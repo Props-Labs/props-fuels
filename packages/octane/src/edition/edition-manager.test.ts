@@ -1,38 +1,55 @@
+import { describe, it, expect, beforeEach } from "vitest";
+import { Provider, Account } from "fuels";
+import { EditionManager } from "./edition-manager";
+import { setup } from "../utils/setup";
 
+describe("EditionManager", () => {
+  let provider: Provider;
+  let wallet: Account;
+  let manager: EditionManager;
 
-/**
- * @class EditionManager
- * @classdesc EditionManager is responsible for managing different editions within the Octane SDK.
- */
-export class EditionManager {
-  /**
-   * Creates a new edition.
-   * @param {string} name - The name of the edition to create.
-   * @param {object} config - The configuration object for the edition.
-   * @returns {Promise<object>} A promise that resolves to the created edition object.
-   */
-  async create(name: string, config: object): Promise<object> {
-    // Implementation for creating a new edition
-    return {}; // Placeholder return
-  }
+  beforeEach(async () => {
+    const { wallet1 } = await setup();
+    provider = await Provider.create("http://127.0.0.1:4000");
+    wallet = wallet1;
+    manager = new EditionManager(provider, wallet);
+  });
 
-  /**
-   * Lists all available editions.
-   * @returns {Promise<object[]>} A promise that resolves to an array of edition objects.
-   */
-  async list(): Promise<object[]> {
-    // Implementation for listing all editions
-    return []; // Placeholder return
-  }
+  it("should create a new edition", async () => {
+    const editionId = await manager.create("Edition 1", {
+      name: "Edition 1",
+      description: "First edition",
+      image: "image_url",
+    });
+    expect(editionId).toBe("edition-id");
+  });
 
-  /**
-   * Gets the details of a specific edition.
-   * @param {string} id - The ID of the edition to retrieve.
-   * @returns {Promise<object>} A promise that resolves to the edition object.
-   */
-  async get(id: string): Promise<object> {
-    // Implementation for getting a specific edition
-    return {}; // Placeholder return
-  }
-}
+  it("should list all editions", async () => {
+    const editions = await manager.list();
+    expect(editions).toBeInstanceOf(Array);
+  });
 
+  it("should get a specific edition", async () => {
+    const editionId = "some-edition-id";
+    const editionData = await manager.get(editionId);
+    expect(editionData).toBeDefined();
+  });
+
+  it("should mint a new token in a specific edition", async () => {
+    const editionId = "some-edition-id";
+    const recipient = "some-recipient-address";
+    const tokenId = await manager.mint(editionId, recipient);
+    expect(tokenId).toBe("token-id");
+  });
+
+  it("should update metadata of a specific edition", async () => {
+    const editionId = "some-edition-id";
+    const metadata = {
+      name: "Updated Edition",
+      description: "Updated description",
+      image: "updated_image_url",
+    };
+    await manager.updateMetadata(editionId, metadata);
+    // Verify that the function completes without errors
+  });
+});

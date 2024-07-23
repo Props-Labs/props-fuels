@@ -1,0 +1,30 @@
+{
+  "name": "octane-fuels-ts",
+  "version": "0.0.1",
+  "description": "Octane SDK for managing NFTs on the Fuel network",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "test": "vitest run",
+    "lint": "eslint . --ext .ts",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "fuels": "^0.91.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^0.0.134",
+    "eslint": "^8.0.0",
+    "rimraf": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Props-Labs/octane.git"
+  },
+  "author": "Props Labs <hello@props.app>",
+  "license": "MIT",
+  "type": "module"
+}
