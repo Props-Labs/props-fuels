@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "lib": ["ES2022", "ESNext.disposable"],
+    "module": "Node16",
+    "moduleResolution": "node16",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2022",
+    "sourceMap": true,
+    "types": ["vitest/globals", "node", "node-fetch", "web"]
+  },
+  "exclude": ["**/dist", "**/node_modules"],
+  "include": ["packages/**/*", "apps/**/*"]
+}

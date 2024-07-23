@@ -1,0 +1,9 @@
+{
+  "entryPoints": ["packages/octane/src/index.ts"],
+  "out": "apps/docs/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "excludeNotDocumented": true
+}
