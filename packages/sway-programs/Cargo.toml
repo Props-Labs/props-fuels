@@ -1,0 +1,8 @@
+[workspace]
+resolver = "2"
+members = [
+    "./SRC721-contract",
+    "./SRC721Edition-contract",
+    "./SRC721EditionImmutable-contract",
+    "./OctaneFeeSplitter-contract"
+]
