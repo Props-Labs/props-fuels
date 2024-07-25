@@ -3,7 +3,7 @@ contract;
 mod errors;
 mod interface;
 
-use errors::{SetError};
+use errors::{SetError, DistributionError};
 use interface::{OctaneFeeSplitter, Constructor};
 use standards::{src5::{SRC5, State},};
 use sway_libs::{
@@ -23,10 +23,14 @@ use sway_libs::{
 use std::{
     hash::Hash,
     asset::{transfer},
+    call_frames::msg_asset_id,
     context::msg_amount,
     address::Address,
+    auth::msg_sender,
+    identity::Identity,
     storage::storage_vec::*,
 };
+use std::logging::log;
 
 storage {
     /// The fee amount for the contract.
@@ -48,7 +52,7 @@ storage {
     /// # Description
     /// This storage map holds the shares allocated to each recipient, identified by their address.
     /// The key is the recipient's address, and the value is the number of shares allocated to them.
-    shares: StorageVec<(Address, u64)> = StorageVec {},
+    shares: StorageVec<(Identity, u64)> = StorageVec {},
 }
 
 impl SRC5 for Contract {
@@ -130,7 +134,7 @@ impl OctaneFeeSplitter for Contract {
     ///
     /// * If the length of `recipients` and `shares` do not match.
     #[storage(write)]
-    fn set_shares(recipients: Vec<Address>, shares: Vec<u64>) {
+    fn set_shares(recipients: Vec<Identity>, shares: Vec<u64>) {
         only_owner();
         assert(recipients.len() == shares.len());
         let mut total_shares = 0;
@@ -141,6 +145,47 @@ impl OctaneFeeSplitter for Contract {
             i += 1;
         }
         storage.total_shares.write(total_shares);
+    }
+
+    /// Returns the share for the caller of the function.
+    ///
+    /// # Arguments
+    ///
+    /// * `caller`: [Identity] - The identity of the caller.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<u64>] - The share of the caller, or `None` if not set.
+    ///
+    /// # Storage Accesses
+    ///
+    /// * Reads: `1`
+    #[storage(read)]
+    fn get_share() -> Option<u64> {
+        let sender = msg_sender().unwrap();
+        let mut i = 0;
+        while i < storage.shares.len() {
+            let (recipient, share) = storage.shares.get(i).unwrap().read();
+            if recipient == sender {
+                return Some(share);
+            }
+            i += 1;
+        }
+        None
+    }
+
+    /// Returns the total shares.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<u64>] - The total shares, or `None` if not set.
+    ///
+    /// # Storage Accesses
+    ///
+    /// * Reads: `1`
+    #[storage(read)]
+    fn total_shares() -> Option<u64> {
+        Some(storage.total_shares.try_read().unwrap_or(0))
     }
 
     /// Distributes the received funds to recipients based on their shares.
@@ -155,12 +200,20 @@ impl OctaneFeeSplitter for Contract {
     /// * Writes: `1`
     #[storage(read, write)]
     fn distribute_funds(amount: u64) {
-        let total_shares = storage.total_shares.read();
+
+        // @TODO add more checks for amounts
+
+        let total_shares = storage.total_shares.try_read().unwrap_or(1);
         let mut i = 0;
+
         while i < storage.shares.len() {
             let (recipient, share) = storage.shares.get(i).unwrap().read();
-            let amount_to_send = (amount * share) / total_shares;
-            transfer(Identity::Address(recipient), AssetId::base(), amount_to_send);
+            let amount_to_send: u64 = ((amount * share) / total_shares);
+
+            require(amount_to_send > 0, DistributionError::CanNotSendZero);
+            log(amount_to_send);
+
+            transfer(recipient, AssetId::base(), amount_to_send);
             i += 1;
         }
     }
@@ -178,6 +231,8 @@ impl OctaneFeeSplitter for Contract {
     #[storage(write), payable]
     fn receive_funds() {
         require_not_paused();
+        assert(msg_asset_id() == AssetId::base());
+        assert(msg_amount() > 0);
         // The contract automatically receives funds when this function is called.
         let amount_received = msg_amount();
         // distribute_funds(amount_received); //- @TODO I wish this would work need to find out how to call my self
