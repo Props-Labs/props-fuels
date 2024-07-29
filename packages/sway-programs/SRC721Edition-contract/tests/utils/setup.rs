@@ -34,9 +34,14 @@ pub(crate) fn defaults(
     Identity,
     Identity,
 ) {
-    let sub_id_1 = Bytes32::from([1u8; 32]);
-    let sub_id_2 = Bytes32::from([2u8; 32]);
-    let sub_id_3 = Bytes32::from([3u8; 32]);
+    let sub_id_1 = Bytes32::from([0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 1u8]);
+    let sub_id_2 = Bytes32::from([0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 2u8]);
+    let sub_id_3 = Bytes32::from([0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 3u8]);
+
+    println!("sub_id_1: {:?}", sub_id_1);
+    println!("sub_id_2: {:?}", sub_id_2);
+    println!("sub_id_3: {:?}", sub_id_3);
+
     let asset1 = get_asset_id(sub_id_1, contract_id);
     let asset2 = get_asset_id(sub_id_2, contract_id);
     let asset3 = get_asset_id(sub_id_3, contract_id);

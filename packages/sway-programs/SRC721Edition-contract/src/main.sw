@@ -65,7 +65,7 @@ storage {
     /// is added by users and stored into storage.
     metadata: StorageMetadata = StorageMetadata {},
     mints: u64 = 0,
-    last_minted: u64 = 0,
+    last_minted_id: u64 = 0,
     name: StorageString = StorageString {},
     symbol: StorageString = StorageString {},
     price: u64 = 0,
@@ -268,7 +268,7 @@ impl SRC3PayableExtension for Contract {
     /// ```
     #[payable]
     #[storage(read, write)]
-    fn mint(recipient: Identity, sub_id: SubId, amount: u64) {
+    fn mint(recipient: Identity, _sub_id: SubId, amount: u64) {
         require_not_paused();
 
         let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
@@ -277,17 +277,7 @@ impl SRC3PayableExtension for Contract {
         // Checks to ensure this is a valid mint.
         let price_amount = msg_amount();
         require(price_amount >= storage.price.try_read().unwrap_or(0) + fee, MintError::NotEnoughTokens(price_amount + fee));
-
-        let asset = AssetId::new(ContractId::this(), sub_id);
-        require(amount == 1, MintError::CannotMintMoreThanOneNFTWithSubId);
-        require(
-            storage
-                .total_supply
-                .get(asset)
-                .try_read()
-                .is_none(),
-            MintError::NFTAlreadyMinted,
-        );
+        require(amount > 0, MintError::CannotMintMoreThanOneNFTWithSubId);
         require(
             storage
                 .total_assets
@@ -296,16 +286,52 @@ impl SRC3PayableExtension for Contract {
             MintError::MaxNFTsMinted,
         );
 
-        // Mint the NFT
-        let _ = _mint(
-            storage
-                .total_assets,
-            storage
-                .total_supply,
-            recipient,
-            sub_id,
-            amount,
-        );
+        let mut minted_count = 0;
+        let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
+
+        log("PASSED SUB ID: ");
+        log(_sub_id);
+
+        while minted_count < amount {
+            let new_minted_id = last_minted_id + 1;
+            log("New minted id:");
+            log(new_minted_id);
+            let new_sub_id = new_minted_id.as_u256().as_b256();
+            log("New sub id:");
+            log(new_minted_id);
+            let asset = AssetId::new(ContractId::this(), new_sub_id);
+            log(asset);
+
+            require(
+                storage
+                    .total_supply
+                    .get(asset)
+                    .try_read()
+                    .is_none(),
+                MintError::NFTAlreadyMinted,
+            );
+
+            log("MINTING NFT");
+            log(new_minted_id);
+            log(new_sub_id);
+
+            // Mint the NFT
+            let _ = _mint(
+                storage
+                    .total_assets,
+                storage
+                    .total_supply,
+                recipient,
+                new_sub_id,
+                1,
+            );
+
+            last_minted_id = new_minted_id;
+            minted_count += 1;
+        }
+
+        // Update last minted id in storage
+        storage.last_minted_id.write(last_minted_id);
     }
 
     /// Burns assets sent with the given `sub_id`.
