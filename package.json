@@ -43,5 +43,9 @@
     "env": {},
     "componentsDefaultDirectory": "components/{name}",
     "packageManager": "npm"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "fuels": "^0.91.0"
   }
 }
