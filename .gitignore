@@ -128,3 +128,11 @@ apps/docs/.vitepress/cache
 # VSCode
 .vscode/
 .history/
+
+# Turbo
+.turbo/
+*.turbo/
+turbo/
+turbo.log
+turbo-cache/
+turbo-out/

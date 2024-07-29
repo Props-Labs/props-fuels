@@ -1,5 +1,6 @@
 import { Provider, Wallet } from "fuels";
-import { NFTMetadata, Edition as EditionType } from "../common/types";
+import { NFTMetadata, Edition as EditionType, EditionCreateConfigurationOptions } from "../common/types";
+import { defaultEditionCreateConfigurationOptions } from "../common/defaults";
 
 /**
  * @class EditionManager
@@ -17,11 +18,18 @@ export class EditionManager {
    * Creates a new edition.
    * @param {string} name - The name of the edition to create.
    * @param {NFTMetadata} metadata - The metadata for the edition.
+   * @param {EditionCreateConfigurationOptions} options - Additional configuration options for creating the edition.
    * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
    */
-  async create(name: string, metadata: NFTMetadata): Promise<string> {
+  async create(
+    name: string,
+    metadata: NFTMetadata,
+    options: EditionCreateConfigurationOptions = defaultEditionCreateConfigurationOptions
+  ): Promise<string> {
     // Replace the following with the actual implementation to interact with the Fuel network
-    console.log(`Creating edition: ${name}`);
+    console.log(
+      `Creating edition: ${name} with options: ${JSON.stringify(options)}, metadata: ${JSON.stringify(metadata)}`
+    );
     return "edition-id";
   }
 

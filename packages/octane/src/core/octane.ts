@@ -1,6 +1,6 @@
 import { EditionManager } from "../edition";
 import { supportedNetworks } from "../common/constants";
-import { Network } from "../common/types";
+import { Network, OctaneConfigurationOptions } from "../common/types";
 
 /**
  * @class Octane
@@ -9,29 +9,32 @@ import { Network } from "../common/types";
 export class Octane {
   public edition: EditionManager;
   private network: Network;
+  private apiKey: string;
 
   /**
    * Creates an instance of Octane.
    * @constructor
-   * @param {string} apiKey - The API key to authenticate requests.
-   * @param {string} network - The network to connect to (e.g., 'beta-5', 'mainnet').
+   * @param {OctaneConfigurationOptions} options - The configuration options for Octane.
+   * @param {string} options.apiKey - The API key to authenticate requests. If no apiKey is supplied, a default rate-limited key will be used.
+   * @param {string} options.network - The network to connect to (e.g., 'beta-5', 'mainnet').
    */
-  constructor(private apiKey: string, _network: string) {
+  constructor(options: OctaneConfigurationOptions) {
     /**
-     * @property {string} apiKey - The API key to authenticate requests.
+     * @property {string} apiKey - The API key to authenticate requests. If no apiKey is supplied, a default rate-limited key will be used.
      * @private
      */
-    this.apiKey = apiKey; //TODO validate api key
+    this.apiKey = options.apiKey || 'default-rate-limited-key'; //TODO validate api key
 
     /**
      * @property {string} network - The network to connect to.
      * @private
      */
     const supportedNetwork = supportedNetworks.find(
-      (net) => net.id === _network
+      (net) => net.id === options.network
     );
     if (!supportedNetwork) {
-      throw new Error(`Network ${_network} is not supported.`);
+      const supportedNetworkIds = supportedNetworks.map(net => net.id).join(', ');
+      throw new Error(`Network ${options.network} is not supported. It must be one of: ${supportedNetworkIds}.`);
     }
     this.network = supportedNetwork;
 
