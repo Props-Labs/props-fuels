@@ -9,7 +9,15 @@ Welcome to the Octane SDK documentation. This SDK allows you to easily create, m
 To install the SDK, run:
 
 ```bash
-npm install octane-sdk
+npm install octane-fuels-ts
+```
+
+```bash
+pnpm install octane-fuels-ts
+```
+
+```bash
+yarn add octane-fuels-ts
 ```
 
 ## Usage
@@ -17,15 +25,18 @@ npm install octane-sdk
 To use the SDK, you must first create an instance of the `Octane` class:
 
 ```javascript
-import { Octane } from 'octane-sdk';
-import { Provider, Wallet } from 'fuels-ts-sdk';
+import { Octane } from 'octane-fuels-ts';
+import { Provider, Wallet } from 'fuels';
 
-const provider = new Provider('https://api.fuel.network');
+const provider = new Provider('https://testnet.fuel.network');
 const wallet = Wallet.fromPrivateKey('your-private-key');
-const sdk = new Octane(provider, wallet);
+
+const octane = new Octane({
+  network: 'testnet',
+});
 
 async function createEdition() {
-  const editionId = await sdk.edition.create('Edition 1', {
+  const editionId = await octane.edition.create('Edition 1', {
     name: 'Edition 1',
     description: 'First edition',
     image: 'image_url',

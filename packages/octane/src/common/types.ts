@@ -1,3 +1,4 @@
+import { Account } from "fuels";
 import { supportedNetworks } from "./constants";
 
 export type NFTMetadata = {
@@ -39,6 +40,7 @@ export type EditionCreateConfigurationOptions = {
      * The maximum number of tokens that can be minted for the edition.
      */
     maxSupply: number;
+    account: Account;
 };
 
 export type Network = {

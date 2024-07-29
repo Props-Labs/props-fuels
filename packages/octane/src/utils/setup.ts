@@ -1,5 +1,7 @@
 import { WalletUnlocked } from "fuels";
 import { launchTestNode, AssetId, TestMessage } from "fuels/test-utils";
+import { OctaneFeeSplitterContractAbi__factory } from "../sway-api/contracts";
+import octaneFeeSplitterBytecode from "../sway-api/contracts/OctaneFeeSplitterContractAbi.hex";
 
 export async function setup(): Promise<
     {
@@ -22,16 +24,16 @@ export async function setup(): Promise<
         messages: [message], // Initial messages
       },
       nodeOptions: {
-        port: "4000"
-      }
-    //   contractsConfigs: [
-    //     {
-    //       deployer: SRC721ContractAbi__factory, // Contract deployer factory
-    //       bytecode, // Contract bytecode
-    //       walletIndex: 3, // Index of the wallet to deploy the contract
-    //       options: { storageSlots: [] }, // Storage options for the contract
-    //     },
-    //   ],
+        port: "4000",
+      },
+      contractsConfigs: [
+        {
+          deployer: OctaneFeeSplitterContractAbi__factory, // Contract deployer factory
+          bytecode: octaneFeeSplitterBytecode, // Contract bytecode
+          walletIndex: 0, // Index of the wallet to deploy the contract
+          options: { storageSlots: [] }, // Storage options for the contract
+        },
+      ],
     });
 
     // Destructure the launched object to get wallets and contracts

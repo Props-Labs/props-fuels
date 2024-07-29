@@ -1,8 +1,8 @@
-[**octane**](../README.md) • **Docs**
+[**octane-fuels-ts**](../README.md) • **Docs**
 
 ***
 
-[octane](../README.md) / Octane
+[octane-fuels-ts](../README.md) / Octane
 
 # Class: Octane
 
@@ -16,19 +16,15 @@ Octane is the core class for the Octane SDK, providing essential functionalities
 
 ### new Octane()
 
-> **new Octane**(`apiKey`, `network`): [`Octane`](Octane.md)
+> **new Octane**(`options`): [`Octane`](Octane.md)
 
 Creates an instance of Octane.
 
 #### Parameters
 
-• **apiKey**: `string`
+• **options**: `OctaneConfigurationOptions`
 
-The API key to authenticate requests.
-
-• **network**: `string`
-
-The network to connect to (e.g., 'beta-5', 'mainnet').
+The configuration options for Octane.
 
 #### Returns
 
@@ -36,4 +32,4 @@ The network to connect to (e.g., 'beta-5', 'mainnet').
 
 #### Defined in
 
-core/octane.ts:16
+[core/octane.ts:21](https://github.com/Props-Labs/octane/blob/bec5a98c4f9e28a3423b8abc950fac2fe7d487bc/packages/octane/src/core/octane.ts#L21)

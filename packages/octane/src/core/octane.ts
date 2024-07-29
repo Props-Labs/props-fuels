@@ -8,6 +8,7 @@ import { Network, OctaneConfigurationOptions } from "../common/types";
  */
 export class Octane {
   public edition: EditionManager;
+  public events: OctaneEvents;
   private network: Network;
   private apiKey: string;
 
@@ -43,5 +44,12 @@ export class Octane {
      * @public
      */
     this.edition = new EditionManager();
+
+    /**
+     * @property {OctaneEvents}
+     * @public
+     * @description The event manager instance.
+     */
+     this.events = OctaneEvents.getInstance();
   }
 }

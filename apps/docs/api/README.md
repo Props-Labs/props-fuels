@@ -1,8 +1,8 @@
-**octane** • **Docs**
+**octane-fuels-ts** • **Docs**
 
 ***
 
-# octane
+# octane-fuels-ts
 
 ## Classes
 
