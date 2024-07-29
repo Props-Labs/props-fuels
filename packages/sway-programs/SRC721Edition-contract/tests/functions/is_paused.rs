@@ -9,7 +9,7 @@ mod success {
 
     #[tokio::test]
     async fn is_unpaused_by_default() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -28,7 +28,7 @@ mod success {
 
     #[tokio::test]
     async fn is_unpaused_when_not_initialzied() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -45,7 +45,7 @@ mod success {
 
     #[tokio::test]
     async fn switches_state_when_paused() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,

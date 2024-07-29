@@ -1,0 +1,5 @@
+[project]
+authors = ["Props Labs LLC <hello@props.app>"]
+entry = "interface.sw"
+license = "Apache-2.0"
+name = "libraries"

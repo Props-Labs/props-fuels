@@ -22,25 +22,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "SRC721-contract"
-version = "0.0.0"
-dependencies = [
- "fuels",
- "sha2 0.10.8",
- "tokio",
-]
-
-[[package]]
 name = "SRC721Edition-contract"
-version = "0.0.0"
-dependencies = [
- "fuels",
- "sha2 0.10.8",
- "tokio",
-]
-
-[[package]]
-name = "SRC721EditionImmutableImmutable-contract"
 version = "0.0.0"
 dependencies = [
  "fuels",

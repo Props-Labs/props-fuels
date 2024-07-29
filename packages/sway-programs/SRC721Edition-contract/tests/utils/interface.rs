@@ -1,9 +1,10 @@
-use crate::utils::setup::{Metadata, State, SRC721Edition};
+use crate::utils::setup::{Metadata, State, SRC721Edition, OctaneFeeSplitter};
 use fuels::{
-    prelude::{AssetId, CallParameters, TxPolicies, WalletUnlocked},
+    prelude::{AssetId, CallParameters, TxPolicies, WalletUnlocked, ContractId, Bech32ContractId},
     programs::{call_response::FuelCallResponse, call_utils::TxDependencyExtension},
     types::{Bits256, Identity},
 };
+use std::str::FromStr;
 
 pub(crate) async fn total_assets(contract: &SRC721Edition<WalletUnlocked>) -> u64 {
     contract
@@ -48,11 +49,21 @@ pub(crate) async fn mint(
     recipient: Identity,
     sub_id: Bits256,
     amount: u64,
+    price: u64,
+    fee_contract_instance: &OctaneFeeSplitter<WalletUnlocked>,
 ) -> FuelCallResponse<()> {
+    // @dev TODO: This is a hack to get the contract id, should be refactored
+    let id = Bech32ContractId::from(
+        ContractId::from_str("0x067aeee777f1ae6826d721d51e8a906f62ecc452e9097c01808263740dfd70c7")
+        .unwrap(),
+    );
     contract
         .methods()
         .mint(recipient, sub_id, amount)
+        .with_contract_ids(&[id.clone()])
         .append_variable_outputs(1)
+        .call_params(CallParameters::new(price, AssetId::zeroed(), 1_000_000))
+        .unwrap()
         .call()
         .await
         .unwrap()
@@ -143,4 +154,35 @@ pub(crate) async fn set_price(
 
 pub(crate) async fn price(contract: &SRC721Edition<WalletUnlocked>) -> Option<u64> {
     contract.methods().price().call().await.unwrap().value
+}
+
+// @dev Not very dry, should be moved into its own test-utils module
+
+pub(crate) async fn fee_constructor(
+    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    owner: Identity,
+) -> FuelCallResponse<()> {
+    contract.methods().constructor(owner).call().await.unwrap()
+}
+
+pub(crate) async fn set_fee(
+    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    fee: u64,
+) -> FuelCallResponse<()> {
+    contract
+        .methods()
+        .set_fee(fee)
+        .call()
+        .await
+        .unwrap()
+}
+
+pub(crate) async fn fee(contract: &OctaneFeeSplitter<WalletUnlocked>) -> Option<u64> {
+    contract
+        .methods()
+        .fee()
+        .call()
+        .await
+        .unwrap()
+        .value
 }
