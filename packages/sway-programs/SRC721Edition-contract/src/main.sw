@@ -36,11 +36,13 @@ use sway_libs::{
         require_not_paused,
     },
 };
-use std::{hash::Hash, storage::storage_string::*, string::String};
+use std::{hash::Hash, storage::storage_string::*, storage::storage_vec::*, string::String};
 use std::logging::log;
 use std::context::msg_amount;
 
-// const FEE_CONTRACT: ContractId = ContractId(0);
+use libraries::{OctaneFeeSplitter};
+
+const FEE_CONTRACT_ID = 0x067aeee777f1ae6826d721d51e8a906f62ecc452e9097c01808263740dfd70c7;
 
 storage {
     /// The total number of unique assets minted by this contract.
@@ -67,6 +69,8 @@ storage {
     name: StorageString = StorageString {},
     symbol: StorageString = StorageString {},
     price: u64 = 0,
+
+    // rewards: StorageVec<StorageString> = StorageVec {},
 }
 
 configurable {
@@ -267,9 +271,12 @@ impl SRC3PayableExtension for Contract {
     fn mint(recipient: Identity, sub_id: SubId, amount: u64) {
         require_not_paused();
 
+        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
+        let fee = fee_splitter.fee().unwrap_or(0);
+
         // Checks to ensure this is a valid mint.
         let price_amount = msg_amount();
-        require(price_amount >= storage.price.try_read().unwrap_or(0), MintError::NotEnoughTokens(price_amount));
+        require(price_amount >= storage.price.try_read().unwrap_or(0) + fee, MintError::NotEnoughTokens(price_amount + fee));
 
         let asset = AssetId::new(ContractId::this(), sub_id);
         require(amount == 1, MintError::CannotMintMoreThanOneNFTWithSubId);

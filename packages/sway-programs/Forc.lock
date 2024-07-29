@@ -2,16 +2,8 @@
 name = "OctaneFeeSplitter-contract"
 source = "member"
 dependencies = [
+    "libraries",
     "standards git+https://github.com/FuelLabs/sway-standards?tag=v0.5.1#e2d5ac40a1d11a9e38e0a662d35141076515319f",
-    "std",
-    "sway_libs",
-]
-
-[[package]]
-name = "SRC721-contract"
-source = "member"
-dependencies = [
-    "standards git+https://github.com/FuelLabs/sway-standards?tag=v0.4.3#6f63eb7dff2458a7d976184e565b5cbf26f61da2",
     "std",
     "sway_libs",
 ]
@@ -20,15 +12,7 @@ dependencies = [
 name = "SRC721Edition-contract"
 source = "member"
 dependencies = [
-    "standards git+https://github.com/FuelLabs/sway-standards?tag=v0.5.1#e2d5ac40a1d11a9e38e0a662d35141076515319f",
-    "std",
-    "sway_libs",
-]
-
-[[package]]
-name = "SRC721EditionImmutableImmutable-contract"
-source = "member"
-dependencies = [
+    "libraries",
     "standards git+https://github.com/FuelLabs/sway-standards?tag=v0.5.1#e2d5ac40a1d11a9e38e0a662d35141076515319f",
     "std",
     "sway_libs",
@@ -39,8 +23,8 @@ name = "core"
 source = "path+from-root-E19CE48B3E858B72"
 
 [[package]]
-name = "counter-contract"
-source = "member"
+name = "libraries"
+source = "path+from-root-A1B53A4998387B5E"
 dependencies = ["std"]
 
 [[package]]

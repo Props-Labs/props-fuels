@@ -11,7 +11,12 @@ use sha2::{Digest, Sha256};
 abigen!(Contract(
     name = "SRC721Edition",
     abi = "./SRC721Edition-contract/out/debug/SRC721Edition-contract-abi.json"
+),Contract(
+    name = "OctaneFeeSplitter",
+    abi = "./OctaneFeeSplitter-contract/out/debug/OctaneFeeSplitter-contract-abi.json"
 ),);
+
+const FEE_SPLITTER_CONTRACT_BINARY_PATH: &str = "../OctaneFeeSplitter-contract/out/debug/OctaneFeeSplitter-contract.bin";
 
 const NFT_CONTRACT_BINARY_PATH: &str = "./out/debug/SRC721Edition-contract.bin";
 
@@ -57,6 +62,8 @@ pub(crate) async fn setup() -> (
     ContractId,
     SRC721Edition<WalletUnlocked>,
     SRC721Edition<WalletUnlocked>,
+    ContractId,
+    OctaneFeeSplitter<WalletUnlocked>,
 ) {
     let number_of_coins = 1;
     let coin_amount = 100_000_000;
@@ -86,7 +93,15 @@ pub(crate) async fn setup() -> (
     let instance_1 = SRC721Edition::new(id.clone(), wallet1.clone());
     let instance_2 = SRC721Edition::new(id.clone(), wallet2.clone());
 
-    (wallet1, wallet2, id.into(), instance_1, instance_2)
+    let fee_id = Contract::load_from(FEE_SPLITTER_CONTRACT_BINARY_PATH, LoadConfiguration::default())
+        .unwrap()
+        .deploy(&wallet1, TxPolicies::default())
+        .await
+        .unwrap();
+
+    let fee_instance_1 = OctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
+
+    (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
 pub(crate) fn get_asset_id(sub_id: Bytes32, contract: ContractId) -> AssetId {

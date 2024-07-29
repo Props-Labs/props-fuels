@@ -4,7 +4,7 @@ mod errors;
 mod interface;
 
 use errors::{SetError, DistributionError};
-use interface::{OctaneFeeSplitter, Constructor};
+use interface::{Constructor};
 use standards::{src5::{SRC5, State},};
 use sway_libs::{
     ownership::{
@@ -31,6 +31,7 @@ use std::{
     storage::storage_vec::*,
 };
 use std::logging::log;
+use libraries::{OctaneFeeSplitter};
 
 storage {
     /// The fee amount for the contract.

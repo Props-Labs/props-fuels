@@ -70,6 +70,8 @@ pub(crate) async fn setup() -> (
         .await
         .unwrap();
 
+    println!("Contract deployed at: {:?}", id);
+
     let instance_1 = OctaneFeeSplitter::new(id.clone(), wallet1.clone());
     let instance_2 = OctaneFeeSplitter::new(id.clone(), wallet2.clone());
     let instance_3 = OctaneFeeSplitter::new(id.clone(), wallet3.clone());
