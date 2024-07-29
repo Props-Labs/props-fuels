@@ -231,12 +231,13 @@ impl SRC20 for Contract {
 }
 
 impl SRC3PayableExtension for Contract {
-    /// Mints new assets using the `sub_id` sub-identifier.
+    /// Mints new assets using the `sub_id` sub-identifier in a sequential manner.
     ///
     /// # Additional Information
     ///
     /// This conforms to the SRC-20 NFT portion of the standard for a maximum
-    /// mint amount of 1 coin per asset.
+    /// mint amount of 1 coin per asset. The minting process is sequential, meaning
+    /// each new asset is assigned a unique identifier incrementally.
     ///
     /// # Arguments
     ///
@@ -289,18 +290,10 @@ impl SRC3PayableExtension for Contract {
         let mut minted_count = 0;
         let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
 
-        log("PASSED SUB ID: ");
-        log(_sub_id);
-
         while minted_count < amount {
             let new_minted_id = last_minted_id + 1;
-            log("New minted id:");
-            log(new_minted_id);
             let new_sub_id = new_minted_id.as_u256().as_b256();
-            log("New sub id:");
-            log(new_minted_id);
             let asset = AssetId::new(ContractId::this(), new_sub_id);
-            log(asset);
 
             require(
                 storage
@@ -310,10 +303,6 @@ impl SRC3PayableExtension for Contract {
                     .is_none(),
                 MintError::NFTAlreadyMinted,
             );
-
-            log("MINTING NFT");
-            log(new_minted_id);
-            log(new_sub_id);
 
             // Mint the NFT
             let _ = _mint(
