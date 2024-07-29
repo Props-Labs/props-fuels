@@ -1,7 +1,6 @@
 {
 	"name": "demo-octane",
 	"version": "0.0.1",
-	"private": true,
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -31,6 +30,9 @@
 		"typescript": "^4.9.3",
 		"vite": "^4.0.0",
 		"vitest": "^0.25.3"
+	},
+	"dependencies": {
+		"octane-fuels-ts": "workspace:*"
 	},
 	"type": "module"
 }

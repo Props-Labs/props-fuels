@@ -6,25 +6,11 @@ import { NFTMetadata, Edition as EditionType } from "../common/types";
  * @classdesc Manages editions within the Octane SDK on the Fuel network.
  */
 export class EditionManager {
-  private provider: Provider;
-  private wallet: Wallet;
-
   /**
-   * Constructs the EditionManager instance.
-   * @param {Provider} provider - The Fuel provider.
-   * @param {Wallet} wallet - The Fuel wallet.
+   * Creates a new instance of the EditionManager class.
    */
-  constructor(provider: Provider, wallet: Wallet) {
-    this.provider = provider;
-    this.wallet = wallet;
-  }
-
-  /**
-   * Sets the wallet for the manager.
-   * @param {Wallet} wallet - The new wallet instance.
-   */
-  setWallet(wallet: Wallet): void {
-    this.wallet = wallet;
+  constructor() {
+    // TODO: Initialize the EditionManager class
   }
 
   /**

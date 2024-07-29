@@ -1,12 +1,11 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "declaration": true,
-    "declarationMap": true,
-    "module": "ESNext", // Use ESNext for ESM
-    "moduleResolution": "node16"
+    "outDir": "./dist"
   },
-  "include": ["src/**/*"]
+  "include": ["src", "test"],
+  "exclude": [
+    "node_modules",
+    "src/sway-api"
+  ]
 }

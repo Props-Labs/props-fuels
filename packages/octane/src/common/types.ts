@@ -10,3 +10,11 @@ export type Edition = {
     metadata: NFTMetadata;
     tokens: string[];
 };
+
+export type Network = {
+    id: string;
+    name: string;
+    url: string;
+    port?: number;
+    graphqlUrl?: string;
+};
