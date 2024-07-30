@@ -1,5 +1,5 @@
 import { Account } from "fuels";
-import { supportedNetworks } from "./constants";
+import { supportedNetworks } from "../constants";
 
 export type NFTMetadata = {
     /**

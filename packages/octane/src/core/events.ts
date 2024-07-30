@@ -2,7 +2,7 @@
  * @class OctaneEvents
  * @classdesc Singleton class to manage event states within the application.
  */
-class OctaneEvents {
+export class OctaneEvents {
   /**
    * The single instance of the OctaneEvents class.
    * @private

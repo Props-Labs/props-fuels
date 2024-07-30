@@ -29,7 +29,23 @@ module.exports = {
         },
         {
           text: "Guide",
-          items: [{ text: "Editions", link: "/editions" }],
+          items: [
+            {
+              text: "Editions",
+              items: [
+                { text: "Overview", link: "/editions" },
+                { text: "Create Edition", link: "/editions/create" },
+                { text: "Mint Edition", link: "/editions/mint" },
+              ],
+            },
+            {
+              text: "Advanced",
+              items: [
+                { text: "Edition Metadata", link: "/editions/metadata" },
+                { text: "Edition Configuration", link: "/editions/configuration" },
+              ],
+            },
+          ],
         },
       ],
     },
