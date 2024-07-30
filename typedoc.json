@@ -2,6 +2,7 @@
   "entryPoints": ["packages/octane/src/index.ts"],
   "out": "apps/docs/api",
   "plugin": ["typedoc-plugin-markdown"],
+  "exclude": ["**/sway-api/**", "**/demo-octane/**", "apps/demo-octane/**/*"],
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,
