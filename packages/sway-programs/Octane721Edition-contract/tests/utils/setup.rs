@@ -104,9 +104,77 @@ pub(crate) async fn setup() -> (
         .await
         .unwrap();
 
+    // println!("fee_id: {:?}", fee_id.toB256());
+
     let fee_instance_1 = OctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
     (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
+}
+
+pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
+    WalletUnlocked,
+    WalletUnlocked,
+    WalletUnlocked,
+    ContractId,
+    Octane721Edition<WalletUnlocked>,
+    Octane721Edition<WalletUnlocked>,
+    ContractId,
+    OctaneFeeSplitter<WalletUnlocked>,
+) {
+    let number_of_coins = 1;
+    let coin_amount = 100_000_000;
+    let number_of_wallets = 3;
+
+    let base_asset = AssetConfig {
+        id: AssetId::zeroed(),
+        num_coins: number_of_coins,
+        coin_amount,
+    };
+    let assets = vec![base_asset];
+
+    let wallet_config = WalletsConfig::new_multiple_assets(number_of_wallets, assets);
+    let mut wallets = launch_custom_provider_and_get_wallets(wallet_config, None, None)
+        .await
+        .unwrap();
+
+    let wallet1 = wallets.pop().unwrap();
+    let wallet2 = wallets.pop().unwrap();
+    let wallet3 = wallets.pop().unwrap();
+
+    let mut configurables = Octane721EditionConfigurables::default()
+        .with_BUILDER_FEE_ADDRESS(wallet3.address().into()).unwrap();
+
+    if let Some(1) = mode {
+        configurables = configurables
+            .with_BUILDER_FEE_MODE(1).unwrap()
+            .with_BUILDER_FEE(50).unwrap();
+    } else {
+        configurables = configurables
+            .with_BUILDER_FEE(1000).unwrap(); // Example value for BUILDER_FEE
+    }
+
+    let id = Contract::load_from(NFT_CONTRACT_BINARY_PATH, LoadConfiguration::default()
+        .with_configurables(configurables)
+    )
+        .unwrap()
+        .deploy(&wallet1, TxPolicies::default())
+        .await
+        .unwrap();
+
+    let instance_1 = Octane721Edition::new(id.clone(), wallet1.clone());
+    let instance_2 = Octane721Edition::new(id.clone(), wallet2.clone());
+
+    let fee_id = Contract::load_from(FEE_SPLITTER_CONTRACT_BINARY_PATH, LoadConfiguration::default())
+        .unwrap()
+        .deploy(&wallet1, TxPolicies::default())
+        .await
+        .unwrap();
+
+    // println!("fee_id: {:?}", fee_id.toB256());
+
+    let fee_instance_1 = OctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
+
+    (wallet1, wallet2, wallet3, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
 pub(crate) fn get_asset_id(sub_id: Bytes32, contract: ContractId) -> AssetId {

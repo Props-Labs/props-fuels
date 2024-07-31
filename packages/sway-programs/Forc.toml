@@ -1,2 +1,2 @@
 [workspace]
-members = ["./SRC721Edition-contract", "./OctaneFeeSplitter-contract"]
+members = ["./Octane721Edition-contract", "./OctaneFeeSplitter-contract"]

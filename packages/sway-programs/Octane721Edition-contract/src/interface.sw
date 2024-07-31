@@ -22,6 +22,14 @@ abi SetMintMetadata {
     fn price() -> Option<u64>;
 }
 
+abi SetAffiliate {
+    #[storage(write)]
+    fn set_affiliate_fee(mode: u64, fee: u64);
+
+    #[storage(read)]
+    fn affiliate() -> Option<(u64,u64)>;
+}
+
 abi Octane721Edition {
     #[storage(read, write)]
     fn constructor(owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64);

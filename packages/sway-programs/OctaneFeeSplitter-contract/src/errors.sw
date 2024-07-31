@@ -6,4 +6,6 @@ pub enum SetError {
 
 pub enum DistributionError {
     CanNotSendZero: (),
+    AssetNotBaseId: (),
+    AmountIsZero: (),
 }

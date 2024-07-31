@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "OctaneFeeSplitter-contract"
+name = "Octane721Edition-contract"
 version = "0.0.0"
 dependencies = [
  "fuels",
@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "SRC721Edition-contract"
+name = "OctaneFeeSplitter-contract"
 version = "0.0.0"
 dependencies = [
  "fuels",

@@ -232,8 +232,8 @@ impl OctaneFeeSplitter for Contract {
     #[storage(write), payable]
     fn receive_funds() {
         require_not_paused();
-        assert(msg_asset_id() == AssetId::base());
-        assert(msg_amount() > 0);
+        require(msg_asset_id() == AssetId::base(), DistributionError::AssetNotBaseId);
+        require(msg_amount() > 0, DistributionError::AmountIsZero);
         // The contract automatically receives funds when this function is called.
         let amount_received = msg_amount();
         // distribute_funds(amount_received); //- @TODO I wish this would work need to find out how to call my self
