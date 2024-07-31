@@ -225,7 +225,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_assets_with_builder_fee() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = deploy_edition_with_builder_fee().await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = deploy_edition_with_builder_fee(Some(0)).await;
         let owner_wallet_clone = owner_wallet.clone();
         let another_wallet_clone = another_wallet.clone();
         let (
@@ -266,6 +266,64 @@ mod success {
         assert_eq!(base_asset_balance, 0);
 
         assert_eq!(get_wallet_balance(&another_wallet_clone, &AssetId::zeroed()).await, initial_another_wallet_balance+1_000);
+
+        assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
+        assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
+        assert_eq!(total_assets(&instance_1).await, 1);
+    }
+
+    #[tokio::test]
+    async fn mints_assets_with_builder_fee_mode_1() {
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = deploy_edition_with_builder_fee(Some(1)).await;
+        let owner_wallet_clone = owner_wallet.clone();
+        let another_wallet_clone = another_wallet.clone();
+        let other_wallet_clone = other_wallet.clone();
+        let (
+            asset_id_1,
+            _asset_id_2,
+            _asset_id_3,
+            sub_id_1,
+            _sub_id_2,
+            _sub_id_3,
+            owner_identity,
+            other_identity,
+        ) = defaults(id, owner_wallet, other_wallet.clone());
+
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+
+        assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
+        assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
+        assert_eq!(total_assets(&instance_1).await, 0);
+
+        let initial_owner_wallet_balance = get_wallet_balance(&owner_wallet_clone, &AssetId::zeroed()).await;
+        let initial_other_wallet_balance = get_wallet_balance(&other_wallet_clone, &AssetId::zeroed()).await;
+        let initial_another_wallet_balance = get_wallet_balance(&another_wallet_clone, &AssetId::zeroed()).await;
+
+        println!("other_wallet_clone address hash:");
+        println!("{:?}", another_wallet_clone.address().hash());
+
+        println!("initial_owner_wallet_balance: {:?}", initial_owner_wallet_balance);
+        println!("initial_another_wallet_balance: {:?}", initial_another_wallet_balance);
+        println!("initial_other_wallet_balance: {:?}", initial_other_wallet_balance);
+
+        set_price(&instance_1, 1_000).await;
+
+        let response = mint(&instance_2, other_identity, sub_id_1, 1, 1_000, fee_id).await;
+        let logs = response.decode_logs();
+        println!("{:?}", logs);
+
+        // Check that mint has transferred the coins
+        let contract_balances = instance_1.get_balances().await.unwrap();
+        let base_asset_balance = contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);
+        assert_eq!(base_asset_balance, 0);
+
+        println!("owner wallet balance: {:?}", get_wallet_balance(&owner_wallet_clone, &AssetId::zeroed()).await);
+        println!("another wallet balance: {:?}", get_wallet_balance(&another_wallet_clone, &AssetId::zeroed()).await);
+        println!("other wallet balance: {:?}", get_wallet_balance(&other_wallet_clone, &AssetId::zeroed()).await);
+
+        assert_eq!(get_wallet_balance(&another_wallet_clone, &AssetId::zeroed()).await, initial_another_wallet_balance + 500);
+        assert_eq!(get_wallet_balance(&owner_wallet_clone, &AssetId::zeroed()).await, initial_owner_wallet_balance + 500);
+        assert_eq!(get_wallet_balance(&other_wallet_clone, &AssetId::zeroed()).await, initial_other_wallet_balance - 1_000);
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));

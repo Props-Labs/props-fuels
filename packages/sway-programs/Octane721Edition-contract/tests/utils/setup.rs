@@ -111,7 +111,7 @@ pub(crate) async fn setup() -> (
     (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
-pub(crate) async fn deploy_edition_with_builder_fee() -> (
+pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
     WalletUnlocked,
     WalletUnlocked,
     WalletUnlocked,
@@ -141,9 +141,17 @@ pub(crate) async fn deploy_edition_with_builder_fee() -> (
     let wallet2 = wallets.pop().unwrap();
     let wallet3 = wallets.pop().unwrap();
 
-    let configurables = Octane721EditionConfigurables::default()
-        .with_BUILDER_FEE_ADDRESS(wallet3.address().into()).unwrap()
-        .with_BUILDER_FEE(1000).unwrap(); // Example value for BUILDER_FEE
+    let mut configurables = Octane721EditionConfigurables::default()
+        .with_BUILDER_FEE_ADDRESS(wallet3.address().into()).unwrap();
+
+    if let Some(1) = mode {
+        configurables = configurables
+            .with_BUILDER_FEE_MODE(1).unwrap()
+            .with_BUILDER_FEE(50).unwrap();
+    } else {
+        configurables = configurables
+            .with_BUILDER_FEE(1000).unwrap(); // Example value for BUILDER_FEE
+    }
 
     let id = Contract::load_from(NFT_CONTRACT_BINARY_PATH, LoadConfiguration::default()
         .with_configurables(configurables)
