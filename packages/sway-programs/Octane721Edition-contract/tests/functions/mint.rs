@@ -2,7 +2,9 @@ use crate::utils::{
     interface::{burn, constructor, mint, pause, total_assets, total_supply, set_fee, fee, fee_constructor, set_price},
     setup::{defaults, get_wallet_balance, setup, default_name, default_metadata_keys, default_metadata_values, default_symbol, default_price},
 };
-use fuels::types::Bits256;
+use fuels::{
+    types::{Bits256,AssetId},
+};
 
 mod success {
 
@@ -10,7 +12,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_assets() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,
@@ -28,7 +30,7 @@ mod success {
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
         assert_eq!(total_assets(&instance_1).await, 0);
 
-        let response = mint(&instance_1, other_identity, sub_id_1, 1, 0, &fee_instance_1).await;
+        let response = mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
 
         let logs = response.decode_logs();
         println!("{:?}", logs);
@@ -40,7 +42,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_multiple_assets() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
         let (
             asset_id_1,
             asset_id_2,
@@ -53,7 +55,7 @@ mod success {
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_2).await, 0);
@@ -61,7 +63,7 @@ mod success {
         assert_eq!(total_supply(&instance_1, asset_id_2).await, None);
         assert_eq!(total_assets(&instance_1).await, 1);
 
-        mint(&instance_1, other_identity, sub_id_2, 1, 0, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_2).await, 1);
@@ -69,7 +71,7 @@ mod success {
         assert_eq!(total_supply(&instance_1, asset_id_2).await, Some(1));
         assert_eq!(total_assets(&instance_1).await, 2);
 
-        mint(&instance_1, other_identity, sub_id_3, 1, 0, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_2).await, 1);
@@ -108,7 +110,17 @@ mod success {
         set_fee(&fee_instance_1, fee_amount).await;
         assert_eq!(fee(&fee_instance_1).await, Some(fee_amount));
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 1_000, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id).await;
+
+        // Check that mint has transferred the coins
+        let contract_balances = instance_1.get_balances().await.unwrap();
+        let base_asset_balance = contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);
+        assert_eq!(base_asset_balance, 0);
+
+        // Check that mint has transferred the fee to splitter
+        let fee_contract_balances = fee_instance_1.get_balances().await.unwrap();
+        let fee_base_asset_balance = fee_contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);
+        assert_eq!(fee_base_asset_balance, fee_amount);
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
@@ -137,7 +149,17 @@ mod success {
 
         set_price(&instance_1, 1_000).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 1_000, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id).await;
+
+        // Check that mint has the coins
+        let contract_balances = instance_1.get_balances().await.unwrap();
+        let base_asset_balance = contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);
+        assert_eq!(base_asset_balance, 1000);
+
+        // Check that mint has NOT transferred the fee to splitter
+        let fee_contract_balances = fee_instance_1.get_balances().await.unwrap();
+        let fee_base_asset_balance = fee_contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);
+        assert_eq!(fee_base_asset_balance, 0);
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
@@ -174,7 +196,17 @@ mod success {
 
         set_price(&instance_1, 1_000).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 2_000, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 2_000, fee_id).await;
+
+        // Check that mint has transferred the coins
+        let contract_balances = instance_1.get_balances().await.unwrap();
+        let base_asset_balance = contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);
+        assert_eq!(base_asset_balance, 1_000);
+
+        // Check that mint has transferred the fee to splitter
+        let fee_contract_balances = fee_instance_1.get_balances().await.unwrap();
+        let fee_base_asset_balance = fee_contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);
+        assert_eq!(fee_base_asset_balance, fee_amount);
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
@@ -189,7 +221,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "Paused")]
     async fn when_paused() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, _fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -205,13 +237,13 @@ mod revert {
 
         pause(&instance_1).await;
 
-        mint(&instance_2, other_identity, sub_id_1, 1, 0, &fee_instance_1).await;
+        mint(&instance_2, other_identity, sub_id_1, 1, 0, fee_id).await;
     }
 
     #[tokio::test]
     #[should_panic(expected = "MaxNFTsMinted")]
     async fn when_max_supplt_reached() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -225,16 +257,16 @@ mod revert {
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, &fee_instance_1).await;
-        mint(&instance_1, other_identity, sub_id_2, 1, 0, &fee_instance_1).await;
-        mint(&instance_1, other_identity, sub_id_3, 1, 0, &fee_instance_1).await;
-        mint(&instance_1, other_identity, Bits256([4u8; 32]), 1, 0, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, Bits256([4u8; 32]), 1, 0, fee_id).await;
     }
 
     #[tokio::test]
     #[should_panic(expected = "MaxNFTsMinted")]
     async fn when_minting_max_supply_after_burn() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, _fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,
@@ -247,19 +279,19 @@ mod revert {
         ) = defaults(id, owner_wallet, other_wallet);
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, &fee_instance_1).await;
-        mint(&instance_1, other_identity, sub_id_2, 1, 0, &fee_instance_1).await;
-        mint(&instance_1, other_identity, sub_id_3, 1, 0, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id).await;
 
         burn(&instance_2, asset_id_1, sub_id_1, 1).await;
 
-        mint(&instance_1, other_identity, Bits256([4u8; 32]), 1, 0, &fee_instance_1).await;
+        mint(&instance_1, other_identity, Bits256([4u8; 32]), 1, 0, fee_id).await;
     }
 
     #[tokio::test]
     #[should_panic(expected = "NotEnoughTokens")]
     async fn when_underpriced() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -274,7 +306,7 @@ mod revert {
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
         set_price(&instance_1, 1_000).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 500, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 500, fee_id).await;
     }
 
     #[tokio::test]
@@ -299,7 +331,7 @@ mod revert {
         let fee_amount = 1_000;
         set_fee(&fee_instance_1, fee_amount).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 1_000, &fee_instance_1).await;
-        mint(&instance_1, other_identity, sub_id_2, 1, 1_500, &fee_instance_1).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_2, 1, 1_500, fee_id).await;
     }
 }

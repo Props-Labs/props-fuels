@@ -35,14 +35,16 @@ use sway_libs::{
         Pausable,
         require_not_paused,
     },
+    reentrancy::reentrancy_guard,
 };
 use std::{hash::Hash, storage::storage_string::*, storage::storage_vec::*, string::String};
 use std::logging::log;
 use std::context::msg_amount;
+use std::call_frames::msg_asset_id;
 
 use libraries::{OctaneFeeSplitter};
 
-const FEE_CONTRACT_ID = 0x067aeee777f1ae6826d721d51e8a906f62ecc452e9097c01808263740dfd70c7;
+const FEE_CONTRACT_ID = 0xf6b478da6741beed76acdc1e8cfb9fa64d250378e8868201a5aa2c0afc7fb328;
 
 storage {
     /// The total number of unique assets minted by this contract.
@@ -64,7 +66,6 @@ storage {
     /// In this NFT contract, there is no metadata provided at compile time. All metadata
     /// is added by users and stored into storage.
     metadata: StorageMetadata = StorageMetadata {},
-    mints: u64 = 0,
     last_minted_id: u64 = 0,
     name: StorageString = StorageString {},
     symbol: StorageString = StorageString {},
@@ -267,28 +268,40 @@ impl SRC3PayableExtension for Contract {
     ///     contract_abi.mint(Identity::ContractId(ContractId::this()), ZERO_B256, 1);
     /// }
     /// ```
-    #[payable]
-    #[storage(read, write)]
+    #[storage(read, write), payable]
     fn mint(recipient: Identity, _sub_id: SubId, amount: u64) {
+        reentrancy_guard();
         require_not_paused();
+
+        let price = storage.price.try_read().unwrap_or(0);
+        let total_assets = storage.total_assets.try_read().unwrap_or(0);
+        let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
 
         let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
         let fee = fee_splitter.fee().unwrap_or(0);
 
+        log("FEE:");
+        log(fee);
+
         // Checks to ensure this is a valid mint.
         let price_amount = msg_amount();
-        require(price_amount >= storage.price.try_read().unwrap_or(0) + fee, MintError::NotEnoughTokens(price_amount + fee));
+        log("PRICE AMOUNT:");
+        log(price_amount);
+        let asset_id = msg_asset_id();
+        log("ASSET ID:");
+        log(asset_id);
+
+        require(msg_amount() >= price + fee, MintError::NotEnoughTokens(price_amount + fee));
+
+        require(asset_id == AssetId::base(), MintError::InvalidAsset);
+        require(price_amount >= price + fee, MintError::NotEnoughTokens(price_amount + fee));
         require(amount > 0, MintError::CannotMintMoreThanOneNFTWithSubId);
         require(
-            storage
-                .total_assets
-                .try_read()
-                .unwrap_or(0) + amount <= MAX_SUPPLY,
+            total_assets + amount <= MAX_SUPPLY,
             MintError::MaxNFTsMinted,
         );
 
         let mut minted_count = 0;
-        let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
 
         while minted_count < amount {
             let new_minted_id = last_minted_id + 1;
@@ -321,6 +334,19 @@ impl SRC3PayableExtension for Contract {
 
         // Update last minted id in storage
         storage.last_minted_id.write(last_minted_id);
+
+        log("Base bits:");
+        log(AssetId::base().bits());
+        log("Fee:");
+        log(fee);
+
+        if fee > 0 {
+            fee_splitter.receive_funds {
+                coins: fee,
+                asset_id: AssetId::base().bits(),
+                gas: 1_000_000
+            }();
+        }
     }
 
     /// Burns assets sent with the given `sub_id`.

@@ -5,6 +5,7 @@ pub enum MintError {
     MaxNFTsMinted: (),
     NFTAlreadyMinted: (),
     NotEnoughTokens: u64,
+    InvalidAsset: (),
 }
 
 pub enum SetError {

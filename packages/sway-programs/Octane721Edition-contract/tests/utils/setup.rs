@@ -104,6 +104,8 @@ pub(crate) async fn setup() -> (
         .await
         .unwrap();
 
+    // println!("fee_id: {:?}", fee_id.toB256());
+
     let fee_instance_1 = OctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
     (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)

@@ -1,5 +1,5 @@
 [[package]]
-name = "OctaneFeeSplitter-contract"
+name = "Octane721Edition-contract"
 source = "member"
 dependencies = [
     "libraries",
@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "SRC721Edition-contract"
+name = "OctaneFeeSplitter-contract"
 source = "member"
 dependencies = [
     "libraries",
@@ -24,7 +24,7 @@ source = "path+from-root-E19CE48B3E858B72"
 
 [[package]]
 name = "libraries"
-source = "path+from-root-A1B53A4998387B5E"
+source = "path+from-root-88BC6C342AD7F25E"
 dependencies = ["std"]
 
 [[package]]
