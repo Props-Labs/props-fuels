@@ -72,9 +72,9 @@ importers:
 
   apps/demo-octane:
     dependencies:
-      octane-fuels-ts:
+      '@props/fuels':
         specifier: workspace:*
-        version: link:../../packages/octane
+        version: link:../../packages/props-fuels
     devDependencies:
       '@playwright/test':
         specifier: ^1.28.1
@@ -130,7 +130,7 @@ importers:
 
   apps/docs: {}
 
-  packages/octane:
+  packages/props-fuels:
     dependencies:
       fuels:
         specifier: ^0.91.0

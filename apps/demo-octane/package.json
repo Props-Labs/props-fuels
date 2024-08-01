@@ -32,7 +32,7 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
-		"octane-fuels-ts": "workspace:*"
+		"@props/fuels": "workspace:*"
 	},
 	"type": "module"
 }

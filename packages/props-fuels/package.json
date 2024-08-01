@@ -7,8 +7,9 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
-    "test": "vitest run",
+    "build": "pnpm test && rollup -c",
+    "test": "vitest --run",
+    "test:dev": "vitest",
     "lint": "eslint . --ext .ts",
     "clean": "rimraf dist"
   },
