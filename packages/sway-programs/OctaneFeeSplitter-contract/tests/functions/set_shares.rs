@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, set_shares, get_share},
-    setup::{defaults, setup, State},
+    setup::{defaults, setup},
 };
 
 mod success {

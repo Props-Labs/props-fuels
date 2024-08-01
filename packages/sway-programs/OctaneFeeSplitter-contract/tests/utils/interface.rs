@@ -92,7 +92,7 @@ pub(crate) async fn receive_funds(
 pub(crate) async fn distribute_funds(
     contract: &OctaneFeeSplitter<WalletUnlocked>,
     amount: u64,
-    recipientCount: u64,
+    recipient_count: u64,
 ) -> FuelCallResponse<()> {
     contract
         .methods()

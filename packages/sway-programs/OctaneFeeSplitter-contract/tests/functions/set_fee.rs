@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, set_fee, fee},
-    setup::{defaults, setup, State},
+    setup::{defaults, setup},
 };
 
 mod success {

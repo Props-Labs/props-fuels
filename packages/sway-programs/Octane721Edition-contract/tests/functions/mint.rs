@@ -12,7 +12,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_assets() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,
@@ -42,7 +42,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_multiple_assets() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             asset_id_2,
@@ -110,7 +110,9 @@ mod success {
         set_fee(&fee_instance_1, fee_amount).await;
         assert_eq!(fee(&fee_instance_1).await, Some(fee_amount));
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id).await;
+        let response = mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id).await;
+        let logs = response.decode_logs();
+        println!("{:?}", logs);
 
         // Check that mint has transferred the coins
         let contract_balances = instance_1.get_balances().await.unwrap();
@@ -225,7 +227,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_assets_with_builder_fee() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = deploy_edition_with_builder_fee(Some(0)).await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2, fee_id, _fee_instance_1) = deploy_edition_with_builder_fee(Some(0)).await;
         let owner_wallet_clone = owner_wallet.clone();
         let another_wallet_clone = another_wallet.clone();
         let (
@@ -256,7 +258,7 @@ mod success {
 
         set_price(&instance_1, 1_000).await;
 
-        let response = mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id).await;
+        let response = mint(&instance_1, other_identity, sub_id_1, 1, 2_000, fee_id).await;
         let logs = response.decode_logs();
         println!("{:?}", logs);
 
@@ -273,8 +275,8 @@ mod success {
     }
 
     #[tokio::test]
-    async fn mints_assets_with_builder_fee_mode_1() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = deploy_edition_with_builder_fee(Some(1)).await;
+    async fn mints_assets_with_builder_fee_revenue_share() {
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = deploy_edition_with_builder_fee(Some(1)).await;
         let owner_wallet_clone = owner_wallet.clone();
         let another_wallet_clone = another_wallet.clone();
         let other_wallet_clone = other_wallet.clone();
@@ -338,7 +340,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "Paused")]
     async fn when_paused() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -359,8 +361,8 @@ mod revert {
 
     #[tokio::test]
     #[should_panic(expected = "MaxNFTsMinted")]
-    async fn when_max_supplt_reached() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
+    async fn when_max_supply_reached() {
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -383,7 +385,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "MaxNFTsMinted")]
     async fn when_minting_max_supply_after_burn() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,
@@ -408,7 +410,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "NotEnoughTokens")]
     async fn when_underpriced() {
-        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -431,7 +433,7 @@ mod revert {
     async fn when_underpriced_with_fee() {
         let (owner_wallet, other_wallet, id, instance_1, _instance_2, fee_id, fee_instance_1) = setup().await;
         let (
-            _asset_id_1,
+            asset_id_1,
             _asset_id_2,
             _asset_id_3,
             sub_id_1,
@@ -439,7 +441,7 @@ mod revert {
             _sub_id_3,
             owner_identity,
             other_identity,
-        ) = defaults(id, owner_wallet, other_wallet);
+        ) = defaults(id, owner_wallet, other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
         set_price(&instance_1, 1_000).await;
@@ -450,5 +452,8 @@ mod revert {
 
         mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id).await;
         mint(&instance_1, other_identity, sub_id_2, 1, 1_500, fee_id).await;
+
+        // Ensure the user has no tokens of asset_id_1 after the reverted mint
+        assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
     }
 }

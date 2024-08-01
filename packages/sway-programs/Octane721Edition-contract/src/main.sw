@@ -4,7 +4,7 @@ mod errors;
 mod interface;
 
 use errors::{MintError, SetError};
-use interface::{Octane721Edition, SetMintMetadata, SRC3PayableExtension, SetAffiliate};
+use interface::{Octane721Edition, SetMintMetadata, SRC3PayableExtension};
 use standards::{src20::SRC20, src3::SRC3, src5::{SRC5, State}, src7::{Metadata, SRC7},};
 use sway_libs::{
     asset::{
@@ -80,10 +80,50 @@ storage {
 
 configurable {
     /// The maximum number of NFTs that may be minted.
+    /// 
+    /// # Type
+    /// 
+    /// `u64`
     MAX_SUPPLY: u64 = 3,
+
+    /// The address to which the builder fee will be sent.
+    /// 
+    /// # Type
+    /// 
+    /// `Address`
     BUILDER_FEE_ADDRESS: Address = Address::from(0x0000000000000000000000000000000000000000000000000000000000000000),
-    BUILDER_FEE_MODE: u64 = 0, // 0 = fixed, 1 = percentage
+
+    /// The fee amount to be paid to the builder.
+    /// 
+    /// # Type
+    /// 
+    /// `u64`
     BUILDER_FEE: u64 = 0, 
+
+    /// The address to which the builder's revenue share will be sent.
+    /// 
+    /// # Type
+    /// 
+    /// `Address`
+    BUILDER_REVENUE_SHARE_ADDRESS: Address = Address::from(0x0000000000000000000000000000000000000000000000000000000000000000),
+
+    /// The percentage of revenue to be shared with the builder.
+    /// 
+    /// This needs to be a value between 0 and 100.
+    ///
+    /// # Type
+    /// 
+    /// `u64`
+    BUILDER_REVENUE_SHARE_PERCENTAGE: u64 = 0,
+
+    /// The percentage of revenue to be shared with the affiliate.
+    /// 
+    /// This needs to be a value between 0 and 100.
+    ///
+    /// # Type
+    /// 
+    /// `u64`
+    AFFILIATE_FEE_PERCENTAGE: u64 = 0,
 }
 
 impl SRC20 for Contract {
@@ -287,17 +327,9 @@ impl SRC3PayableExtension for Contract {
         let total_assets = storage.total_assets.try_read().unwrap_or(0);
         let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
 
-        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
-        let fee = fee_splitter.fee().unwrap_or(0);
-
-        total_price = price.multiply(amount) + fee;
-        total_fee = fee;
-
-        // Checks to ensure this is a valid mint.
+        let stored_owner = _owner();
         let price_amount = msg_amount();
         let asset_id = msg_asset_id();
-
-        require(msg_amount() >= total_price, MintError::NotEnoughTokens(total_price));
 
         require(asset_id == AssetId::base(), MintError::InvalidAsset);
 
@@ -313,15 +345,6 @@ impl SRC3PayableExtension for Contract {
             let new_minted_id = last_minted_id + 1;
             let new_sub_id = new_minted_id.as_u256().as_b256();
             let asset = AssetId::new(ContractId::this(), new_sub_id);
-
-            require(
-                storage
-                    .total_supply
-                    .get(asset)
-                    .try_read()
-                    .is_none(),
-                MintError::NFTAlreadyMinted,
-            );
 
             // Mint the NFT
             let _ = _mint(
@@ -341,38 +364,37 @@ impl SRC3PayableExtension for Contract {
         // Update last minted id in storage
         storage.last_minted_id.write(last_minted_id);
 
-        if fee > 0 {
-            fee_splitter.receive_funds {
-                coins: fee,
-                asset_id: AssetId::base().bits(),
-                gas: 1_000_000
-            }();
-        }
-
         log("BUILDER_FEE:");
         log(BUILDER_FEE);
         log("BUILDER_FEE_ADDRESS:");
         log(BUILDER_FEE_ADDRESS);
-        log("BUILDER_FEE_MODE:");
-        log(BUILDER_FEE_MODE);
+
+        log("BUILDER_REVENUE_SHARE_PERCENTAGE:");
+        log(BUILDER_REVENUE_SHARE_PERCENTAGE);
+        log("BUILDER_REVENUE_SHARE_ADDRESS:");
+        log(BUILDER_REVENUE_SHARE_ADDRESS);
 
         // Check and transfer builder fee
         if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
-            if BUILDER_FEE_MODE == 0 {
+            if BUILDER_FEE > 0 {
                 // Fixed fee mode
                 require(price_amount >= BUILDER_FEE, MintError::NotEnoughTokens(price_amount));
                 total_fee += BUILDER_FEE;
                 log("BUILDER_FEE TRANSFER:");
                 log(BUILDER_FEE);
                 transfer(Identity::Address(BUILDER_FEE_ADDRESS), AssetId::base(), BUILDER_FEE);
-            } else if BUILDER_FEE_MODE == 1 {
-                // Percentage fee mode
-                let builder_fee = (price_amount * BUILDER_FEE) / 100;
+            }
+        }
+
+        if BUILDER_REVENUE_SHARE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
+            if BUILDER_REVENUE_SHARE_PERCENTAGE > 0 {
+                // Calculate the builder revenue share fee
+                let builder_fee = (price * BUILDER_REVENUE_SHARE_PERCENTAGE) / 100;
                 require(price_amount >= builder_fee, MintError::NotEnoughTokens(price_amount));
                 total_fee += builder_fee;
-                log("BUILDER_FEE TRANSFER:");
+                log("BUILDER_REVENUE_SHARE_FEE TRANSFER:");
                 log(builder_fee);
-                transfer(Identity::Address(BUILDER_FEE_ADDRESS), AssetId::base(), builder_fee);
+                transfer(Identity::Address(BUILDER_REVENUE_SHARE_ADDRESS), AssetId::base(), builder_fee);
             }
         }
 
@@ -392,11 +414,35 @@ impl SRC3PayableExtension for Contract {
         //     }
         // }
 
+        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
+        let fee = fee_splitter.fee().unwrap_or(0);
+
+        total_price = price.multiply(amount) + fee + BUILDER_FEE;
+        total_fee += fee;
+
+        log("TOTAL_PRICE:");
+        log(total_price);
+        log("TOTAL_FEE:");
+        log(total_fee);
+        log("PRICE_AMOUNT:");
+        log(price_amount);
+        log("CREATOR_PRICE:");
+        log(price_amount - total_fee);
+
+        require(price_amount >= total_price, MintError::NotEnoughTokens(total_price));
+
+        if fee > 0 {
+            fee_splitter.receive_funds {
+                coins: fee,
+                asset_id: AssetId::base().bits(),
+                gas: 1_000_000
+            }();
+        }
+
         let creator_price = price_amount - total_fee; // Allows giving tips to the creator
 
         // Transfer the remaining amount to the owner
         if creator_price > 0 {
-            let stored_owner = _owner();
             if let State::Initialized(owner_identity) = stored_owner {
                 if let Identity::Address(owner_address) = owner_identity {
                     transfer(Identity::Address(owner_address), AssetId::base(), creator_price);
@@ -614,67 +660,62 @@ impl SetMintMetadata for Contract {
         Some(storage.price.try_read().unwrap_or(0))
     }
 
-}
-
-impl SetAffiliate for Contract {
-    /// Sets the affiliate fee and mode.
-    ///
-    /// # Arguments
-    ///
-    /// * `mode`: [u64] - The mode for the affiliate fee.
-    /// * `fee`: [u64] - The fee for the affiliate.
-    ///
-    /// # Reverts
-    ///
-    /// * When the caller is not the contract owner.
-    ///
-    /// # Number of Storage Accesses
-    ///
-    /// * Writes: `2`
-    ///
-    /// # Examples
-    ///
-    /// ```sway
-    /// use sway_libs::affiliate::SetAffiliate;
-    ///
-    /// fn foo(contract_id: ContractId, mode: u64, fee: u64) {
-    ///     let affiliate_abi = abi(SetAffiliate, contract_id);
-    ///     affiliate_abi.set_affiliate_fee(mode, fee);
-    ///     assert(affiliate_abi.affiliate() == (mode, fee));
-    /// }
-    /// ```
-    #[storage(write)]
-    fn set_affiliate_fee(mode: u64, fee: u64) {
-        only_owner();
-        storage.affiliate_fee_mode.write(mode);
-        storage.affiliate_fee.write(fee);
-    }
-
-    /// Returns the affiliate fee and mode.
+    /// Returns the total price for minting an NFT, including any applicable fees.
     ///
     /// # Returns
     ///
-    /// * [Option<(u64, u64)>] - The affiliate fee and mode.
+    /// * [Option<u64>] - The total price to mint an NFT.
     ///
     /// # Number of Storage Accesses
     ///
-    /// * Reads: `2`
+    /// * Reads: `1`
     ///
     /// # Examples
     ///
     /// ```sway
-    /// use sway_libs::affiliate::SetAffiliate;
+    /// use sway_libs::mint::SetMintMetadata;
     ///
     /// fn foo(contract_id: ContractId) {
-    ///     let affiliate_abi = abi(SetAffiliate, contract_id);
-    ///     let affiliate = affiliate_abi.affiliate();
-    ///     assert(affiliate.is_some());
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let total_price = mint_abi.total_price();
+    ///     assert(total_price != 0);
     /// }
     /// ```
     #[storage(read)]
-    fn affiliate() -> Option<(u64, u64)> {
-        Some((storage.affiliate_fee_mode.try_read().unwrap_or(0), storage.affiliate_fee.try_read().unwrap_or(0)))
+    fn total_price() -> Option<u64> {
+        let base_price = storage.price.try_read().unwrap_or(0);
+        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
+        let fee = fee_splitter.fee().unwrap_or(0);
+        Some(base_price + fee + BUILDER_FEE)
     }
+
+    /// Returns the breakdown of fees for minting an NFT.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<(u64, u64, u64)>] - A tuple containing the base price, builder fee, and total fee.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let (base_price, builder_fee, total_fee) = mint_abi.fee_breakdown().unwrap();
+    ///     assert(base_price != 0);
+    /// }
+    /// ```
+    fn fee_breakdown() -> Option<(u64, u64)> {
+        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
+        let fee = fee_splitter.fee().unwrap_or(0);
+        Some((fee, BUILDER_FEE))
+    }
+
 }
 
 impl Pausable for Contract {
@@ -803,11 +844,11 @@ impl Octane721Edition for Contract {
             i += 1;
         }
 
-        let final_price = if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) && BUILDER_FEE_MODE == 0 {
-            price + BUILDER_FEE
-        } else {
-            price
-        };
-        storage.price.write(final_price);
+        // let final_price = if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
+        //     price + BUILDER_FEE
+        // } else {
+        //     price
+        // };
+        storage.price.write(price);
     }
 }

@@ -20,14 +20,11 @@ abi SetMintMetadata {
 
     #[storage(read)]
     fn price() -> Option<u64>;
-}
-
-abi SetAffiliate {
-    #[storage(write)]
-    fn set_affiliate_fee(mode: u64, fee: u64);
 
     #[storage(read)]
-    fn affiliate() -> Option<(u64,u64)>;
+    fn total_price() -> Option<u64>;
+
+    fn fee_breakdown() -> Option<(u64, u64)>;
 }
 
 abi Octane721Edition {

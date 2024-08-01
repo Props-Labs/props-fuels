@@ -10,7 +10,7 @@ mod success {
 
     #[tokio::test]
     async fn burn_assets() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,
@@ -38,7 +38,7 @@ mod success {
 
     #[tokio::test]
     async fn burns_multiple_assets() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             asset_id_2,
@@ -102,7 +102,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "NotEnoughCoins")]
     async fn when_not_enough_coins() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,
@@ -133,7 +133,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "NotEnoughCoins")]
     async fn when_invalid_asset() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             _asset_id_1,
             _asset_id_2,
@@ -164,7 +164,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "NotEnoughCoins")]
     async fn when_invalid_sub_id() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,
@@ -195,7 +195,7 @@ mod revert {
     #[tokio::test]
     #[should_panic(expected = "Paused")]
     async fn when_contract_is_paused() {
-        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, fee_instance_1) = setup().await;
+        let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
             asset_id_1,
             _asset_id_2,

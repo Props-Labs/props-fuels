@@ -141,15 +141,15 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
     let wallet2 = wallets.pop().unwrap();
     let wallet3 = wallets.pop().unwrap();
 
-    let mut configurables = Octane721EditionConfigurables::default()
-        .with_BUILDER_FEE_ADDRESS(wallet3.address().into()).unwrap();
+    let mut configurables = Octane721EditionConfigurables::default();
 
     if let Some(1) = mode {
         configurables = configurables
-            .with_BUILDER_FEE_MODE(1).unwrap()
-            .with_BUILDER_FEE(50).unwrap();
+            .with_BUILDER_REVENUE_SHARE_ADDRESS(wallet3.address().into()).unwrap()
+            .with_BUILDER_REVENUE_SHARE_PERCENTAGE(50).unwrap();
     } else {
         configurables = configurables
+            .with_BUILDER_FEE_ADDRESS(wallet3.address().into()).unwrap()
             .with_BUILDER_FEE(1000).unwrap(); // Example value for BUILDER_FEE
     }
 

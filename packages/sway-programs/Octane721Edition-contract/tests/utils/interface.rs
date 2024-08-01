@@ -62,7 +62,7 @@ pub(crate) async fn mint(
         .methods()
         .mint(recipient, sub_id, amount)
         .with_contract_ids(&[id.clone()])
-        .append_variable_outputs(3)
+        .append_variable_outputs(4)
         .call_params(CallParameters::new(price, AssetId::zeroed(), 1_000_000))
         .unwrap()
         .call()

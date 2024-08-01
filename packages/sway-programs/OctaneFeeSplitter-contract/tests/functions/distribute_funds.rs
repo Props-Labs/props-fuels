@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, set_shares, get_share, receive_funds, distribute_funds},
-    setup::{defaults, setup, State},
+    setup::{defaults, setup},
 };
 
 use fuels::{
@@ -41,7 +41,7 @@ mod success {
 
         let initial_owner_wallet_balance = owner_wallet.get_asset_balance(&AssetId::zeroed()).await.unwrap();
         let initial_other_wallet_balance = other_wallet.get_asset_balance(&AssetId::zeroed()).await.unwrap();
-        let initial_another_wallet_balance = another_wallet.get_asset_balance(&AssetId::zeroed()).await.unwrap();
+        // let initial_another_wallet_balance = another_wallet.get_asset_balance(&AssetId::zeroed()).await.unwrap();
 
         // Verify that the contract now has the specified amount of base_asset
         let contract_balances = instance_1.get_balances().await.unwrap();
@@ -49,7 +49,7 @@ mod success {
         assert_eq!(base_asset_balance, amount);
 
         // Call distribute_funds with the same amount
-        let response = distribute_funds(&instance_1, 1_000, 2).await;
+        distribute_funds(&instance_1, 1_000, 2).await;
 
         // Verify that the correct amount of asset has been received by the wallets
         let owner_balance = owner_wallet.get_asset_balance(&AssetId::zeroed()).await.unwrap();
