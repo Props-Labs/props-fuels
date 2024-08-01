@@ -1,8 +1,8 @@
 {
-  "name": "octane",
-  "version": "0.0.1",
-  "description": "Octane is the SDK to help you launch your next project on fuel network.",
-  "author": "Props Labs <hello@props.app> (https://www.props.app)",
+  "name": "props-fuels",
+  "version": "0.1.0",
+  "description": "Props Minting is the SDK to help you launch your next project on fuel network.",
+  "author": "Props Labs, Calvin Hoenes <hello@props.app> (https://www.props.app)",
   "private": true,
   "engines": {
     "node": "^18.20.3 || ^20.0.0 || ^22.0.0",
