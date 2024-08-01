@@ -1,4 +1,4 @@
-use crate::utils::setup::{Metadata, State, Octane721Edition, OctaneFeeSplitter};
+use crate::utils::setup::{Metadata, State, PropsOctane721Edition, PropsOctaneFeeSplitter};
 use fuels::{
     prelude::{AssetId, CallParameters, TxPolicies, WalletUnlocked, ContractId, Bech32ContractId},
     programs::{call_response::FuelCallResponse, call_utils::TxDependencyExtension},
@@ -6,7 +6,7 @@ use fuels::{
 };
 use std::str::FromStr;
 
-pub(crate) async fn total_assets(contract: &Octane721Edition<WalletUnlocked>) -> u64 {
+pub(crate) async fn total_assets(contract: &PropsOctane721Edition<WalletUnlocked>) -> u64 {
     contract
         .methods()
         .total_assets()
@@ -16,7 +16,7 @@ pub(crate) async fn total_assets(contract: &Octane721Edition<WalletUnlocked>) ->
         .value
 }
 
-pub(crate) async fn total_supply(contract: &Octane721Edition<WalletUnlocked>, asset: AssetId) -> Option<u64> {
+pub(crate) async fn total_supply(contract: &PropsOctane721Edition<WalletUnlocked>, asset: AssetId) -> Option<u64> {
     contract
         .methods()
         .total_supply(asset)
@@ -26,15 +26,15 @@ pub(crate) async fn total_supply(contract: &Octane721Edition<WalletUnlocked>, as
         .value
 }
 
-pub(crate) async fn name(contract: &Octane721Edition<WalletUnlocked>, asset: AssetId) -> Option<String> {
+pub(crate) async fn name(contract: &PropsOctane721Edition<WalletUnlocked>, asset: AssetId) -> Option<String> {
     contract.methods().name(asset).call().await.unwrap().value
 }
 
-pub(crate) async fn symbol(contract: &Octane721Edition<WalletUnlocked>, asset: AssetId) -> Option<String> {
+pub(crate) async fn symbol(contract: &PropsOctane721Edition<WalletUnlocked>, asset: AssetId) -> Option<String> {
     contract.methods().symbol(asset).call().await.unwrap().value
 }
 
-pub(crate) async fn decimals(contract: &Octane721Edition<WalletUnlocked>, asset: AssetId) -> Option<u8> {
+pub(crate) async fn decimals(contract: &PropsOctane721Edition<WalletUnlocked>, asset: AssetId) -> Option<u8> {
     contract
         .methods()
         .decimals(asset)
@@ -45,7 +45,7 @@ pub(crate) async fn decimals(contract: &Octane721Edition<WalletUnlocked>, asset:
 }
 
 pub(crate) async fn mint(
-    contract: &Octane721Edition<WalletUnlocked>,
+    contract: &PropsOctane721Edition<WalletUnlocked>,
     recipient: Identity,
     sub_id: Bits256,
     amount: u64,
@@ -72,7 +72,7 @@ pub(crate) async fn mint(
 }
 
 pub(crate) async fn burn(
-    contract: &Octane721Edition<WalletUnlocked>,
+    contract: &PropsOctane721Edition<WalletUnlocked>,
     asset_id: AssetId,
     sub_id: Bits256,
     amount: u64,
@@ -90,12 +90,12 @@ pub(crate) async fn burn(
         .unwrap()
 }
 
-pub(crate) async fn owner(contract: &Octane721Edition<WalletUnlocked>) -> State {
+pub(crate) async fn owner(contract: &PropsOctane721Edition<WalletUnlocked>) -> State {
     contract.methods().owner().call().await.unwrap().value
 }
 
 pub(crate) async fn constructor(
-    contract: &Octane721Edition<WalletUnlocked>,
+    contract: &PropsOctane721Edition<WalletUnlocked>,
     owner: Identity,
     name: String,
     symbol: String,
@@ -108,7 +108,7 @@ pub(crate) async fn constructor(
 }
 
 pub(crate) async fn metadata(
-    contract: &Octane721Edition<WalletUnlocked>,
+    contract: &PropsOctane721Edition<WalletUnlocked>,
     asset: AssetId,
     key: String,
 ) -> Option<Metadata> {
@@ -122,7 +122,7 @@ pub(crate) async fn metadata(
 }
 
 pub(crate) async fn set_metadata(
-    contract: &Octane721Edition<WalletUnlocked>,
+    contract: &PropsOctane721Edition<WalletUnlocked>,
     asset: AssetId,
     key: String,
     metadata: Metadata,
@@ -135,40 +135,40 @@ pub(crate) async fn set_metadata(
         .unwrap()
 }
 
-pub(crate) async fn pause(contract: &Octane721Edition<WalletUnlocked>) -> FuelCallResponse<()> {
+pub(crate) async fn pause(contract: &PropsOctane721Edition<WalletUnlocked>) -> FuelCallResponse<()> {
     contract.methods().pause().call().await.unwrap()
 }
 
-pub(crate) async fn unpause(contract: &Octane721Edition<WalletUnlocked>) -> FuelCallResponse<()> {
+pub(crate) async fn unpause(contract: &PropsOctane721Edition<WalletUnlocked>) -> FuelCallResponse<()> {
     contract.methods().unpause().call().await.unwrap()
 }
 
-pub(crate) async fn is_paused(contract: &Octane721Edition<WalletUnlocked>) -> bool {
+pub(crate) async fn is_paused(contract: &PropsOctane721Edition<WalletUnlocked>) -> bool {
     contract.methods().is_paused().call().await.unwrap().value
 }
 
 pub(crate) async fn set_price(
-    contract: &Octane721Edition<WalletUnlocked>,
+    contract: &PropsOctane721Edition<WalletUnlocked>,
     price: u64,
 ) -> FuelCallResponse<()> {
     contract.methods().set_price(price).call().await.unwrap()
 }
 
-pub(crate) async fn price(contract: &Octane721Edition<WalletUnlocked>) -> Option<u64> {
+pub(crate) async fn price(contract: &PropsOctane721Edition<WalletUnlocked>) -> Option<u64> {
     contract.methods().price().call().await.unwrap().value
 }
 
 // @dev Not very dry, should be moved into its own test-utils module
 
 pub(crate) async fn fee_constructor(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
     owner: Identity,
 ) -> FuelCallResponse<()> {
     contract.methods().constructor(owner).call().await.unwrap()
 }
 
 pub(crate) async fn set_fee(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
     fee: u64,
 ) -> FuelCallResponse<()> {
     contract
@@ -179,7 +179,7 @@ pub(crate) async fn set_fee(
         .unwrap()
 }
 
-pub(crate) async fn fee(contract: &OctaneFeeSplitter<WalletUnlocked>) -> Option<u64> {
+pub(crate) async fn fee(contract: &PropsOctaneFeeSplitter<WalletUnlocked>) -> Option<u64> {
     contract
         .methods()
         .fee()

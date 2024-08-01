@@ -4,7 +4,7 @@ mod errors;
 mod interface;
 
 use errors::{MintError, SetError};
-use interface::{Octane721Edition, SetMintMetadata, SRC3PayableExtension};
+use interface::{PropsOctane721Edition, SetMintMetadata, SRC3PayableExtension};
 use standards::{src20::SRC20, src3::SRC3, src5::{SRC5, State}, src7::{Metadata, SRC7},};
 use sway_libs::{
     asset::{
@@ -43,7 +43,7 @@ use std::context::msg_amount;
 use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
 
-use libraries::{OctaneFeeSplitter};
+use libraries::{PropsOctaneFeeSplitter};
 
 const FEE_CONTRACT_ID = 0xf6b478da6741beed76acdc1e8cfb9fa64d250378e8868201a5aa2c0afc7fb328;
 
@@ -389,7 +389,7 @@ impl SRC3PayableExtension for Contract {
             }
         }
 
-        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
+        let fee_splitter = abi(PropsOctaneFeeSplitter, FEE_CONTRACT_ID);
         let fee = fee_splitter.fee().unwrap_or(0);
 
         total_price = price.multiply(amount) + fee + BUILDER_FEE;
@@ -650,7 +650,7 @@ impl SetMintMetadata for Contract {
     #[storage(read)]
     fn total_price() -> Option<u64> {
         let base_price = storage.price.try_read().unwrap_or(0);
-        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
+        let fee_splitter = abi(PropsOctaneFeeSplitter, FEE_CONTRACT_ID);
         let fee = fee_splitter.fee().unwrap_or(0);
         Some(base_price + fee + BUILDER_FEE)
     }
@@ -677,7 +677,7 @@ impl SetMintMetadata for Contract {
     /// }
     /// ```
     fn fee_breakdown() -> Option<(u64, u64)> {
-        let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
+        let fee_splitter = abi(PropsOctaneFeeSplitter, FEE_CONTRACT_ID);
         let fee = fee_splitter.fee().unwrap_or(0);
         Some((fee, BUILDER_FEE))
     }
@@ -765,7 +765,7 @@ impl Pausable for Contract {
     }
 }
 
-impl Octane721Edition for Contract {
+impl PropsOctane721Edition for Contract {
     /// Sets the defaults for the contract.
     ///
     /// # Arguments

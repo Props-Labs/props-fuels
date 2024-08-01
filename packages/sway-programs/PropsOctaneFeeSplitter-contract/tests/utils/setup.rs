@@ -1,22 +1,20 @@
 use fuels::{
-    accounts::ViewOnlyAccount,
     prelude::{
         abigen, launch_custom_provider_and_get_wallets, AssetConfig, Contract, ContractId,
         LoadConfiguration, TxPolicies, WalletUnlocked, WalletsConfig,
     },
-    types::{Address, AssetId, Bits256, Bytes32, Identity},
+    types::{Address, AssetId, Identity},
 };
-use sha2::{Digest, Sha256};
 
 abigen!(Contract(
-    name = "OctaneFeeSplitter",
-    abi = "./OctaneFeeSplitter-contract/out/debug/OctaneFeeSplitter-contract-abi.json"
+    name = "PropsOctaneFeeSplitter",
+    abi = "./PropsOctaneFeeSplitter-contract/out/debug/PropsOctaneFeeSplitter-contract-abi.json"
 ),);
 
-const CONTRACT_BINARY_PATH: &str = "./out/debug/OctaneFeeSplitter-contract.bin";
+const CONTRACT_BINARY_PATH: &str = "./out/debug/PropsOctaneFeeSplitter-contract.bin";
 
 pub(crate) fn defaults(
-    contract_id: ContractId,
+    _contract_id: ContractId,
     wallet_1: WalletUnlocked,
     wallet_2: WalletUnlocked,
     wallet_3: WalletUnlocked,
@@ -41,8 +39,8 @@ pub(crate) async fn setup() -> (
     WalletUnlocked,
     WalletUnlocked,
     ContractId,
-    OctaneFeeSplitter<WalletUnlocked>,
-    OctaneFeeSplitter<WalletUnlocked>,
+    PropsOctaneFeeSplitter<WalletUnlocked>,
+    PropsOctaneFeeSplitter<WalletUnlocked>,
 ) {
     let number_of_coins = 1;
     let coin_amount = 100_000_000;
@@ -72,9 +70,8 @@ pub(crate) async fn setup() -> (
 
     println!("Contract deployed at: {:?}", id);
 
-    let instance_1 = OctaneFeeSplitter::new(id.clone(), wallet1.clone());
-    let instance_2 = OctaneFeeSplitter::new(id.clone(), wallet2.clone());
-    let instance_3 = OctaneFeeSplitter::new(id.clone(), wallet3.clone());
+    let instance_1 = PropsOctaneFeeSplitter::new(id.clone(), wallet1.clone());
+    let instance_2 = PropsOctaneFeeSplitter::new(id.clone(), wallet2.clone());
 
     (wallet1, wallet2, wallet3, id.into(), instance_1, instance_2)
 }

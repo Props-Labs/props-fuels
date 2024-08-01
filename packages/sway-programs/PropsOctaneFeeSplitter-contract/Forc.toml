@@ -2,7 +2,7 @@
 authors = ["Calvin Hoenes <calvin@props.app>"]
 entry = "main.sw"
 license = "Apache-2.0"
-name = "Octane721Edition-contract"
+name = "PropsOctaneFeeSplitter-contract"
 
 [dependencies]
 libraries = { path = "../libraries" }

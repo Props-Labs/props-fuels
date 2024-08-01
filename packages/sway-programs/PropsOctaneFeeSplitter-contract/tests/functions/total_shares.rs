@@ -9,7 +9,7 @@ mod success {
 
     #[tokio::test]
     async fn two_shares() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2) = setup().await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2) = setup().await;
         let (
             owner_identity,
             other_identity,
@@ -27,7 +27,7 @@ mod success {
 
     #[tokio::test]
     async fn one_share() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2) = setup().await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2) = setup().await;
         let (
             owner_identity,
             _other_identity,
@@ -45,7 +45,7 @@ mod success {
 
     #[tokio::test]
     async fn overwrite_shares() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2) = setup().await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2) = setup().await;
         let (
             owner_identity,
             other_identity,

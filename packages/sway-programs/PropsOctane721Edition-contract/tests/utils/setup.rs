@@ -9,16 +9,16 @@ use fuels::{
 use sha2::{Digest, Sha256};
 
 abigen!(Contract(
-    name = "Octane721Edition",
-    abi = "./Octane721Edition-contract/out/debug/Octane721Edition-contract-abi.json"
+    name = "PropsOctane721Edition",
+    abi = "./PropsOctane721Edition-contract/out/debug/PropsOctane721Edition-contract-abi.json"
 ),Contract(
-    name = "OctaneFeeSplitter",
-    abi = "./OctaneFeeSplitter-contract/out/debug/OctaneFeeSplitter-contract-abi.json"
+    name = "PropsOctaneFeeSplitter",
+    abi = "./PropsOctaneFeeSplitter-contract/out/debug/PropsOctaneFeeSplitter-contract-abi.json"
 ),);
 
-const FEE_SPLITTER_CONTRACT_BINARY_PATH: &str = "../OctaneFeeSplitter-contract/out/debug/OctaneFeeSplitter-contract.bin";
+const FEE_SPLITTER_CONTRACT_BINARY_PATH: &str = "../PropsOctaneFeeSplitter-contract/out/debug/PropsOctaneFeeSplitter-contract.bin";
 
-const NFT_CONTRACT_BINARY_PATH: &str = "./out/debug/Octane721Edition-contract.bin";
+const NFT_CONTRACT_BINARY_PATH: &str = "./out/debug/PropsOctane721Edition-contract.bin";
 
 pub(crate) fn defaults(
     contract_id: ContractId,
@@ -65,10 +65,10 @@ pub(crate) async fn setup() -> (
     WalletUnlocked,
     WalletUnlocked,
     ContractId,
-    Octane721Edition<WalletUnlocked>,
-    Octane721Edition<WalletUnlocked>,
+    PropsOctane721Edition<WalletUnlocked>,
+    PropsOctane721Edition<WalletUnlocked>,
     ContractId,
-    OctaneFeeSplitter<WalletUnlocked>,
+    PropsOctaneFeeSplitter<WalletUnlocked>,
 ) {
     let number_of_coins = 1;
     let coin_amount = 100_000_000;
@@ -95,8 +95,8 @@ pub(crate) async fn setup() -> (
         .await
         .unwrap();
 
-    let instance_1 = Octane721Edition::new(id.clone(), wallet1.clone());
-    let instance_2 = Octane721Edition::new(id.clone(), wallet2.clone());
+    let instance_1 = PropsOctane721Edition::new(id.clone(), wallet1.clone());
+    let instance_2 = PropsOctane721Edition::new(id.clone(), wallet2.clone());
 
     let fee_id = Contract::load_from(FEE_SPLITTER_CONTRACT_BINARY_PATH, LoadConfiguration::default())
         .unwrap()
@@ -106,7 +106,7 @@ pub(crate) async fn setup() -> (
 
     // println!("fee_id: {:?}", fee_id.toB256());
 
-    let fee_instance_1 = OctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
+    let fee_instance_1 = PropsOctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
     (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
@@ -116,10 +116,10 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
     WalletUnlocked,
     WalletUnlocked,
     ContractId,
-    Octane721Edition<WalletUnlocked>,
-    Octane721Edition<WalletUnlocked>,
+    PropsOctane721Edition<WalletUnlocked>,
+    PropsOctane721Edition<WalletUnlocked>,
     ContractId,
-    OctaneFeeSplitter<WalletUnlocked>,
+    PropsOctaneFeeSplitter<WalletUnlocked>,
 ) {
     let number_of_coins = 1;
     let coin_amount = 100_000_000;
@@ -141,7 +141,7 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
     let wallet2 = wallets.pop().unwrap();
     let wallet3 = wallets.pop().unwrap();
 
-    let mut configurables = Octane721EditionConfigurables::default();
+    let mut configurables = PropsOctane721EditionConfigurables::default();
 
     if let Some(1) = mode {
         configurables = configurables
@@ -164,8 +164,8 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
         .await
         .unwrap();
 
-    let instance_1 = Octane721Edition::new(id.clone(), wallet1.clone());
-    let instance_2 = Octane721Edition::new(id.clone(), wallet2.clone());
+    let instance_1 = PropsOctane721Edition::new(id.clone(), wallet1.clone());
+    let instance_2 = PropsOctane721Edition::new(id.clone(), wallet2.clone());
 
     let fee_id = Contract::load_from(FEE_SPLITTER_CONTRACT_BINARY_PATH, LoadConfiguration::default())
         .unwrap()
@@ -175,7 +175,7 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
 
     // println!("fee_id: {:?}", fee_id.toB256());
 
-    let fee_instance_1 = OctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
+    let fee_instance_1 = PropsOctaneFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
     (wallet1, wallet2, wallet3, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }

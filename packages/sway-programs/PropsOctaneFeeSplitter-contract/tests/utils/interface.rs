@@ -1,23 +1,23 @@
-use crate::utils::setup::{State, OctaneFeeSplitter};
+use crate::utils::setup::{State, PropsOctaneFeeSplitter};
 use fuels::{
-    prelude::{AssetId, CallParameters, TxPolicies, WalletUnlocked},
+    prelude::{AssetId, CallParameters, WalletUnlocked},
     programs::{call_response::FuelCallResponse, call_utils::TxDependencyExtension},
-    types::{Bits256, Identity},
+    types::{Identity},
 };
 
 pub(crate) async fn constructor(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
     owner: Identity,
 ) -> FuelCallResponse<()> {
     contract.methods().constructor(owner).call().await.unwrap()
 }
 
-pub(crate) async fn owner(contract: &OctaneFeeSplitter<WalletUnlocked>) -> State {
+pub(crate) async fn owner(contract: &PropsOctaneFeeSplitter<WalletUnlocked>) -> State {
     contract.methods().owner().call().await.unwrap().value
 }
 
 pub(crate) async fn set_fee(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
     fee: u64,
 ) -> FuelCallResponse<()> {
     contract
@@ -28,7 +28,7 @@ pub(crate) async fn set_fee(
         .unwrap()
 }
 
-pub(crate) async fn fee(contract: &OctaneFeeSplitter<WalletUnlocked>) -> Option<u64> {
+pub(crate) async fn fee(contract: &PropsOctaneFeeSplitter<WalletUnlocked>) -> Option<u64> {
     contract
         .methods()
         .fee()
@@ -39,7 +39,7 @@ pub(crate) async fn fee(contract: &OctaneFeeSplitter<WalletUnlocked>) -> Option<
 }
 
 pub(crate) async fn set_shares(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
     recipients: Vec<Identity>,
     shares: Vec<u64>,
 ) -> FuelCallResponse<()> {
@@ -52,7 +52,7 @@ pub(crate) async fn set_shares(
 }
 
 pub(crate) async fn get_share(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
 ) -> Option<u64> {
     contract
         .methods()
@@ -64,7 +64,7 @@ pub(crate) async fn get_share(
 }
 
 pub(crate) async fn total_shares(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
 ) -> Option<u64> {
     contract
         .methods()
@@ -76,7 +76,7 @@ pub(crate) async fn total_shares(
 }
 
 pub(crate) async fn receive_funds(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
     amount: u64,
 ) -> FuelCallResponse<()> {
     contract
@@ -90,9 +90,9 @@ pub(crate) async fn receive_funds(
 }
 
 pub(crate) async fn distribute_funds(
-    contract: &OctaneFeeSplitter<WalletUnlocked>,
+    contract: &PropsOctaneFeeSplitter<WalletUnlocked>,
     amount: u64,
-    recipient_count: u64,
+    _recipient_count: u64,
 ) -> FuelCallResponse<()> {
     contract
         .methods()

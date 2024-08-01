@@ -27,7 +27,7 @@ abi SetMintMetadata {
     fn fee_breakdown() -> Option<(u64, u64)>;
 }
 
-abi Octane721Edition {
+abi PropsOctane721Edition {
     #[storage(read, write)]
     fn constructor(owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64);
 }

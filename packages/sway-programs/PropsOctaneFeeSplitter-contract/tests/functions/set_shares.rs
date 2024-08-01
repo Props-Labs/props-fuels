@@ -41,7 +41,7 @@ mod revert {
         let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2) = setup().await;
         let (
             owner_identity,
-            other_identity,
+            _other_identity,
             another_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone(), another_wallet.clone());
 

@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, receive_funds},
-    setup::{defaults, setup, State},
+    setup::{defaults, setup},
 };
 
 use fuels::{

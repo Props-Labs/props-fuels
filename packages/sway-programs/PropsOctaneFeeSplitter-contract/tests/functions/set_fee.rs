@@ -37,7 +37,7 @@ mod revert {
         let (
             owner_identity,
             _other_identity,
-            another_identity,
+            _another_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone(), another_wallet.clone());
 
         constructor(&instance_1, owner_identity).await;

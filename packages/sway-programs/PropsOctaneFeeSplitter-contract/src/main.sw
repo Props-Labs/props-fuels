@@ -31,7 +31,7 @@ use std::{
     storage::storage_vec::*,
 };
 use std::logging::log;
-use libraries::{OctaneFeeSplitter};
+use libraries::{PropsOctaneFeeSplitter};
 
 storage {
     /// The fee amount for the contract.
@@ -88,7 +88,7 @@ impl SRC5 for Contract {
     }
 }
 
-impl OctaneFeeSplitter for Contract {
+impl PropsOctaneFeeSplitter for Contract {
     /// Sets the fee amount for the contract.
     ///
     /// # Arguments
