@@ -7,7 +7,7 @@ use standards::src7::Metadata;
 abi SRC3PayableExtension {
     #[payable]
     #[storage(read, write)]
-    fn mint(recipient: Identity, sub_id: SubId, amount: u64);
+    fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>);
 
     #[payable]
     #[storage(read, write)]

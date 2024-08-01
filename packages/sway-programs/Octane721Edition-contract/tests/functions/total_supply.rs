@@ -24,7 +24,7 @@ mod success {
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
     }
 
@@ -45,15 +45,15 @@ mod success {
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
 
         assert_eq!(total_supply(&instance_1, asset_id_2).await, None);
-        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id, None).await;
         assert_eq!(total_supply(&instance_1, asset_id_2).await, Some(1));
 
         assert_eq!(total_supply(&instance_1, asset_id_3).await, None);
-        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id, None).await;
         assert_eq!(total_supply(&instance_1, asset_id_3).await, Some(1));
     }
 
@@ -74,13 +74,13 @@ mod success {
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
 
-        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id, None).await;
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
 
-        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id, None).await;
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
     }
 
@@ -100,7 +100,7 @@ mod success {
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
         burn(&instance_2, asset_id_1, sub_id_1, 1).await;

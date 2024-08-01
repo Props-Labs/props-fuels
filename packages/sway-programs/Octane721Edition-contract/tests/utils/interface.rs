@@ -51,6 +51,7 @@ pub(crate) async fn mint(
     amount: u64,
     price: u64,
     fee_contract_id: ContractId,
+    affilate: Option<Identity>
 ) -> FuelCallResponse<()> {
     // @dev TODO: This is a hack to get the contract id, should be refactored
     let id = Bech32ContractId::from(
@@ -60,7 +61,7 @@ pub(crate) async fn mint(
     println!("fee_contract_id: {:?}", fee_contract_id);
     contract
         .methods()
-        .mint(recipient, sub_id, amount)
+        .mint(recipient, sub_id, amount, affilate)
         .with_contract_ids(&[id.clone()])
         .append_variable_outputs(4)
         .call_params(CallParameters::new(price, AssetId::zeroed(), 1_000_000))

@@ -147,6 +147,9 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
         configurables = configurables
             .with_BUILDER_REVENUE_SHARE_ADDRESS(wallet3.address().into()).unwrap()
             .with_BUILDER_REVENUE_SHARE_PERCENTAGE(50).unwrap();
+    } else if let Some(2) = mode {
+        configurables = configurables
+            .with_AFFILIATE_FEE_PERCENTAGE(10).unwrap()
     } else {
         configurables = configurables
             .with_BUILDER_FEE_ADDRESS(wallet3.address().into()).unwrap()

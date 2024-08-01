@@ -23,7 +23,7 @@ mod success {
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, Some(1));
@@ -51,9 +51,9 @@ mod success {
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
-        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id).await;
-        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
+        mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id, None).await;
+        mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id, None).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_2).await, 1);
@@ -116,7 +116,7 @@ mod revert {
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
         let call_params = CallParameters::new(0, asset_id_1, 1_000_000);
         instance_2
@@ -147,7 +147,7 @@ mod revert {
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
         let call_params = CallParameters::new(1, AssetId::zeroed(), 1_000_000);
         instance_2
@@ -178,7 +178,7 @@ mod revert {
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
         let call_params = CallParameters::new(1, asset_id_1, 1_000_000);
         instance_2
@@ -209,7 +209,7 @@ mod revert {
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
 
-        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id).await;
+        mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         pause(&instance_1).await;
 
         burn(&instance_2, asset_id_1, sub_id_1, 1).await;

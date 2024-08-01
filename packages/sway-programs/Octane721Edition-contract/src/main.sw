@@ -70,12 +70,7 @@ storage {
     last_minted_id: u64 = 0,
     name: StorageString = StorageString {},
     symbol: StorageString = StorageString {},
-    price: u64 = 0,
-    
-    affiliate_fee_mode: u64 = 0, // 0 = fixed, 1 = percentage
-    affiliate_fee: u64 = 0,
-
-    // rewards: StorageVec<StorageString> = StorageVec {},
+    price: u64 = 0
 }
 
 configurable {
@@ -316,7 +311,7 @@ impl SRC3PayableExtension for Contract {
     /// }
     /// ```
     #[storage(read, write), payable]
-    fn mint(recipient: Identity, _sub_id: SubId, amount: u64) {
+    fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>) {
         reentrancy_guard();
         require_not_paused();
 
@@ -364,24 +359,12 @@ impl SRC3PayableExtension for Contract {
         // Update last minted id in storage
         storage.last_minted_id.write(last_minted_id);
 
-        log("BUILDER_FEE:");
-        log(BUILDER_FEE);
-        log("BUILDER_FEE_ADDRESS:");
-        log(BUILDER_FEE_ADDRESS);
-
-        log("BUILDER_REVENUE_SHARE_PERCENTAGE:");
-        log(BUILDER_REVENUE_SHARE_PERCENTAGE);
-        log("BUILDER_REVENUE_SHARE_ADDRESS:");
-        log(BUILDER_REVENUE_SHARE_ADDRESS);
-
         // Check and transfer builder fee
         if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
             if BUILDER_FEE > 0 {
                 // Fixed fee mode
                 require(price_amount >= BUILDER_FEE, MintError::NotEnoughTokens(price_amount));
                 total_fee += BUILDER_FEE;
-                log("BUILDER_FEE TRANSFER:");
-                log(BUILDER_FEE);
                 transfer(Identity::Address(BUILDER_FEE_ADDRESS), AssetId::base(), BUILDER_FEE);
             }
         }
@@ -392,42 +375,25 @@ impl SRC3PayableExtension for Contract {
                 let builder_fee = (price * BUILDER_REVENUE_SHARE_PERCENTAGE) / 100;
                 require(price_amount >= builder_fee, MintError::NotEnoughTokens(price_amount));
                 total_fee += builder_fee;
-                log("BUILDER_REVENUE_SHARE_FEE TRANSFER:");
-                log(builder_fee);
                 transfer(Identity::Address(BUILDER_REVENUE_SHARE_ADDRESS), AssetId::base(), builder_fee);
             }
         }
 
-        // // Check and transfer affiliate fee
-        // if affiliate_fee_address != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
-        //     if storage.affiliate_fee_mode == 0 {
-        //         // Fixed fee mode
-        //         require(price_amount >= storage.affiliate_fee, MintError::NotEnoughTokens(price_amount));
-        //         total_price -= storage.affiliate_fee;
-        //         transfer(affiliate_fee_address, storage.affiliate_fee);
-        //     } else if storage.affiliate_fee_mode == 1 {
-        //         // Percentage fee mode
-        //         let affiliate_fee = (total_price * storage.affiliate_fee) / 100;
-        //         require(price_amount >= affiliate_fee, MintError::NotEnoughTokens(price_amount));
-        //         total_price -= affiliate_fee;
-        //         transfer(affiliate_fee_address, affiliate_fee);
-        //     }
-        // }
+        // Check and transfer affiliate fee
+        if let Some(Identity::Address(affiliate_address)) = affiliate {
+            if AFFILIATE_FEE_PERCENTAGE > 0 {
+                let affiliate_fee = (price * AFFILIATE_FEE_PERCENTAGE) / 100;
+                require(price_amount >= affiliate_fee, MintError::NotEnoughTokens(price_amount));
+                total_fee += affiliate_fee;
+                transfer(Identity::Address(affiliate_address), AssetId::base(), affiliate_fee);
+            }
+        }
 
         let fee_splitter = abi(OctaneFeeSplitter, FEE_CONTRACT_ID);
         let fee = fee_splitter.fee().unwrap_or(0);
 
         total_price = price.multiply(amount) + fee + BUILDER_FEE;
         total_fee += fee;
-
-        log("TOTAL_PRICE:");
-        log(total_price);
-        log("TOTAL_FEE:");
-        log(total_fee);
-        log("PRICE_AMOUNT:");
-        log(price_amount);
-        log("CREATOR_PRICE:");
-        log(price_amount - total_fee);
 
         require(price_amount >= total_price, MintError::NotEnoughTokens(total_price));
 
