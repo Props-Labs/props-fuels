@@ -18,6 +18,8 @@
     "docs:build": "typedoc && vitepress build apps/docs",
     "docs:dev": "vitepress dev apps/docs",
     "test": "vitest",
+    "test:props-fuels": "vitest",
+    "test:contracts": "cd packages/sway-programs && forc build && cargo test",
     "coverage": "vitest --coverage"
   },
   "repository": {

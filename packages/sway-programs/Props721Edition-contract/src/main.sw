@@ -418,6 +418,72 @@ impl SRC3PayableExtension for Contract {
 
     }
 
+    /// Mints new assets to a recipient in a sequential manner. Only callable by the owner.
+    ///
+    /// # Arguments
+    ///
+    /// * `recipient`: [Identity] - The user to which the newly minted assets are transferred to.
+    /// * `amount`: [u64] - The quantity of coins to mint.
+    ///
+    /// # Reverts
+    ///
+    /// * When the contract is paused.
+    /// * When more than the MAX_SUPPLY NFTs have been minted.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `2`
+    /// * Writes: `2`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use src3::SRC3;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let contract_abi = abi(SR3, contract_id);
+    ///     contract_abi.mint_to(Identity::ContractId(ContractId::this()), 1);
+    /// }
+    /// ```
+    #[storage(read, write)]
+    fn mint_to(recipient: Identity, amount: u64) {
+        only_owner();
+        require_not_paused();
+
+        let total_assets = storage.total_assets.try_read().unwrap_or(0);
+        let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
+
+        require(
+            total_assets + amount <= MAX_SUPPLY,
+            MintError::MaxNFTsMinted,
+        );
+
+        let mut minted_count = 0;
+
+        while minted_count < amount {
+            let new_minted_id = last_minted_id + 1;
+            let new_sub_id = new_minted_id.as_u256().as_b256();
+            let asset = AssetId::new(ContractId::this(), new_sub_id);
+
+            // Mint the NFT
+            let _ = _mint(
+                storage
+                    .total_assets,
+                storage
+                    .total_supply,
+                recipient,
+                new_sub_id,
+                1,
+            );
+
+            last_minted_id = new_minted_id;
+            minted_count += 1;
+        }
+
+        // Update last minted id in storage
+        storage.last_minted_id.write(last_minted_id);
+    }
+
     /// Burns assets sent with the given `sub_id`.
     ///
     /// # Additional Information
@@ -659,7 +725,7 @@ impl SetMintMetadata for Contract {
     ///
     /// # Returns
     ///
-    /// * [Option<(u64, u64, u64)>] - A tuple containing the base price, builder fee, and total fee.
+    /// * [Option<(u64, u64, u64)>] - A tuple containing the builder fee, and base fee.
     ///
     /// # Number of Storage Accesses
     ///
@@ -672,13 +738,12 @@ impl SetMintMetadata for Contract {
     ///
     /// fn foo(contract_id: ContractId) {
     ///     let mint_abi = abi(SetMintMetadata, contract_id);
-    ///     let (base_price, builder_fee, total_fee) = mint_abi.fee_breakdown().unwrap();
-    ///     assert(base_price != 0);
+    ///     let (builder_fee, base_fee) = mint_abi.fees().unwrap();
     /// }
     /// ```
-    fn fee_breakdown() -> Option<(u64, u64)> {
+    fn fees() -> Option<(u64, u64)> {
         let fee_splitter = abi(PropsFeeSplitter, FEE_CONTRACT_ID);
-        let fee = fee_splitter.fee().unwrap_or(0);
+        let fee:u64 = fee_splitter.fee().unwrap_or(0);
         Some((fee, BUILDER_FEE))
     }
 
