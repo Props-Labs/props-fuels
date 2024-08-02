@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "PropsOctane721Edition-contract"
+name = "Props721Edition-contract"
 version = "0.0.0"
 dependencies = [
  "fuels",
@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "PropsOctaneFeeSplitter-contract"
+name = "PropsFeeSplitter-contract"
 version = "0.0.0"
 dependencies = [
  "fuels",

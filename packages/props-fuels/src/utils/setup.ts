@@ -1,10 +1,10 @@
 import { WalletUnlocked, Provider, BytesLike, Address, BN, Account } from "fuels";
 import { launchTestNode, AssetId, TestMessage } from "fuels/test-utils";
-import { Octane721EditionContractAbi__factory, OctaneFeeSplitterContractAbi, OctaneFeeSplitterContractAbi__factory } from "../sway-api/contracts";
-import octaneFeeSplitterBytecode from "../sway-api/contracts/OctaneFeeSplitterContractAbi.hex";
+import { Props721EditionContractAbi__factory, PropsFeeSplitterContractAbi, PropsFeeSplitterContractAbi__factory } from "../sway-api/contracts";
+import octaneFeeSplitterBytecode from "../sway-api/contracts/PropsFeeSplitterContractAbi.hex";
 import crypto from "crypto";
-import { MetadataInput, Octane721EditionContractAbi } from "../sway-api/contracts/Octane721EditionContractAbi";
-import bytecode from "../sway-api/contracts/Octane721EditionContractAbi.hex";
+import { MetadataInput, Props721EditionContractAbi } from "../sway-api/contracts/Props721EditionContractAbi";
+import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
 
 export async function setup(): Promise<
     {
@@ -13,7 +13,7 @@ export async function setup(): Promise<
         wallet3: WalletUnlocked;
         wallet4: WalletUnlocked;
         provider: Provider;
-        feeSplitterContract: OctaneFeeSplitterContractAbi;
+        feeSplitterContract: PropsFeeSplitterContractAbi;
     }
 > {
 
@@ -31,13 +31,6 @@ export async function setup(): Promise<
       nodeOptions: {
         port: "4000",
       },
-      contractsConfigs: [
-        {
-          deployer: OctaneFeeSplitterContractAbi__factory, // Contract deployer factory
-          bytecode: octaneFeeSplitterBytecode, // Contract bytecode,
-          walletIndex: 0, // Index of the wallet to deploy the contract
-        },
-      ],
       launchNodeServerPort: '4000',
     });
 
@@ -50,7 +43,7 @@ export async function setup(): Promise<
       provider
     } = launched;
 
-    const feeSplitterContract = await OctaneFeeSplitterContractAbi__factory.deployContract(
+    const { waitForResult } = await PropsFeeSplitterContractAbi__factory.deployContract(
       octaneFeeSplitterBytecode,
       wallet1,
       {
@@ -58,12 +51,14 @@ export async function setup(): Promise<
       }
     );
 
+    const { contract: feeSplitterContract, transactionResult } = await waitForResult();
+
     return { wallet1, wallet2, wallet3, wallet4, provider, feeSplitterContract };
 }
 
-export async function deployOctane721EditionContract(wallet1:Account): Promise<Octane721EditionContractAbi> {
+export async function deployProps721EditionContract(wallet1:Account): Promise<Props721EditionContractAbi> {
     const salt: BytesLike = crypto.randomBytes(32);
-    const contract = await Octane721EditionContractAbi__factory.deployContract(
+    const {waitForResult} = await Props721EditionContractAbi__factory.deployContract(
       bytecode,
       wallet1,
       {
@@ -73,6 +68,8 @@ export async function deployOctane721EditionContract(wallet1:Account): Promise<O
         salt,
       }
     );
+
+    const { contract, transactionResult } = await waitForResult();
 
     const address = Address.fromDynamicInput(wallet1.address);
     const addressInput = { bits: address.toB256() };

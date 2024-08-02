@@ -11,13 +11,14 @@
   "packageManager": "pnpm@9.4.0",
   "scripts": {
     "build": "turbo run build --cache-dir=.turbo",
-    "build:packages": "turbo run build --filter=!docs --filter=!demo-octane",
+    "build:packages": "turbo run build --filter=!docs --filter=!demo-props-fuels",
     "clean": "rimraf node_modules && rimraf apps/*/node_modules && rimraf packages/*/node_modules && rimraf dist",
     "dev": "pnpm build:packages && pnpm dev:apps",
-    "dev:apps": "turbo run dev --filter=demo-octane",
+    "dev:apps": "turbo run dev --filter=demo-props-fuels",
     "docs:build": "typedoc && vitepress build apps/docs",
     "docs:dev": "vitepress dev apps/docs",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest --coverage"
   },
   "repository": {
     "type": "git",
@@ -49,7 +50,8 @@
     "packageManager": "pnpm"
   },
   "dependencies": {
+    "@vitest/coverage-v8": "^2.0.5",
     "dotenv": "^16.4.5",
-    "fuels": "^0.91.0"
+    "fuels": "^0.92.0"
   }
 }

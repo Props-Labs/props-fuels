@@ -1,6 +1,6 @@
 library;
 
-abi PropsOctaneFeeSplitter {
+abi PropsFeeSplitter {
     #[storage(read, write)]
     fn set_fee(amount: u64);
 

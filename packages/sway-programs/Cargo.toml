@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
 members = [
-    "./PropsOctane721Edition-contract",
-    "./PropsOctaneFeeSplitter-contract"
+    "./Props721Edition-contract",
+    "./PropsFeeSplitter-contract"
 ]

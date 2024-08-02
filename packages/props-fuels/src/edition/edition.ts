@@ -1,9 +1,9 @@
 import { Account, Address, BN } from "fuels";
-import { Octane721EditionContractAbi } from "../sway-api/contracts";
+import { Props721EditionContractAbi } from "../sway-api/contracts";
 import { NFTMetadata } from "../common/types";
 
 /**
- * Represents an edition within the Octane SDK.
+ * Represents an edition within the Props SDK.
  */
 export class Edition {
   /**
@@ -14,9 +14,9 @@ export class Edition {
 
   /**
    * Optional contract associated with the edition.
-   * @type {Octane721EditionContractAbi | undefined}
+   * @type {Props721EditionContractAbi | undefined}
    */
-  contract?: Octane721EditionContractAbi;
+  contract?: Props721EditionContractAbi;
 
   /**
    * Optional account associated with the edition.
@@ -33,11 +33,11 @@ export class Edition {
   /**
    * Creates a new instance of the Edition class.
    * @param {string} id - The ID of the edition.
-   * @param {Octane721EditionContractAbi} [contract] - Optional contract associated with the edition.
+   * @param {Props721EditionContractAbi} [contract] - Optional contract associated with the edition.
    * @param {Account} [account] - Optional account associated with the edition.
    * @param {NFTMetadata} metadata - Metadata associated with the edition.
    */
-  constructor(id: string, contract?: Octane721EditionContractAbi, account?: Account, metadata?: NFTMetadata) {
+  constructor(id: string, contract?: Props721EditionContractAbi, account?: Account, metadata?: NFTMetadata) {
     this.id = id;
     this.contract = contract;
     this.account = account;

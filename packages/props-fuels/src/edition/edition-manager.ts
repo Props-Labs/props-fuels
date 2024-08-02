@@ -2,20 +2,20 @@ import { Account, Address, BN, BytesLike, ContractIdLike } from "fuels";
 import crypto from "crypto";
 import { NFTMetadata, Edition as EditionType, EditionCreateConfigurationOptions, Network } from "../common/types";
 import EventEmitter from "events";
-import { OctaneEvents } from "../core/events";
-import { defaultNetwork, supportedOctane721EditionContractConfigurableOptions, supportedOctane721EditionContractConfigurableOptionsMapping } from "../common/defaults";
-import { Octane721EditionContractAbi__factory } from "../sway-api/contracts";
-import bytecode from "../sway-api/contracts/Octane721EditionContractAbi.hex";
-import type { MetadataInput } from "../sway-api/contracts/Octane721EditionContractAbi";
+import { PropsEvents } from "../core/events";
+import { defaultNetwork, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/defaults";
+import { Props721EditionContractAbi__factory } from "../sway-api/contracts";
+import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
+import type { MetadataInput } from "../sway-api/contracts/Props721EditionContractAbi";
 import { executeGraphQLQuery } from "../core/fuels-api";
 import { Edition } from "./edition";
 
 /**
  * @class EditionManager
- * @classdesc Manages editions within the Octane SDK on the Fuel network.
+ * @classdesc Manages editions within the Props SDK on the Fuel network.
  */
 export class EditionManager extends EventEmitter {
-  private events: OctaneEvents;
+  private events: PropsEvents;
 
   /**
    * Creates a new instance of the EditionManager class.
@@ -23,7 +23,7 @@ export class EditionManager extends EventEmitter {
   constructor() {
     // Initialize the EditionManager class
     super();
-    this.events = OctaneEvents.getInstance();
+    this.events = PropsEvents.getInstance();
   }
 
   /**
@@ -47,12 +47,12 @@ export class EditionManager extends EventEmitter {
 
     const configurableConstants = Object.keys(options)
       .filter((key) =>
-        supportedOctane721EditionContractConfigurableOptions.includes(key)
+        supportedProps721EditionContractConfigurableOptions.includes(key)
       )
       .reduce(
         (obj, key) => {
           const mappedKey =
-            supportedOctane721EditionContractConfigurableOptionsMapping[key];
+            supportedProps721EditionContractConfigurableOptionsMapping[key];
           (obj as any)[mappedKey] =
             options[key as keyof EditionCreateConfigurationOptions];
           return obj;
@@ -61,7 +61,7 @@ export class EditionManager extends EventEmitter {
       );
 
     const salt: BytesLike = crypto.randomBytes(32);
-    const contract = await Octane721EditionContractAbi__factory.deployContract(
+    const {waitForResult, contractId, transactionId} = await Props721EditionContractAbi__factory.deployContract(
       bytecode,
       account,
       {
@@ -69,6 +69,8 @@ export class EditionManager extends EventEmitter {
         salt,
       }
     );
+
+    const { contract, transactionResult } = await waitForResult();
 
     const address = Address.fromDynamicInput(account.address);
     const addressInput = { bits: address.toB256() };

@@ -2,15 +2,15 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Account, AssetId, Provider } from "fuels";
 import { EditionManager } from "./edition-manager";
 import { setup } from "../utils/setup";
-import { Octane721EditionContractAbi__factory, OctaneFeeSplitterContractAbi } from "../sway-api/contracts";
-import { MetadataOutput } from "../sway-api/contracts/Octane721EditionContractAbi";
+import { Props721EditionContractAbi__factory, PropsFeeSplitterContractAbi } from "../sway-api/contracts";
+import { MetadataOutput } from "../sway-api/contracts/Props721EditionContractAbi";
 import { Edition } from "./edition";
 
 describe("EditionManager", () => {
   let manager: EditionManager;
   let wallets: Account[];
   let provider: Provider;
-  let feeSplitterContract: OctaneFeeSplitterContractAbi;
+  let feeSplitterContract: PropsFeeSplitterContractAbi;
 
   beforeEach(async () => {
     manager = new EditionManager();
@@ -59,9 +59,10 @@ describe("EditionManager", () => {
     // Since all tokens are the same, 0x address assetId can be passed.
     const assetId =
       "0x0000000000000000000000000000000000000000000000000000000000000000";
-    const { value } = await edition.contract.functions
+    const { transactionId, waitForResult } = await edition.contract.functions
       .metadata({ bits: assetId }, "name")
       .call();
+    const { value } = await waitForResult();
     expect(value as MetadataOutput).toBeDefined();
     expect((value as MetadataOutput).String).toEqual("Edition 1");
   });

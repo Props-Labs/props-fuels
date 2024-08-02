@@ -1,5 +1,5 @@
 [[package]]
-name = "PropsOctane721Edition-contract"
+name = "Props721Edition-contract"
 source = "member"
 dependencies = [
     "libraries",
@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "PropsOctaneFeeSplitter-contract"
+name = "PropsFeeSplitter-contract"
 source = "member"
 dependencies = [
     "libraries",
@@ -20,11 +20,11 @@ dependencies = [
 
 [[package]]
 name = "core"
-source = "path+from-root-E19CE48B3E858B72"
+source = "path+from-root-7B44AF7AEF784F26"
 
 [[package]]
 name = "libraries"
-source = "path+from-root-EFBBD4398E206F5B"
+source = "path+from-root-9BCEF9F25DFE87F2"
 dependencies = ["std"]
 
 [[package]]
@@ -39,7 +39,7 @@ dependencies = ["std"]
 
 [[package]]
 name = "std"
-source = "git+https://github.com/fuellabs/sway?tag=v0.60.0#2f0392ee35a1e4dd80bd8034962d5b4083dfb8b6"
+source = "git+https://github.com/fuellabs/sway?rev#24e7ebfcea34e0b32c21f1d1b61ff0cd77060161"
 dependencies = ["core"]
 
 [[package]]

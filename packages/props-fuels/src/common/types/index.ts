@@ -66,7 +66,7 @@ export type Network = {
     graphqlUrl?: string;
 };
 
-export type OctaneConfigurationOptions = {
+export type PropsConfigurationOptions = {
     /**
      * The API key to authenticate requests. If not provided, a default API key will be used.
      */

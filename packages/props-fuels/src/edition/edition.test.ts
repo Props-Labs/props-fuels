@@ -1,20 +1,20 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { Account, Provider } from "fuels";
 import { Edition } from "./edition";
-import { deployOctane721EditionContract, setup } from "../utils/setup";
-import { Octane721EditionContractAbi } from "../sway-api/contracts";
+import { deployProps721EditionContract, setup } from "../utils/setup";
+import { Props721EditionContractAbi } from "../sway-api/contracts";
 
 describe("Edition", () => {
   let edition: Edition;
   let wallets: Account[];
   let provider: Provider;
-  let contract: Octane721EditionContractAbi;
+  let contract: Props721EditionContractAbi;
 
   beforeEach(async () => {
     const { wallet1, wallet2, wallet3, wallet4, provider: setupProvider } = await setup();
     wallets = [wallet1, wallet2, wallet3, wallet4];
     provider = setupProvider;
-    contract = await deployOctane721EditionContract(wallet1);
+    contract = await deployProps721EditionContract(wallet1);
     edition = new Edition("edition-id", contract, wallet1, {
       name: "Test Edition",
       description: "A test edition",

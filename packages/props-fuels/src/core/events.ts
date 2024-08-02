@@ -1,15 +1,15 @@
 /**
- * @class OctaneEvents
+ * @class PropsEvents
  * @classdesc Singleton class to manage event states within the application.
  */
-export class OctaneEvents {
+export class PropsEvents {
   /**
-   * The single instance of the OctaneEvents class.
+   * The single instance of the PropsEvents class.
    * @private
    * @static
-   * @type {OctaneEvents}
+   * @type {PropsEvents}
    */
-  private static instance: OctaneEvents;
+  private static instance: PropsEvents;
 
   /**
    * Event state indicating a waiting status.
@@ -62,15 +62,15 @@ export class OctaneEvents {
   }
 
   /**
-   * Retrieves the single instance of the OctaneEvents class.
-   * @returns {OctaneEvents} The singleton instance of the OctaneEvents class.
+   * Retrieves the single instance of the PropsEvents class.
+   * @returns {PropsEvents} The singleton instance of the PropsEvents class.
    * @public
    * @static
    */
-  public static getInstance(): OctaneEvents {
-    if (!OctaneEvents.instance) {
-      OctaneEvents.instance = new OctaneEvents();
+  public static getInstance(): PropsEvents {
+    if (!PropsEvents.instance) {
+      PropsEvents.instance = new PropsEvents();
     }
-    return OctaneEvents.instance;
+    return PropsEvents.instance;
   }
 }

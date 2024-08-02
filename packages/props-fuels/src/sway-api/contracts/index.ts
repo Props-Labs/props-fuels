@@ -4,13 +4,13 @@
 /* eslint-disable */
 
 /*
-  Fuels version: 0.92.1
+  Fuels version: 0.92.0
   Forc version: 0.61.2
   Fuel-Core version: 0.31.0
 */
 
-export type { OctaneFeeSplitterContractAbi } from './OctaneFeeSplitterContractAbi';
-export type { Octane721EditionContractAbi } from './Octane721EditionContractAbi';
+export type { PropsFeeSplitterContractAbi } from './PropsFeeSplitterContractAbi';
+export type { Props721EditionContractAbi } from './Props721EditionContractAbi';
 
-export { OctaneFeeSplitterContractAbi__factory } from './factories/OctaneFeeSplitterContractAbi__factory';
-export { Octane721EditionContractAbi__factory } from './factories/Octane721EditionContractAbi__factory';
+export { PropsFeeSplitterContractAbi__factory } from './factories/PropsFeeSplitterContractAbi__factory';
+export { Props721EditionContractAbi__factory } from './factories/Props721EditionContractAbi__factory';

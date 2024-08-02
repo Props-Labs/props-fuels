@@ -1,2 +1,2 @@
-export * from './octane'
+export * from './core'
 export * from './events'

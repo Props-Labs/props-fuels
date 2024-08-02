@@ -1,10 +1,10 @@
 import { EditionCreateConfigurationOptions, Network } from "./types";
 
-export const supportedOctane721EditionContractConfigurableOptions: Array<string> = [
+export const supportedProps721EditionContractConfigurableOptions: Array<string> = [
     'maxSupply',
 ];
 
-export const supportedOctane721EditionContractConfigurableOptionsMapping: Record<string, string> = {
+export const supportedProps721EditionContractConfigurableOptionsMapping: Record<string, string> = {
     maxSupply: 'MAX_SUPPLY',
 };
 
