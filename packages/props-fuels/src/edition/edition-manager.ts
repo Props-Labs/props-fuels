@@ -1,9 +1,10 @@
 import { Account, Address, BN, BytesLike, ContractIdLike } from "fuels";
 import crypto from "crypto";
-import { NFTMetadata, Edition as EditionType, EditionCreateConfigurationOptions, Network } from "../common/types";
+import { NFTMetadata, Edition as EditionType, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
 import EventEmitter from "events";
 import { PropsEvents } from "../core/events";
-import { defaultNetwork, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/defaults";
+import { defaultNetwork } from "../common/defaults";
+import { configurableOptionsTypeMapping, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/constants";
 import { Props721EditionContractAbi__factory } from "../sway-api/contracts";
 import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
 import type { MetadataInput } from "../sway-api/contracts/Props721EditionContractAbi";
@@ -34,16 +35,12 @@ export class EditionManager extends EventEmitter {
    * @param {EditionCreateConfigurationOptions} options - Additional configuration options for creating the edition.
    * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
    */
-  async create(
-    name: string,
-    symbol: string,
-    metadata: NFTMetadata,
-    options: EditionCreateConfigurationOptions
-  ): Promise<Edition> {
+  async create(params:EditionCreateOptions): Promise<Edition> {
+    const { name, symbol, metadata, price, options } = params;
     // Replace the following with the actual implementation to interact with the Fuel network
     this.emit(this.events.waiting, { name, symbol, metadata, options });
 
-    const { account } = options;
+    const { owner } = options;
 
     const configurableConstants = Object.keys(options)
       .filter((key) =>
@@ -54,29 +51,34 @@ export class EditionManager extends EventEmitter {
           const mappedKey =
             supportedProps721EditionContractConfigurableOptionsMapping[key];
           (obj as any)[mappedKey] =
-            options[key as keyof EditionCreateConfigurationOptions];
+            configurableOptionsTypeMapping[key](options[key as keyof EditionCreateConfigurationOptions]);
           return obj;
         },
         {} as Partial<Record<string, any>>
       );
+    
+    // console.log("configurableConstants", configurableConstants);
 
     const salt: BytesLike = crypto.randomBytes(32);
-    const {waitForResult, contractId, transactionId} = await Props721EditionContractAbi__factory.deployContract(
-      bytecode,
-      account,
-      {
-        configurableConstants,
-        salt,
-      }
-    );
+    const { waitForResult } =
+      await Props721EditionContractAbi__factory.deployContract(
+        bytecode,
+        owner,
+        {
+          configurableConstants,
+          salt,
+        }
+      );
 
-    const { contract, transactionResult } = await waitForResult();
+    const { contract } = await waitForResult();
 
-    const address = Address.fromDynamicInput(account.address);
+    const address = Address.fromDynamicInput(owner.address);
     const addressInput = { bits: address.toB256() };
     const addressIdentityInput = { Address: addressInput };
 
-    await contract.functions
+    // console.log("PRICE IN CREATE::", price);
+
+    const { waitForResult:waitForResultConstructor } = await contract.functions
       .constructor(
         addressIdentityInput,
         name,
@@ -91,11 +93,17 @@ export class EditionManager extends EventEmitter {
             throw new Error("Unsupported metadata value type");
           }
         }),
-        0 // @dev TODO implement pricing and better function call optiolns
+        price ?? 0
       )
       .call();
 
-    return new Edition(contract.id.toString(), contract, account);
+    const { transactionResult } = await waitForResultConstructor();
+
+    if( transactionResult?.gqlTransaction?.status?.type === "SuccessStatus"){
+      return new Edition(contract.id.toString(), contract, owner);
+    } else {
+      throw new Error("Failed to create edition: Transaction was not successful");
+    }
   }
 
   async list(
@@ -161,7 +169,11 @@ export class EditionManager extends EventEmitter {
       let similarCount = 0;
       let dissimilarCount = 0;
 
-      for (let i = 0; i < Math.min(contractBytecode.length, bytecode.length); i++) {
+      for (
+        let i = 0;
+        i < Math.min(contractBytecode.length, bytecode.length);
+        i++
+      ) {
         if (contractBytecode[i] === bytecode[i]) {
           similarCount++;
         } else {
@@ -171,7 +183,9 @@ export class EditionManager extends EventEmitter {
 
       dissimilarCount += Math.abs(contractBytecode.length - bytecode.length);
 
-      const similarityPercentage = (similarCount / Math.max(contractBytecode.length, bytecode.length)) * 100;
+      const similarityPercentage =
+        (similarCount / Math.max(contractBytecode.length, bytecode.length)) *
+        100;
 
       if (similarityPercentage >= 99.98) {
         matchingContracts.push(contractId);

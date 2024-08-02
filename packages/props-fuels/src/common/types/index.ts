@@ -1,4 +1,4 @@
-import { Account } from "fuels";
+import { Account, TransactionResult } from "fuels";
 import { supportedNetworks } from "../constants";
 
 export type NFTMetadata = {
@@ -35,12 +35,58 @@ export type Edition = {
     tokens: string[];
 };
 
-export type EditionCreateConfigurationOptions = {
+export type EditionCreateOptions = {
     /**
-     * The maximum number of tokens that can be minted for the edition.
+     * The name of the edition to create.
      */
-    maxSupply: number;
-    account: Account;
+    name: string;
+    /**
+     * The symbol of the edition to create.
+     */
+    symbol: string;
+    /**
+     * The metadata for the edition.
+     */
+    metadata: NFTMetadata;
+    /**
+     * The price of the edition on the Base Asset (Wei, ETH).
+     */
+    price?: number;
+    /**
+     * The configuration options for the edition creation.
+     */
+    options: EditionCreateConfigurationOptions;
+};
+
+export type EditionCreateConfigurationOptions = {
+  /**
+   * The account associated with the edition creation. Cannot be changed after deployment.
+   */
+  owner: Account;
+  /**
+   * The maximum number of tokens that can be minted for the edition. Defaults to 3. Cannot be changed after deployment.
+   */
+  maxSupply?: number;
+  /**
+   * The address where the builder fee will be sent (optional). Cannot be changed after deployment.
+   */
+  builderFeeAddress?: string;
+  /**
+   * The percentage of the builder fee (optional). Cannot be changed after deployment.
+   */
+  builderFee?: number;
+  /**
+   * The address where the builder's revenue share will be sent (optional). Cannot be changed after deployment.
+   */
+  builderRevenueShareAddress?: string;
+  /**
+   * The percentage of the builder's revenue share (optional). Cannot be changed after deployment.
+   */
+  builderRevenueSharePercentage?: number;
+  /**
+   * The percentage of the affiliate fee (optional). Cannot be changed after deployment.
+   */
+  affiliateFeePercentage?: number;
 };
 
 export type Network = {
@@ -75,4 +121,18 @@ export type PropsConfigurationOptions = {
      * The network to connect to, identified by its unique ID.
      */
     network: typeof supportedNetworks[number]['id'];
+};
+
+/**
+ * Represents the result of an edition mint operation.
+ */
+export type EditionMintResult = {
+    /**
+     * The unique identifier for the minted edition.
+     */
+    id: string;
+    /**
+     * The result of the transaction associated with the mint operation.
+     */
+    transactionResult: TransactionResult;
 };

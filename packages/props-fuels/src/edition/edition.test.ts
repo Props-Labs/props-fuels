@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { Account, Provider } from "fuels";
+import { Account, BN, Provider, getMintedAssetId } from "fuels";
 import { Edition } from "./edition";
 import { deployProps721EditionContract, setup } from "../utils/setup";
 import { Props721EditionContractAbi } from "../sway-api/contracts";
@@ -34,8 +34,14 @@ describe("Edition", () => {
   });
 
   it("should mint tokens", async () => {
+    expect(edition.contract).toBeDefined();
     await edition.mint(wallets[2].address.toB256(), 1);
-    // Assuming minting logs or other side effects can be checked here
+
+    const subId = "0x0000000000000000000000000000000000000000000000000000000000000001";
+    const assetId = getMintedAssetId(edition?.contract?.id.toB256() ?? "", subId);
+
+    const balance: BN = await wallets[2].getBalance(assetId);
+    expect(balance.toString()).toBe("1");
   });
 
   it("should throw an error if minting without a connected contract or account", async () => {

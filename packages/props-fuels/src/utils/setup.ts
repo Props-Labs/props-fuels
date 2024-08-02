@@ -3,7 +3,7 @@ import { launchTestNode, AssetId, TestMessage } from "fuels/test-utils";
 import { Props721EditionContractAbi__factory, PropsFeeSplitterContractAbi, PropsFeeSplitterContractAbi__factory } from "../sway-api/contracts";
 import octaneFeeSplitterBytecode from "../sway-api/contracts/PropsFeeSplitterContractAbi.hex";
 import crypto from "crypto";
-import { MetadataInput, Props721EditionContractAbi } from "../sway-api/contracts/Props721EditionContractAbi";
+import { Props721EditionContractAbi } from "../sway-api/contracts/Props721EditionContractAbi";
 import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
 
 export async function setup(): Promise<
@@ -24,7 +24,7 @@ export async function setup(): Promise<
       walletsConfig: {
         count: 4, // Number of wallets to create
         assets, // Assets to use
-        coinsPerAsset: 2, // Number of coins per asset
+        coinsPerAsset: 1, // Number of coins per asset
         amountPerCoin: 1_000_000, // Amount per coin
         messages: [message], // Initial messages
       },

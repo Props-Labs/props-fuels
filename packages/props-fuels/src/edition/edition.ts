@@ -1,6 +1,6 @@
 import { Account, Address, BN } from "fuels";
 import { Props721EditionContractAbi } from "../sway-api/contracts";
-import { NFTMetadata } from "../common/types";
+import { EditionMintResult, NFTMetadata } from "../common/types";
 
 /**
  * Represents an edition within the Props SDK.
@@ -37,7 +37,12 @@ export class Edition {
    * @param {Account} [account] - Optional account associated with the edition.
    * @param {NFTMetadata} metadata - Metadata associated with the edition.
    */
-  constructor(id: string, contract?: Props721EditionContractAbi, account?: Account, metadata?: NFTMetadata) {
+  constructor(
+    id: string,
+    contract?: Props721EditionContractAbi,
+    account?: Account,
+    metadata?: NFTMetadata
+  ) {
     this.id = id;
     this.contract = contract;
     this.account = account;
@@ -59,29 +64,54 @@ export class Edition {
    * @returns {Promise<void>} A promise that resolves when the tokens have been minted.
    * @throws {Error} If the minting process fails.
    */
-  async mint(to: string, amount: number): Promise<void> {
+  async mint(
+    to: string,
+    amount: number,
+    affiliate?: string
+  ): Promise<EditionMintResult|Error> {
     if (!this.contract || !this.account) {
-      throw new Error('Contract or account is not connected');
+      throw new Error("Contract or account is not connected");
     }
 
     try {
       const baseAssetId = this.account.provider.getBaseAssetId();
-      const { value } = await this.contract.functions.price().get();
-      if (!value) {
-        throw new Error('Price not found');
+      const { value: priceValue } = await this.contract.functions.price().get();
+      const { value: fees } = await this.contract.functions
+        .fee_breakdown()
+        .get();
+      if (!priceValue) {
+        throw new Error("Price not found");
       }
-      const price = value.mul(amount);
+      if (!fees) {
+        throw new Error("Fees not found");
+      }
+      const totalFees = fees.reduce((acc, fee) => acc.add(fee), new BN(0));
+      const price = priceValue.mul(amount).add(totalFees);
       const address = Address.fromDynamicInput(to);
       const addressInput = { bits: address.toB256() };
       const addressIdentityInput = { Address: addressInput };
       const subId = new BN(0).toHex(32);
-      const result = await this.contract.functions
-        .mint(addressIdentityInput, subId, amount)
+
+      const { waitForResult } = await this.contract.functions
+        .mint(
+          addressIdentityInput,
+          subId,
+          amount,
+          affiliate
+            ? {
+                Address: { bits: Address.fromDynamicInput(affiliate).toB256() },
+              }
+            : undefined
+        )
         .callParams({
           forward: [price, baseAssetId],
-          gasLimit: 1000000,
+          gasLimit: 1_000_000,
         })
         .call();
+      const { transactionResult } = await waitForResult();
+      if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus")
+        return { id: transactionResult.gqlTransaction.id, transactionResult };
+      else throw new Error("Transaction failed");
     } catch (error) {
       throw error;
     }
