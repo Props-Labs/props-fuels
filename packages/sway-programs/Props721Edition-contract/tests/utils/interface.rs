@@ -71,6 +71,20 @@ pub(crate) async fn mint(
         .unwrap()
 }
 
+pub(crate) async fn airdrop(
+    contract: &Props721Edition<WalletUnlocked>,
+    recipient: Identity,
+    amount: u64,
+) -> FuelCallResponse<()> {
+    contract
+        .methods()
+        .airdrop(recipient, amount)
+        .append_variable_outputs(1)
+        .call()
+        .await
+        .unwrap()
+}
+
 pub(crate) async fn burn(
     contract: &Props721Edition<WalletUnlocked>,
     asset_id: AssetId,

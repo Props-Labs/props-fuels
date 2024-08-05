@@ -1,8 +1,8 @@
 {
-  "entryPoints": ["packages/octane/src/index.ts"],
+  "entryPoints": ["packages/props-fuels/src/index.ts"],
   "out": "apps/docs/api",
   "plugin": ["typedoc-plugin-markdown"],
-  "exclude": ["**/sway-api/**", "**/demo-octane/**", "apps/demo-octane/**/*"],
+  "exclude": ["**/sway-api/**", "**/demo-props-fuels/**", "apps/demo-props-fuels/**/*"],
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,

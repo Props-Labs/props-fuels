@@ -1,10 +1,16 @@
-**octane-fuels-ts** • **Docs**
+**@props/fuels** • **Docs**
 
 ***
 
-# octane-fuels-ts
+# @props/fuels
 
 ## Classes
 
+- [Edition](classes/Edition.md)
 - [EditionManager](classes/EditionManager.md)
-- [Octane](classes/Octane.md)
+- [PropsEvents](classes/PropsEvents.md)
+- [PropsSDK](classes/PropsSDK.md)
+
+## Type Aliases
+
+- [EditionMintResult](type-aliases/EditionMintResult.md)

@@ -1,6 +1,6 @@
-# Octane SDK
+# Props SDK
 
-Welcome to the Octane SDK documentation. This SDK allows you to easily create, manage, and interact with NFTs on the Fuel network.
+Welcome to the Props SDK documentation. This SDK allows you to easily create, manage, and interact with NFTs on the Fuel network.
 
 ## Getting Started
 
@@ -9,15 +9,15 @@ Welcome to the Octane SDK documentation. This SDK allows you to easily create, m
 To install the SDK, run:
 
 ```bash
-npm install octane-fuels-ts
+npm install @props/fuels
 ```
 
 ```bash
-pnpm install octane-fuels-ts
+pnpm install @props/fuels
 ```
 
 ```bash
-yarn add octane-fuels-ts
+yarn add @props/fuels
 ```
 
 ## Usage
@@ -25,21 +25,29 @@ yarn add octane-fuels-ts
 To use the SDK, you must first create an instance of the `Octane` class:
 
 ```javascript
-import { Octane } from 'octane-fuels-ts';
+import { PropsSDK } from '@props/fuels';
 import { Provider, Wallet } from 'fuels';
 
 const provider = new Provider('https://testnet.fuel.network');
 const wallet = Wallet.fromPrivateKey('your-private-key');
 
-const octane = new Octane({
+const propsClient = new PropsSDK({
   network: 'testnet',
 });
 
 async function createEdition() {
-  const editionId = await octane.edition.create('Edition 1', {
-    name: 'Edition 1',
-    description: 'First edition',
-    image: 'image_url',
+  const edition: Edition = await manager.create({
+    name:"Edition 1",
+    symbol: "ED1",
+    metadata: {
+      name: "Edition 1",
+      description: "First edition",
+      image: "image_url",
+    },
+    options: {
+      maxSupply: 100,
+      owner: wallets[0],
+    }
   });
   console.log(`Created edition with ID: ${editionId}`);
 }

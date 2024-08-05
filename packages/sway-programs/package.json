@@ -1,0 +1,9 @@
+{
+  "name": "@props/sway-contracts",
+  "version": "0.1.0",
+  "description": "Props Sway Contracts",
+  "author": "Props Labs, Calvin Hoenes <hello@props.app> (https://www.props.app)",
+  "scripts": {
+    "test:contracts": "forc build && cargo test"
+  }
+}

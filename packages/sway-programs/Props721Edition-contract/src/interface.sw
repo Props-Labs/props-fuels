@@ -9,6 +9,9 @@ abi SRC3PayableExtension {
     #[storage(read, write)]
     fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>);
 
+    #[storage(read, write)]
+    fn airdrop(recipient: Identity, amount: u64);
+
     #[payable]
     #[storage(read, write)]
     fn burn(sub_id: SubId, amount: u64);
@@ -24,7 +27,7 @@ abi SetMintMetadata {
     #[storage(read)]
     fn total_price() -> Option<u64>;
 
-    fn fee_breakdown() -> Option<(u64, u64)>;
+    fn fees() -> Option<(u64, u64)>;
 }
 
 abi Props721Edition {

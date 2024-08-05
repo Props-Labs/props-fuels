@@ -77,7 +77,7 @@ export class Edition {
       const baseAssetId = this.account.provider.getBaseAssetId();
       const { value: priceValue } = await this.contract.functions.price().get();
       const { value: fees } = await this.contract.functions
-        .fee_breakdown()
+        .fees()
         .get();
       if (!priceValue) {
         throw new Error("Price not found");

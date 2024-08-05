@@ -4,6 +4,7 @@ mod decimals;
 mod is_paused;
 mod metadata;
 mod mint;
+mod airdrop;
 mod name;
 mod owner;
 mod pause;

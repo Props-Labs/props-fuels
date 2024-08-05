@@ -1,6 +1,6 @@
 import { Account, Address, BN, BytesLike, ContractIdLike } from "fuels";
 import crypto from "crypto";
-import { NFTMetadata, Edition as EditionType, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
+import { NFTMetadata, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
 import EventEmitter from "events";
 import { PropsEvents } from "../core/events";
 import { defaultNetwork } from "../common/defaults";
