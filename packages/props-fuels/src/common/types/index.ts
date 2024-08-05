@@ -16,25 +16,6 @@ export type NFTMetadata = {
     image: string;
 };
 
-export type Edition = {
-    /**
-     * The unique identifier for the edition.
-     */
-    id: string;
-    /**
-     * The name of the edition.
-     */
-    name: string;
-    /**
-     * The metadata associated with the edition.
-     */
-    metadata: NFTMetadata;
-    /**
-     * The list of token identifiers associated with the edition.
-     */
-    tokens: string[];
-};
-
 export type EditionCreateOptions = {
     /**
      * The name of the edition to create.

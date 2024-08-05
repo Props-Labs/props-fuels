@@ -115,6 +115,10 @@ describe("EditionManager", () => {
         }
       });
 
+      if(!edition.contract) {
+        throw new Error("Edition contract not found");
+      }
+
       const { value: totalPrice } = await edition.contract.functions.total_price().get();
       expect(totalPrice?.toString()).toBe((1000+5).toString());
 

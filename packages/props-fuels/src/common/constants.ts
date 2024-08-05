@@ -8,6 +8,7 @@ export const supportedProps721EditionContractConfigurableOptions: Array<string> 
     "builderFee",
     "builderRevenueShareAddress",
     "builderRevenueSharePercentage",
+    "disableAirdrop"
   ];
 
 export const supportedProps721EditionContractConfigurableOptionsMapping: Record<
@@ -19,6 +20,7 @@ export const supportedProps721EditionContractConfigurableOptionsMapping: Record<
   builderFee: "BUILDER_FEE",
   builderRevenueShareAddress: "BUILDER_REVENUE_SHARE_ADDRESS",
   builderRevenueSharePercentage: "BUILDER_REVENUE_SHARE_PERCENTAGE",
+  disableAirdrop: "DISABLE_AIRDROP",
 };
 
 export const configurableOptionsTypeMapping: Record<string, (value: any) => any> = {
@@ -51,6 +53,12 @@ export const configurableOptionsTypeMapping: Record<string, (value: any) => any>
   builderRevenueSharePercentage: (value: number) => {
     if (typeof value !== 'number' || value < 0 || value > 100) {
       throw new Error("Invalid builderRevenueSharePercentage: must be a number between 0 and 100");
+    }
+    return value;
+  },
+  disableAirdrop: (value: boolean) => {
+    if (typeof value !== 'boolean') {
+      throw new Error("Invalid disableAirdrop: must be a boolean");
     }
     return value;
   },

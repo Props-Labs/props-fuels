@@ -119,6 +119,13 @@ configurable {
     /// 
     /// `u64`
     AFFILIATE_FEE_PERCENTAGE: u64 = 0,
+
+    /// A flag to disable the airdrop functionality.
+    ///
+    /// # Type
+    ///
+    /// `bool`
+    DISABLE_AIRDROP: bool = false,
 }
 
 impl SRC20 for Contract {
@@ -442,11 +449,12 @@ impl SRC3PayableExtension for Contract {
     ///
     /// fn foo(contract_id: ContractId) {
     ///     let contract_abi = abi(SR3, contract_id);
-    ///     contract_abi.mint_to(Identity::ContractId(ContractId::this()), 1);
+    ///     contract_abi.airdrop(Identity::ContractId(ContractId::this()), 1);
     /// }
     /// ```
     #[storage(read, write)]
-    fn mint_to(recipient: Identity, amount: u64) {
+    fn airdrop(recipient: Identity, amount: u64) {
+        require(!DISABLE_AIRDROP, "Airdrop is disabled");
         only_owner();
         require_not_paused();
 

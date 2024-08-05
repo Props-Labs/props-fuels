@@ -72,10 +72,11 @@ interface Props721EditionContractAbiInterface extends Interface {
     total_supply: FunctionFragment;
     burn: FunctionFragment;
     mint: FunctionFragment;
+    mint_to: FunctionFragment;
     metadata: FunctionFragment;
     owner: FunctionFragment;
     set_metadata: FunctionFragment;
-    fee_breakdown: FunctionFragment;
+    fees: FunctionFragment;
     price: FunctionFragment;
     set_price: FunctionFragment;
     total_price: FunctionFragment;
@@ -96,10 +97,11 @@ export class Props721EditionContractAbi extends Contract {
     total_supply: InvokeFunction<[asset: AssetIdInput], Option<BN>>;
     burn: InvokeFunction<[sub_id: string, amount: BigNumberish], void>;
     mint: InvokeFunction<[recipient: IdentityInput, _sub_id: string, amount: BigNumberish, affiliate: Option<IdentityInput>], void>;
+    mint_to: InvokeFunction<[recipient: IdentityInput, amount: BigNumberish], void>;
     metadata: InvokeFunction<[asset: AssetIdInput, key: StdString], Option<MetadataOutput>>;
     owner: InvokeFunction<[], StateOutput>;
     set_metadata: InvokeFunction<[asset: AssetIdInput, key: StdString, metadata: MetadataInput], void>;
-    fee_breakdown: InvokeFunction<[], Option<[BN, BN]>>;
+    fees: InvokeFunction<[], Option<[BN, BN]>>;
     price: InvokeFunction<[], Option<BN>>;
     set_price: InvokeFunction<[price: BigNumberish], void>;
     total_price: InvokeFunction<[], Option<BN>>;

@@ -1815,6 +1815,197 @@ const _abi = {
     {
       "inputs": [
         {
+          "name": "recipient",
+          "type": 6,
+          "typeArguments": null
+        },
+        {
+          "name": "amount",
+          "type": 26,
+          "typeArguments": null
+        }
+      ],
+      "name": "mint_to",
+      "output": {
+        "name": "",
+        "type": 0,
+        "typeArguments": null
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Mints new assets to a recipient in a sequential manner. Only callable by the owner."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `recipient`: [Identity] - The user to which the newly minted assets are transferred to."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `amount`: [u64] - The quantity of coins to mint."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Reverts"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * When the contract is paused."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * When more than the MAX_SUPPLY NFTs have been minted."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Reads: `2`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Writes: `2`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use src3::SRC3;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let contract_abi = abi(SR3, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     contract_abi.mint_to(Identity::ContractId(ContractId::this()), 1);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
           "name": "asset",
           "type": 18,
           "typeArguments": null
@@ -2397,7 +2588,7 @@ const _abi = {
     },
     {
       "inputs": [],
-      "name": "fee_breakdown",
+      "name": "fees",
       "output": {
         "name": "",
         "type": 10,
@@ -2437,7 +2628,7 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            " * [Option<(u64, u64, u64)>] - A tuple containing the base price, builder fee, and total fee."
+            " * [Option<(u64, u64, u64)>] - A tuple containing the builder fee, and base fee."
           ]
         },
         {
@@ -2515,13 +2706,7 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            "     let (base_price, builder_fee, total_fee) = mint_abi.fee_breakdown().unwrap();"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     assert(base_price != 0);"
+            "     let (builder_fee, base_fee) = mint_abi.fees().unwrap();"
           ]
         },
         {
@@ -3743,7 +3928,7 @@ const _abi = {
         "type": 26,
         "typeArguments": null
       },
-      "offset": 51920
+      "offset": 53696
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
@@ -3752,7 +3937,7 @@ const _abi = {
         "type": 17,
         "typeArguments": []
       },
-      "offset": 51848
+      "offset": 53624
     },
     {
       "name": "BUILDER_FEE",
@@ -3761,7 +3946,7 @@ const _abi = {
         "type": 26,
         "typeArguments": null
       },
-      "offset": 51840
+      "offset": 53616
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
@@ -3770,7 +3955,7 @@ const _abi = {
         "type": 17,
         "typeArguments": []
       },
-      "offset": 51880
+      "offset": 53656
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
@@ -3779,7 +3964,7 @@ const _abi = {
         "type": 26,
         "typeArguments": null
       },
-      "offset": 51912
+      "offset": 53688
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
@@ -3788,7 +3973,7 @@ const _abi = {
         "type": 26,
         "typeArguments": null
       },
-      "offset": 51832
+      "offset": 53608
     }
   ]
 };

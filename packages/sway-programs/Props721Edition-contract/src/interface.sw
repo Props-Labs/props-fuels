@@ -10,7 +10,7 @@ abi SRC3PayableExtension {
     fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>);
 
     #[storage(read, write)]
-    fn mint_to(recipient: Identity, amount: u64);
+    fn airdrop(recipient: Identity, amount: u64);
 
     #[payable]
     #[storage(read, write)]

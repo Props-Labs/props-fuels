@@ -1,8 +1,8 @@
 module.exports = {
-  title: "Octane for Fuel Docs",
+  title: "PropsSDK for Fuel Docs",
   description: "Octane minting SDK documentation for Fuel Network",
   themeConfig: {
-    logo: '/logo.svg',
+    logo: "/logo.svg",
     nav: [
       { text: "Home", link: "/" },
       { text: "Editions", link: "/editions" },
@@ -20,29 +20,41 @@ module.exports = {
       ],
       "/": [
         {
-          text: "Octane for Fuel",
+          text: "PropsSDK for Fuel",
           items: [
             { text: "Introduction", link: "/#octane-sdk" },
             { text: "Getting Started", link: "/#getting-started" },
             { text: "Usage", link: "/#usage" },
+            {
+              text: "Fees and Incentives",
+              items: [
+                { text: "Overview", link: "/fees" },
+                { text: "Builder Fees", link: "/fees/#builder-fees" },
+              ],
+            },
           ],
         },
         {
-          text: "Guide",
+          text: "Guides",
           items: [
             {
               text: "Editions",
               items: [
                 { text: "Overview", link: "/editions" },
-                { text: "Create Edition", link: "/editions/create" },
-                { text: "Mint Edition", link: "/editions/mint" },
+                { text: "Create Edition", link: "/editions/#creating-an-edition" },
+                { text: "Mint Edition", link: "/editions/#minting-tokens-from-an-edition" },
+                { text: "List Editions", link: "/editions/#listing-editions" },
+                { text: "API Reference", link: "/editions/#editions-api-reference" },
               ],
             },
             {
               text: "Advanced",
               items: [
                 { text: "Edition Metadata", link: "/editions/metadata" },
-                { text: "Edition Configuration", link: "/editions/configuration" },
+                {
+                  text: "Edition Configuration",
+                  link: "/editions/configuration",
+                },
               ],
             },
           ],
