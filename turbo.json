@@ -8,11 +8,16 @@
     "lint": {
       "outputs": []
     },
+    "preview": {
+      "outputs": []
+    },
     "test": {
       "outputs": []
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
     }
   }
 }

@@ -17,6 +17,7 @@
     "dev:apps": "turbo run dev --filter=demo-props-fuels",
     "docs:build": "typedoc && vitepress build apps/docs",
     "docs:dev": "vitepress dev apps/docs",
+    "preview": "turbo run preview --filter=demo-props-fuels",
     "test": "vitest",
     "test:props-fuels": "vitest",
     "test:contracts": "cd packages/sway-programs && forc build && cargo test",

@@ -42,7 +42,7 @@ export type ContractIdOutput = ContractIdInput;
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
 
-interface PropsFeeSplitterContractAbiInterface extends Interface {
+export interface PropsFeeSplitterContractAbiInterface extends Interface {
   functions: {
     owner: FunctionFragment;
     distribute_funds: FunctionFragment;
