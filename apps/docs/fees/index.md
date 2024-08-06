@@ -24,7 +24,7 @@ When creating an edition, builders can specify the following fee parameters:
 Below is an example of how to set builder fees when creating an edition:
 
 ```javascript
-const edition: Edition = await propsClient.edition.create({
+const edition: Edition = await propsClient.editions.create({
   name:"Edition 1",
   symbol: "ED1",
   metadata: {

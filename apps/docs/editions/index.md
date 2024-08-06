@@ -11,7 +11,7 @@ Use the `create` method to create a new edition. You need to provide the name of
 ### Basic Example
 
 ```javascript
-const edition: Edition = await propsClient.edition.create({
+const edition: Edition = await propsClient.editions.create({
   name:"Edition 1",
   symbol: "ED1",
   metadata: {
@@ -33,7 +33,7 @@ The `builderFeeAddress` is the address that will receive the builder fee, and `b
 The `builderRevenueShareAddress` is the address that will receive the builder revenue share, and `builderRevenueShare` is the share value in percentage of the mint price.
 
 ```javascript
-const edition: Edition = await propsClient.edition.create({
+const edition: Edition = await propsClient.editions.create({
   name:"Edition 1",
   symbol: "ED1",
   metadata: {
@@ -66,7 +66,7 @@ const propsClient = new PropsSDK({
   network: 'testnet',
 });
 
-const edition:Edition = await propsClient.edition.get(editionId);
+const edition:Edition = await propsClient.editions.get(editionId);
 
 const wallet = new Wallet('private_key');
 edition.connect(wallet);
@@ -79,7 +79,7 @@ await edition.mint('0x1234567890123456789012345678901234567890', 10);
 To list editions, you need to use the `list` method of the `edition` object in the `Octane` SDK. Below is a guide on how to list editions.
 
 ```javascript
-const editions: Edition[] = await propsClient.edition.list();
+const editions: Edition[] = await propsClient.editions.list();
 ```
 
 ## Editions API Reference
