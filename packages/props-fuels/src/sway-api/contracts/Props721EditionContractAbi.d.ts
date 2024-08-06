@@ -63,7 +63,7 @@ export type Props721EditionContractAbiConfigurables = {
   AFFILIATE_FEE_PERCENTAGE: BigNumberish;
 };
 
-interface Props721EditionContractAbiInterface extends Interface {
+export interface Props721EditionContractAbiInterface extends Interface {
   functions: {
     decimals: FunctionFragment;
     name: FunctionFragment;
