@@ -8,6 +8,9 @@
     "lint": {
       "outputs": []
     },
+    "preview": {
+      "outputs": []
+    },
     "test": {
       "outputs": []
     },

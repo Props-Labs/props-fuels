@@ -74,3 +74,21 @@ export class PropsEvents {
     return PropsEvents.instance;
   }
 }
+
+export class PropsEventEmitter {
+  private _eventListeners: { [key: string]: Array<(...args: any[]) => void> } =
+    {};
+
+  on(event: string, listener: (...args: any[]) => void) {
+    if (!this._eventListeners[event]) {
+      this._eventListeners[event] = [];
+    }
+    this._eventListeners[event].push(listener);
+  }
+
+  emit(event: string, ...args: any[]) {
+    if (this._eventListeners[event]) {
+      this._eventListeners[event].forEach((listener) => listener(...args));
+    }
+  }
+}

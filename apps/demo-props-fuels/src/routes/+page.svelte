@@ -7,37 +7,37 @@
 
     onMount(() => {
         console.log("We're here");
-        let octane = new PropsSDK({
+        let propsClient = new PropsSDK({
             apiKey: 'YOUR_API_KEY',
             network: 'testnet'
         })
-        console.log("Octane initiated: ", octane);
+        console.log("Octane initiated: ", propsClient);
 
-        const provider = Provider.create('https://testnet.fuel.network');
-        const wallet = Wallet.generate({
-            provider: provider,
-            network: 'testnet'
-        });
-        console.log("New wallet created: ", wallet.address.toString());
+        // const provider = Provider.create('https://testnet.fuel.network');
+        // const wallet = Wallet.generate({
+        //     provider: provider,
+        //     network: 'testnet'
+        // });
+        // console.log("New wallet created: ", wallet.address.toString());
 
-        octane.editions.create({
-            name: 'My Edition',
-            symbol: 'Ed1',
-            metadata: {
-                name: 'My Edition',
-                description: 'This is my first edition',
-                image: 'https://example.com/image.jpg',
-            },
-            options: {
-                owner: wallet,
-                maxSupply: 1000,
-            }
-        }).then((edition: Edition) => {
-            console.log("Edition created: ", edition)
-            editionData = edition;
-        }).catch(error => {
-            console.error("Error creating edition: ", error);
-        });
+        // octane.editions.create({
+        //     name: 'My Edition',
+        //     symbol: 'Ed1',
+        //     metadata: {
+        //         name: 'My Edition',
+        //         description: 'This is my first edition',
+        //         image: 'https://example.com/image.jpg',
+        //     },
+        //     options: {
+        //         owner: wallet,
+        //         maxSupply: 1000,
+        //     }
+        // }).then((edition: Edition) => {
+        //     console.log("Edition created: ", edition)
+        //     editionData = edition;
+        // }).catch(error => {
+        //     console.error("Error creating edition: ", error);
+        // });
     })
 </script>
 
