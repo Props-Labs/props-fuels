@@ -142,12 +142,16 @@ export class EditionManager extends PropsEventEmitter {
       variables
     );
 
+    console.log("transactionData", transactionData);
+
     const contractIds = transactionData.data.transactionsByOwner.nodes.flatMap(
       (node: any) =>
         node.outputs
           .filter((output: any) => output.__typename === "ContractCreated")
           .map((output: any) => output.contract)
     );
+
+    console.log("contractIds", contractIds);
 
     const matchingContracts: Array<string> = [];
 
@@ -193,6 +197,10 @@ export class EditionManager extends PropsEventEmitter {
         matchingContracts.push(contractId);
       }
     }
+
+    // matchingContracts.map((contractId) => {
+    //   return Edition.fromContractIdAndWallet(contractId, owner);
+    // });
 
     return matchingContracts;
   }
