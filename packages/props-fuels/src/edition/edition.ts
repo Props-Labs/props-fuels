@@ -1,5 +1,5 @@
 import { Account, Address, BN } from "fuels";
-import { Props721EditionContractAbi } from "../sway-api/contracts";
+import { Props721EditionContractAbi, Props721EditionContractAbi__factory } from "../sway-api/contracts";
 import { EditionMintResult, NFTMetadata } from "../common/types";
 
 /**
@@ -115,5 +115,24 @@ export class Edition {
     } catch (error) {
       throw error;
     }
+  }
+
+  /**
+   * Static method to create an Edition instance based on a contractId and a wallet.
+   * @param {string} contractId - The ID of the contract.
+   * @param {Account} wallet - The wallet to connect.
+   * @returns {Promise<Edition>} A promise that resolves to an Edition instance.
+   */
+  static async fromContractIdAndWallet(contractId: string, wallet: Account): Promise<Edition> {
+    const contract = Props721EditionContractAbi__factory.connect(
+      contractId,
+      wallet
+    );
+    // const { value: metadata } = await contract.functions.metadata().get();
+    return new Edition(contractId, contract, wallet, {
+      name: "name",
+      description: "description",
+      image: "image",
+    });
   }
 }
