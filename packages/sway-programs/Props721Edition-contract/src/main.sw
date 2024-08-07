@@ -4,7 +4,7 @@ mod errors;
 mod interface;
 
 use errors::{MintError, SetError};
-use interface::{Props721Edition, SetMintMetadata, SRC3PayableExtension};
+use interface::{Props721Edition, SetMintMetadata, SRC3PayableExtension, SRC7MetadataExtension};
 use standards::{src20::SRC20, src3::SRC3, src5::{SRC5, State}, src7::{Metadata, SRC7},};
 use sway_libs::{
     asset::{
@@ -54,12 +54,14 @@ storage {
     ///
     /// This is the number of NFTs that have been minted.
     total_assets: u64 = 0,
+
     /// The total number of coins minted for a particular asset.
     ///
     /// # Additional Information
     ///
     /// This should always be 1 for any asset as this is an NFT contract.
     total_supply: StorageMap<AssetId, u64> = StorageMap {},
+
     /// The metadata associated with a particular asset.
     ///
     /// # Additional Information
@@ -67,9 +69,20 @@ storage {
     /// In this NFT contract, there is no metadata provided at compile time. All metadata
     /// is added by users and stored into storage.
     metadata: StorageMetadata = StorageMetadata {},
+
+    /// The keys for the metadata associated with assets.
+    metadata_keys: StorageVec<StorageString> = StorageVec {},
+
+    /// The ID of the last minted asset.
     last_minted_id: u64 = 0,
+
+    /// The name of the NFT collection.
     name: StorageString = StorageString {},
+
+    /// The symbol of the NFT collection.
     symbol: StorageString = StorageString {},
+
+    /// The price of minting an NFT.
     price: u64 = 0
 }
 
@@ -571,6 +584,94 @@ impl SRC7 for Contract {
     }
 }
 
+impl SRC7MetadataExtension for Contract {
+    /// Returns all metadata for the corresponding `asset`.
+    ///
+    /// # Arguments
+    ///
+    /// * `asset`: [AssetId] - The asset of which to query all metadata.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<Vec<(String, Metadata)>>] - A vector of key-metadata pairs if any metadata exists, otherwise `None`.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `N` where `N` is the number of keys in `metadata_keys`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use src_7::{SRC7MetadataExtension, Metadata};
+    /// use std::string::String;
+    /// use std::vec::Vec;
+    ///
+    /// fn foo(contract_id: ContractId, asset: AssetId) {
+    ///     let contract_abi = abi(SRC7MetadataExtension, contract_id);
+    ///     let data = contract_abi.total_metadata(asset);
+    ///     assert(data.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn total_metadata(asset: AssetId) -> Option<Vec<(String, Metadata)>> {
+        let mut all_metadata = Vec::new();
+        let keys = storage.metadata_keys;
+
+        let mut i = 0;
+        while i < keys.len() {
+            let key = keys.get(i).unwrap();
+            if let Some(metadata) = storage.metadata.get(AssetId::from(SubId::zero()), key.read_slice().unwrap()) {
+                all_metadata.push((key.read_slice().unwrap(), metadata));
+            }
+            i += 1;
+        }
+
+        if all_metadata.is_empty() {
+            None
+        } else {
+            Some(all_metadata)
+        }
+    }
+
+    /// Returns all metadata keys for the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Vec<String>] - A vector containing all metadata keys.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use src_7::SRC7MetadataExtension;
+    /// use std::string::String;
+    /// use std::vec::Vec;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let contract_abi = abi(SRC7MetadataExtension, contract_id);
+    ///     let keys = contract_abi.metadata_keys();
+    ///     assert(!keys.is_empty());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn metadata_keys() -> Vec<String> {
+        let keys = storage.metadata_keys;
+        let mut result = Vec::new();
+
+        let mut i = 0;
+        while i < keys.len() {
+            let key = keys.get(i).unwrap();
+            result.push(key.read_slice().unwrap());
+            i += 1;
+        }
+
+        result
+    }
+}
+
 impl SRC5 for Contract {
     /// Returns the owner.
     ///
@@ -880,6 +981,8 @@ impl Props721Edition for Contract {
             let key = metadata_keys.get(i).unwrap();
             let value = metadata_values.get(i).unwrap();
             _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, value);
+            storage.metadata_keys.push(StorageString{});
+            storage.metadata_keys.get(i).unwrap().write_slice(key);
             i += 1;
         }
 

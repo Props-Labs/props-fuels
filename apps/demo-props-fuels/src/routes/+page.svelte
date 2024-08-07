@@ -1,12 +1,15 @@
 <script lang="ts">
     import { onMount } from 'svelte'
-    import { PropsSDK } from '@props/fuels'
+    import { type Edition, PropsSDK } from '@props/fuels'
     import { account, connect, connected, createWalletStore, wallet } from 'svelte-fuels';
 	import List from '$lib/components/List.svelte';
+	import Grid from '$lib/components/Grid.svelte';
+	import { Loader2 } from 'lucide-svelte';
 
-    let editionData = {};
-    let editions = [];
+    let editions:Edition[] = [];
     let editionsLoaded = false;
+    let loading = false;
+    let loadingMessage = '';
     let propsClient:PropsSDK|null;
 
     onMount(() => {
@@ -25,13 +28,40 @@
             console.error("Props client not initialized");
             return;
         };
+
+        loading = true;
+
+        propsClient.editions.on('transaction', (data) => {
+            console.log("Waiting for transaction: ", data);
+            loadingMessage = "Please approve transaction " + data.transactionIndex + " of " + data.transactionCount;
+        });
+
+        propsClient.editions.on('pending', (data) => {
+            console.log("Pending transaction: ", data);
+            loadingMessage = "Please wait for transaction to clear...";
+        });
+
         propsClient.editions.create({
             name: 'My Edition',
             symbol: 'Ed1',
             metadata: {
-                name: 'My Edition',
-                description: 'This is my first edition',
-                image: 'https://example.com/image.jpg',
+                name: 'Friendly OpenSea Creature',
+                description: 'Friendly OpenSea Creature that enjoys long swims in the ocean.',
+                image: 'https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png',
+                attributes: [
+                    {
+                        trait_type: 'Base',
+                        value: 'Aqua'
+                    },
+                    {
+                        trait_type: 'Eyes',
+                        value: 'Waves'
+                    },
+                    {
+                        trait_type: 'Mouth',
+                        value: 'Smile'
+                    }
+                ]
             },
             options: {
                 owner: $wallet,
@@ -39,18 +69,20 @@
             }
         }).then((edition) => {
             console.log("Edition created: ", edition)
-            editionData = edition;
+            editions.push(edition);
         }).catch(error => {
             console.error("Error creating edition: ", error);
+            loading = false;
+            loadingMessage = '';
         });
     }
 
     const listEditions = async () => {
-        if(!propsClient) {
+        if(!propsClient || !$wallet) {
             console.error("Props client not initialized");
             return;
         };
-        propsClient.editions.list($wallet?.address.toB256() ?? '', ).then((result) => {
+        propsClient.editions.list($wallet).then((result) => {
             editions = result;
             editionsLoaded = true;
             console.log("Editions: ", editions);
@@ -70,16 +102,39 @@
       <div class="max-w-md">
         <h1 class="text-5xl font-bold">Welcome to PropsSDK for Fuel Demo</h1>
         <p class="py-6">
-          Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-          quasi. In deleniti eaque aut repudiandae et a id nisi.
+            This is a demo application to showcase the PropsSDK for Fuel. You can create editions and list them here.
         </p>
-        <button class="btn btn-primary btn-lg" on:click={handleCreateEdition}>Create Edition</button>
+        {#key loadingMessage}
+        <button disabled={loading} class="btn btn-primary btn-lg" on:click={handleCreateEdition}>
+            {#if loading}
+                <span class="animate-spin mr-2">
+                    <Loader2/>
+                </span>
+                <span>{loadingMessage}</span>
+            {:else}
+                Create Edition
+            {/if}
+        </button>
+        {/key}
       </div>
     </div>
   </div>
 
-  <main class="flex flex-col gap-3 justify-center">
+  <main class="flex flex-col gap-3 justify-center mb-40">
+    {#if $connected}
     <h2 class="text-3xl text-center">My Editions</h2>
-    <List items={editions} />
+    {#if editionsLoaded}
+        <Grid items={editions} />
+    {:else}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="w-full p-2 skeleton h-48 bg-base-200">
+        </div>
+        <div class="w-full p-2 skeleton h-48 bg-base-200">
+        </div>
+        <div class="w-full p-2 skeleton h-48 bg-base-200">
+        </div>
+    </div>
+    {/if}
+    {/if}
   </main>
 </div>

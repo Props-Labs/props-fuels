@@ -40,7 +40,7 @@ Metadata associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:40](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition.ts#L40)
+[edition/edition.ts:42](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L42)
 
 ## Properties
 
@@ -52,7 +52,7 @@ Optional account associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:25](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition.ts#L25)
+[edition/edition.ts:27](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L27)
 
 ***
 
@@ -64,7 +64,7 @@ Optional contract associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:19](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition.ts#L19)
+[edition/edition.ts:21](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L21)
 
 ***
 
@@ -76,7 +76,7 @@ The ID of the edition.
 
 #### Defined in
 
-[edition/edition.ts:13](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition.ts#L13)
+[edition/edition.ts:15](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L15)
 
 ***
 
@@ -88,7 +88,7 @@ Metadata associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:31](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition.ts#L31)
+[edition/edition.ts:33](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L33)
 
 ## Methods
 
@@ -110,7 +110,7 @@ The account to connect.
 
 #### Defined in
 
-[edition/edition.ts:56](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition.ts#L56)
+[edition/edition.ts:58](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L58)
 
 ***
 
@@ -144,4 +144,32 @@ If the minting process fails.
 
 #### Defined in
 
-[edition/edition.ts:67](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition.ts#L67)
+[edition/edition.ts:69](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L69)
+
+***
+
+### fromContractIdAndWallet()
+
+> `static` **fromContractIdAndWallet**(`contractId`, `wallet`): `Promise`\<[`Edition`](Edition.md)\>
+
+Static method to create an Edition instance based on a contractId and a wallet.
+
+#### Parameters
+
+• **contractId**: `string`
+
+The ID of the contract.
+
+• **wallet**: `Account`
+
+The wallet to connect.
+
+#### Returns
+
+`Promise`\<[`Edition`](Edition.md)\>
+
+A promise that resolves to an Edition instance.
+
+#### Defined in
+
+[edition/edition.ts:128](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition.ts#L128)

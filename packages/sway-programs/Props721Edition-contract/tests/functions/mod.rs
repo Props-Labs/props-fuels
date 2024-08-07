@@ -3,6 +3,7 @@ mod constructor;
 mod decimals;
 mod is_paused;
 mod metadata;
+mod total_metadata;
 mod mint;
 mod airdrop;
 mod name;

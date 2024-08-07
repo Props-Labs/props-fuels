@@ -12,46 +12,53 @@ export class PropsEvents {
   private static instance: PropsEvents;
 
   /**
+   * Event state indicating a transaction that requires approval.
+   * @type {string}
+   * @public
+   */
+  public transaction: string = "transaction";
+
+  /**
    * Event state indicating a waiting status.
    * @type {string}
    * @public
    */
-  public waiting: string = 'waiting';
+  public pending: string = "pending";
 
   /**
    * Event state indicating a completed status.
    * @type {string}
    * @public
    */
-  public completed: string = 'completed';
+  public completed: string = "completed";
 
   /**
    * Event state indicating an error status.
    * @type {string}
    * @public
    */
-  public error: string = 'error';
+  public error: string = "error";
 
   /**
    * Event state indicating an initialized status.
    * @type {string}
    * @public
    */
-  public initialized: string = 'initialized';
+  public initialized: string = "initialized";
 
   /**
    * Event state indicating a paused status.
    * @type {string}
    * @public
    */
-  public paused: string = 'paused';
+  public paused: string = "paused";
 
   /**
    * Event state indicating an unpaused status.
    * @type {string}
    * @public
    */
-  public unpaused: string = 'unpaused';
+  public unpaused: string = "unpaused";
 
   /**
    * Private constructor to prevent direct instantiation.
@@ -76,8 +83,7 @@ export class PropsEvents {
 }
 
 export class PropsEventEmitter {
-  private _eventListeners: { [key: string]: Array<(...args: any[]) => void> } =
-    {};
+  private _eventListeners: { [key: string]: Array<(...args: any[]) => void> } = {};
 
   on(event: string, listener: (...args: any[]) => void) {
     if (!this._eventListeners[event]) {
@@ -89,6 +95,24 @@ export class PropsEventEmitter {
   emit(event: string, ...args: any[]) {
     if (this._eventListeners[event]) {
       this._eventListeners[event].forEach((listener) => listener(...args));
+    }
+  }
+
+  removeListener(event: string, listener: (...args: any[]) => void) {
+    if (this._eventListeners[event]) {
+      this._eventListeners[event] = this._eventListeners[event].filter(
+        (l) => l !== listener
+      );
+    }
+  }
+
+  removeAllListeners(event?: string) {
+    if (event) {
+      if (this._eventListeners[event]) {
+        delete this._eventListeners[event];
+      }
+    } else {
+      this._eventListeners = {};
     }
   }
 }

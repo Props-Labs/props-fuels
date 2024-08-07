@@ -14,6 +14,45 @@ export type NFTMetadata = {
      * The image URL of the NFT.
      */
     image: string;
+    /**
+     * The external URL to the NFT.
+     */
+    external_url?: string;
+    /**
+     * The background color of the NFT item.
+     */
+    background_color?: string;
+    /**
+     * The URL to a multimedia attachment for the NFT.
+     */
+    animation_url?: string;
+    /**
+     * The URL to a YouTube video associated with the NFT.
+     */
+    youtube_url?: string;
+    /**
+     * Attributes associated with the NFT.
+     */
+    attributes?: Array<{
+        /**
+         * The trait type of the attribute.
+         */
+        trait_type: string;
+        /**
+         * The value of the attribute.
+         */
+        value: string | number;
+        /**
+         * The display type of the attribute (optional).
+         */
+        display_type?: string;
+        /**
+         * The maximum value of the attribute (optional).
+         */
+        max_value?: number;
+    }>;
+
+    [key: string]: any;
 };
 
 export type EditionCreateOptions = {

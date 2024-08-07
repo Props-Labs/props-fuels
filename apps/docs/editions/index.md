@@ -8,9 +8,20 @@ To create an edition, you need to use the `create` method of the `edition` objec
 
 Use the `create` method to create a new edition. You need to provide the name of the edition and its metadata.
 
+> **Note:** Due to how contracts on Fuel work, creating an Edition requires 2 transactions. The first transaction creates the edition contract, and the second transaction initializes ownership and sets metadata.
+
 ### Basic Example
 
 ```javascript
+import { Wallet } from 'fuels';
+import { PropsSDK, Edition } from '@props/fuels';
+
+const wallet = new Wallet('private_key');
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
 const edition: Edition = await propsClient.editions.create({
   name:"Edition 1",
   symbol: "ED1",
@@ -20,7 +31,7 @@ const edition: Edition = await propsClient.editions.create({
     image: "image_url",
   },
   options: {
-    owner: wallets[0], // Owner of the edition
+    owner: wallet, // Owner of the edition
     maxSupply: 1000, // defaults to 100 if not set. Value cannot be changed later.,
   }
 });
@@ -33,6 +44,15 @@ The `builderFeeAddress` is the address that will receive the builder fee, and `b
 The `builderRevenueShareAddress` is the address that will receive the builder revenue share, and `builderRevenueShare` is the share value in percentage of the mint price.
 
 ```javascript
+import { Wallet } from 'fuels';
+import { PropsSDK, Edition } from '@props/fuels';
+
+const wallet = new Wallet('private_key');
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
 const edition: Edition = await propsClient.editions.create({
   name:"Edition 1",
   symbol: "ED1",
@@ -42,7 +62,7 @@ const edition: Edition = await propsClient.editions.create({
     image: "image_url",
   },
   options: {
-    owner: wallets[0], // Owner of the edition
+    owner: wallet, // Owner of the edition
     maxSupply: 1000, // defaults to 100 if not set. Value cannot be changed later.,
     builderFeeAddress: '0x1234567890123456789012345678901234567890', // Address to receive the builder fee
     builderFee: 10, // Builder fee value in wei on top of base fee
@@ -81,6 +101,34 @@ To list editions, you need to use the `list` method of the `edition` object in t
 ```javascript
 const editions: Edition[] = await propsClient.editions.list();
 ```
+
+## Events
+
+The `Editions` class emits events that you can listen to. Below is a list of events that you can listen to.
+
+### Listening for Events
+
+```javascript
+import { PropsSDK, Editions } from '@props/fuels';
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
+propsClient.editions.on('transaction', (data) => {
+  console.log('Transaction waiting for approval: ', edition);
+  console.log('Transaction: ', data.transactionIndex, data.transactionCount, data.transactionHash);
+});
+
+propsClient.editions.on('waiting', (data) => {
+  console.log('Waiting for transaction to clear:', data);
+});
+```
+
+### Available Events
+
+- `transaction` - Emitted when a transaction is waiting for approval.
+- `waiting` - Emitted when a transaction is waiting to clear.
 
 ## Editions API Reference
 

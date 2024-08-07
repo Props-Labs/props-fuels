@@ -14,7 +14,7 @@ Manages editions within the Props SDK on the Fuel network.
 
 ## Extends
 
-- `EventEmitter`
+- `PropsEventEmitter`
 
 ## Constructors
 
@@ -30,11 +30,11 @@ Creates a new instance of the EditionManager class.
 
 #### Overrides
 
-`EventEmitter.constructor`
+`PropsEventEmitter.constructor`
 
 #### Defined in
 
-[edition/edition-manager.ts:24](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition-manager.ts#L24)
+[edition/edition-manager.ts:24](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition-manager.ts#L24)
 
 ## Methods
 
@@ -56,7 +56,7 @@ A promise that resolves to the ID of the created edition.
 
 #### Defined in
 
-[edition/edition-manager.ts:38](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition-manager.ts#L38)
+[edition/edition-manager.ts:38](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition-manager.ts#L38)
 
 ***
 
@@ -84,4 +84,4 @@ A promise that resolves when the metadata has been updated.
 
 #### Defined in
 
-[edition/edition-manager.ts:226](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/edition/edition-manager.ts#L226)
+[edition/edition-manager.ts:255](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/edition/edition-manager.ts#L255)

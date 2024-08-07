@@ -80,7 +80,7 @@ describe("EditionManager", () => {
           owner: wallets[0],
         }
       });
-      const editions = await manager.list(wallets[0].address.toB256(), {
+      const editions = await manager.list(wallets[0], {
         id: "local",
         name: "Test",
         url: provider.url,

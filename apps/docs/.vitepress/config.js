@@ -39,13 +39,7 @@ module.exports = {
           items: [
             {
               text: "Editions",
-              items: [
-                { text: "Overview", link: "/editions" },
-                { text: "Create Edition", link: "/editions/#creating-an-edition" },
-                { text: "Mint Edition", link: "/editions/#minting-tokens-from-an-edition" },
-                { text: "List Editions", link: "/editions/#listing-editions" },
-                { text: "API Reference", link: "/editions/#editions-api-reference" },
-              ],
+              link: "/editions",
             },
             {
               text: "Advanced",

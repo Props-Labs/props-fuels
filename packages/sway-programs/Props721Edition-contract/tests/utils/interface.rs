@@ -149,6 +149,33 @@ pub(crate) async fn set_metadata(
         .unwrap()
 }
 
+pub(crate) async fn total_metadata(
+    contract: &Props721Edition<WalletUnlocked>,
+    asset: AssetId,
+) -> Option<Vec<(String, Metadata)>> {
+    contract
+        .methods()
+        .total_metadata(asset)
+        .call()
+        .await
+        .unwrap()
+        .value
+}
+
+pub(crate) async fn metadata_keys(
+    contract: &Props721Edition<WalletUnlocked>,
+) -> Vec<String> {
+    contract
+        .methods()
+        .metadata_keys()
+        .call()
+        .await
+        .unwrap()
+        .value
+}
+
+
+
 pub(crate) async fn pause(contract: &Props721Edition<WalletUnlocked>) -> FuelCallResponse<()> {
     contract.methods().pause().call().await.unwrap()
 }
