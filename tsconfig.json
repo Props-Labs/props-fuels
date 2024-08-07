@@ -1,0 +1,5 @@
+{
+  "extends": "./packages/props-fuels/tsconfig.json",
+  "include": ["packages/props-fuels/src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test", "apps"]
+}

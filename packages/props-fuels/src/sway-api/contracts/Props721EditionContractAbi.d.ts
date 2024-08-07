@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 /*
-  Fuels version: 0.92.0
-  Forc version: 0.61.2
+  Fuels version: 0.93.0
+  Forc version: 0.62.0
   Fuel-Core version: 0.31.0
 */
 
@@ -20,6 +20,7 @@ import type {
   Interface,
   InvokeFunction,
   StdString,
+  StrSlice,
 } from 'fuels';
 
 import type { Option, Enum, Vec } from "./common";
@@ -54,14 +55,15 @@ export type ContractIdOutput = ContractIdInput;
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
 
-export type Props721EditionContractAbiConfigurables = {
+export type Props721EditionContractAbiConfigurables = Partial<{
   MAX_SUPPLY: BigNumberish;
   BUILDER_FEE_ADDRESS: AddressInput;
   BUILDER_FEE: BigNumberish;
   BUILDER_REVENUE_SHARE_ADDRESS: AddressInput;
   BUILDER_REVENUE_SHARE_PERCENTAGE: BigNumberish;
   AFFILIATE_FEE_PERCENTAGE: BigNumberish;
-};
+  DISABLE_AIRDROP: boolean;
+}>;
 
 export interface Props721EditionContractAbiInterface extends Interface {
   functions: {
@@ -70,10 +72,12 @@ export interface Props721EditionContractAbiInterface extends Interface {
     symbol: FunctionFragment;
     total_assets: FunctionFragment;
     total_supply: FunctionFragment;
+    airdrop: FunctionFragment;
     burn: FunctionFragment;
     mint: FunctionFragment;
-    mint_to: FunctionFragment;
     metadata: FunctionFragment;
+    metadata_keys: FunctionFragment;
+    total_metadata: FunctionFragment;
     owner: FunctionFragment;
     set_metadata: FunctionFragment;
     fees: FunctionFragment;
@@ -95,10 +99,12 @@ export class Props721EditionContractAbi extends Contract {
     symbol: InvokeFunction<[asset: AssetIdInput], Option<StdString>>;
     total_assets: InvokeFunction<[], BN>;
     total_supply: InvokeFunction<[asset: AssetIdInput], Option<BN>>;
+    airdrop: InvokeFunction<[recipient: IdentityInput, amount: BigNumberish], void>;
     burn: InvokeFunction<[sub_id: string, amount: BigNumberish], void>;
     mint: InvokeFunction<[recipient: IdentityInput, _sub_id: string, amount: BigNumberish, affiliate: Option<IdentityInput>], void>;
-    mint_to: InvokeFunction<[recipient: IdentityInput, amount: BigNumberish], void>;
     metadata: InvokeFunction<[asset: AssetIdInput, key: StdString], Option<MetadataOutput>>;
+    metadata_keys: InvokeFunction<[], Vec<StdString>>;
+    total_metadata: InvokeFunction<[asset: AssetIdInput], Option<Vec<[StdString, MetadataOutput]>>>;
     owner: InvokeFunction<[], StateOutput>;
     set_metadata: InvokeFunction<[asset: AssetIdInput, key: StdString, metadata: MetadataInput], void>;
     fees: InvokeFunction<[], Option<[BN, BN]>>;

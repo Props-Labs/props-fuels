@@ -17,6 +17,14 @@ abi SRC3PayableExtension {
     fn burn(sub_id: SubId, amount: u64);
 }
 
+abi SRC7MetadataExtension {
+    #[storage(read)]
+    fn total_metadata(asset: AssetId) -> Option<Vec<(String, Metadata)>>;
+
+    #[storage(read)]
+    fn metadata_keys() -> Vec<String>;
+}
+
 abi SetMintMetadata {
     #[storage(write)]
     fn set_price(price: u64);

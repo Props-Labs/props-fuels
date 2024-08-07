@@ -1,13 +1,22 @@
 <script>
-    import { fuelStore, connected, account } from "svelte-fuels";
-    import { Wallet } from 'lucide-svelte'; 
+    import { fuelStore, connected, account, loading } from "svelte-fuels";
+    import { Loader2, Wallet } from 'lucide-svelte'; 
 </script>
 
 <div>
     {#if !$connected}
-        <button class="btn btn-primary" on:click={() => {
+        <button disabled={$loading} class="btn btn-primary" on:click={() => {
             $fuelStore?.connect();
-        }}>Connect</button>
+        }}>
+            {#if $loading}
+                <span class="animate-spin mr-2">
+                    <Loader2/>
+                </span>
+                <span>Connecting...</span>
+            {:else}
+                Connect Wallet
+            {/if}
+        </button>
     {:else}
         <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost">

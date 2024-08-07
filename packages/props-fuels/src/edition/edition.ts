@@ -1,6 +1,8 @@
 import { Account, Address, BN } from "fuels";
 import { Props721EditionContractAbi, Props721EditionContractAbi__factory } from "../sway-api/contracts";
 import { EditionMintResult, NFTMetadata } from "../common/types";
+import { decode } from "punycode";
+import { decodeContractMetadata } from "../utils/metadata";
 
 /**
  * Represents an edition within the Props SDK.
@@ -128,11 +130,10 @@ export class Edition {
       contractId,
       wallet
     );
-    // const { value: metadata } = await contract.functions.metadata().get();
-    return new Edition(contractId, contract, wallet, {
-      name: "name",
-      description: "description",
-      image: "image",
-    });
+    // TODO consider just removing the need to pass AssetId to edition
+    const { value: metadata } = await contract.functions.total_metadata(
+      { bits: wallet.address.toB256() }
+    ).get();
+    return new Edition(contractId, contract, wallet, metadata ? decodeContractMetadata(metadata) : undefined);
   }
 }

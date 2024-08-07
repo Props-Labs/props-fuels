@@ -16,73 +16,85 @@ Singleton class to manage event states within the application.
 
 ### completed
 
-> **completed**: `string` = `'completed'`
+> **completed**: `string` = `"completed"`
 
 Event state indicating a completed status.
 
 #### Defined in
 
-[core/events.ts:26](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/core/events.ts#L26)
+[core/events.ts:33](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L33)
 
 ***
 
 ### error
 
-> **error**: `string` = `'error'`
+> **error**: `string` = `"error"`
 
 Event state indicating an error status.
 
 #### Defined in
 
-[core/events.ts:33](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/core/events.ts#L33)
+[core/events.ts:40](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L40)
 
 ***
 
 ### initialized
 
-> **initialized**: `string` = `'initialized'`
+> **initialized**: `string` = `"initialized"`
 
 Event state indicating an initialized status.
 
 #### Defined in
 
-[core/events.ts:40](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/core/events.ts#L40)
+[core/events.ts:47](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L47)
 
 ***
 
 ### paused
 
-> **paused**: `string` = `'paused'`
+> **paused**: `string` = `"paused"`
 
 Event state indicating a paused status.
 
 #### Defined in
 
-[core/events.ts:47](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/core/events.ts#L47)
+[core/events.ts:54](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L54)
 
 ***
 
-### unpaused
+### pending
 
-> **unpaused**: `string` = `'unpaused'`
-
-Event state indicating an unpaused status.
-
-#### Defined in
-
-[core/events.ts:54](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/core/events.ts#L54)
-
-***
-
-### waiting
-
-> **waiting**: `string` = `'waiting'`
+> **pending**: `string` = `"pending"`
 
 Event state indicating a waiting status.
 
 #### Defined in
 
-[core/events.ts:19](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/core/events.ts#L19)
+[core/events.ts:26](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L26)
+
+***
+
+### transaction
+
+> **transaction**: `string` = `"transaction"`
+
+Event state indicating a transaction that requires approval.
+
+#### Defined in
+
+[core/events.ts:19](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L19)
+
+***
+
+### unpaused
+
+> **unpaused**: `string` = `"unpaused"`
+
+Event state indicating an unpaused status.
+
+#### Defined in
+
+[core/events.ts:61](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L61)
 
 ## Methods
 
@@ -102,4 +114,4 @@ The singleton instance of the PropsEvents class.
 
 #### Defined in
 
-[core/events.ts:70](https://github.com/Props-Labs/octane/blob/3439272d529585517ec5968207e32eb74df3d6b8/packages/props-fuels/src/core/events.ts#L70)
+[core/events.ts:77](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L77)

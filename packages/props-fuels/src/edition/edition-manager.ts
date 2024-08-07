@@ -1,4 +1,4 @@
-import { Address, BN, BytesLike } from "fuels";
+import { Account, Address, BN, BytesLike } from "fuels";
 import { NFTMetadata, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
 import { PropsEventEmitter, PropsEvents } from "../core/events";
 import { defaultNetwork } from "../common/defaults";
@@ -9,6 +9,7 @@ import type { MetadataInput } from "../sway-api/contracts/Props721EditionContrac
 import { executeGraphQLQuery } from "../core/fuels-api";
 import { Edition } from "./edition";
 import { randomBytes } from "fuels";
+import { encodeMetadataValues } from "../utils/metadata";
 
 /**
  * @class EditionManager
@@ -37,7 +38,12 @@ export class EditionManager extends PropsEventEmitter {
   async create(params: EditionCreateOptions): Promise<Edition> {
     const { name, symbol, metadata, price, options } = params;
     // Replace the following with the actual implementation to interact with the Fuel network
-    this.emit(this.events.waiting, { name, symbol, metadata, options });
+    this.emit(this.events.transaction, {
+      params: { name, symbol, metadata, options },
+      message: "Awaiting transaction approval...",
+      transactionIndex: 1,
+      transactionCount: 2,
+    });
 
     const { owner } = options;
 
@@ -70,13 +76,25 @@ export class EditionManager extends PropsEventEmitter {
         }
       );
 
+    this.emit(this.events.pending, {
+      params: { name, symbol, metadata, options },
+      message: "Waiting for transaction to clear...",
+      transactionIndex: 1,
+      transactionCount: 2,
+    });
+
     const { contract } = await waitForResult();
 
     const address = Address.fromDynamicInput(owner.address);
     const addressInput = { bits: address.toB256() };
     const addressIdentityInput = { Address: addressInput };
 
-    // console.log("PRICE IN CREATE::", price);
+    this.emit(this.events.transaction, {
+      params: { name, symbol, metadata, options },
+      message: "Awaiting transaction approval...",
+      transactionIndex: 2,
+      transactionCount: 2,
+    });
 
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
@@ -84,18 +102,17 @@ export class EditionManager extends PropsEventEmitter {
         name,
         symbol,
         Object.keys(metadata),
-        Object.values(metadata).map((value) => {
-          if (typeof value === "string") {
-            return { String: value } as MetadataInput;
-          } else if (typeof value === "number" || BN.isBN(value)) {
-            return { Int: value } as MetadataInput;
-          } else {
-            throw new Error("Unsupported metadata value type");
-          }
-        }),
+        encodeMetadataValues(metadata),
         price ?? 0
       )
       .call();
+
+    this.emit(this.events.pending, {
+      params: { name, symbol, metadata, options },
+      message: "Waiting for transaction to clear...",
+      transactionIndex: 2,
+      transactionCount: 2,
+    });
 
     const { transactionResult } = await waitForResultConstructor();
 
@@ -109,9 +126,9 @@ export class EditionManager extends PropsEventEmitter {
   }
 
   async list(
-    owner: string,
+    owner: Account,
     network: Network = defaultNetwork
-  ): Promise<Array<string>> {
+  ): Promise<Array<Edition>> {
     const queryTransactions = `
       query Transactions($address: Address) {
         transactionsByOwner(owner: $address, first: 100) {
@@ -129,7 +146,7 @@ export class EditionManager extends PropsEventEmitter {
       }
     `;
 
-    const variables = { address: owner };
+    const variables = { address: owner.address.toB256() };
 
     if (!network.graphqlUrl) {
       throw new Error("GraphQL URL is not available for this network");
@@ -198,11 +215,13 @@ export class EditionManager extends PropsEventEmitter {
       }
     }
 
-    // matchingContracts.map((contractId) => {
-    //   return Edition.fromContractIdAndWallet(contractId, owner);
-    // });
+    const editions = await Promise.all(
+      matchingContracts.map(async (contractId) => {
+        return await Edition.fromContractIdAndWallet(contractId, owner);
+      })
+    );
 
-    return matchingContracts;
+    return editions;
   }
 
   // /**

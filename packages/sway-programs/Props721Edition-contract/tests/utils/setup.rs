@@ -211,6 +211,14 @@ pub fn default_metadata_values() -> Vec<Metadata> {
     ]
 }
 
+pub fn default_metadata() -> Vec<(String, Metadata)> {
+    default_metadata_keys()
+        .into_iter()
+        .zip(default_metadata_values().into_iter())
+        .collect()
+}
+
+
 pub fn default_name() -> String {
     "My Props NFT Edition".to_string()
 }

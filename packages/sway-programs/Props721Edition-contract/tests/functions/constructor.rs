@@ -1,5 +1,5 @@
 use crate::utils::{
-    interface::{constructor, owner, metadata, price},
+    interface::{constructor, owner, metadata, price, metadata_keys},
     setup::{defaults, setup, deploy_edition_with_builder_fee, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values, Metadata, State},
 };
 
@@ -29,6 +29,13 @@ mod success {
         assert_eq!(owner(&instance_1).await, State::Initialized(owner_identity));
         assert_eq!(metadata(&instance_1, asset_id_1, key).await,
             Some(metadata1)
+        );
+
+        let keys = metadata_keys(&instance_1).await;
+        println!("keys: {:?}", keys);
+
+        assert_eq!(keys,
+            default_metadata_keys()
         );
 
         assert_eq!(
