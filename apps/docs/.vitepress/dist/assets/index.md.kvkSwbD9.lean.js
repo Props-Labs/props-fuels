@@ -1,0 +1,1 @@
+import{_ as s,c as i,o as a,a2 as n}from"./chunks/framework.BaHG-QLs.js";const c=JSON.parse('{"title":"Props SDK","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),t={name:"index.md"},h=n("",11),l=[h];function p(e,k,r,E,d,o){return a(),i("div",null,l)}const y=s(t,[["render",p]]);export{c as __pageData,y as default};

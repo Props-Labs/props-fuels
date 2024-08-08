@@ -1,0 +1,1 @@
+import{_ as a,c as e,o as s,a2 as l}from"./chunks/framework.BaHG-QLs.js";const u=JSON.parse('{"title":"@props/fuels","description":"","frontmatter":{},"headers":[],"relativePath":"api/README.md","filePath":"api/README.md"}'),t={name:"api/README.md"},i=l("",7),o=[i];function r(n,c,p,h,_,d){return s(),e("div",null,o)}const m=a(t,[["render",r]]);export{u as __pageData,m as default};

@@ -40,7 +40,7 @@ Base URI for the collection's metadata.
 
 #### Defined in
 
-[collection/collection.ts:47](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L47)
+[collection/collection.ts:47](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L47)
 
 ## Properties
 
@@ -52,7 +52,7 @@ Optional account associated with the edition.
 
 #### Defined in
 
-[collection/collection.ts:26](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L26)
+[collection/collection.ts:26](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L26)
 
 ***
 
@@ -64,7 +64,7 @@ The base URI for the collection's metadata.
 
 #### Defined in
 
-[collection/collection.ts:32](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L32)
+[collection/collection.ts:32](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L32)
 
 ***
 
@@ -76,7 +76,7 @@ Optional contract associated with the edition.
 
 #### Defined in
 
-[collection/collection.ts:20](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L20)
+[collection/collection.ts:20](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L20)
 
 ***
 
@@ -88,7 +88,7 @@ The ID of the edition.
 
 #### Defined in
 
-[collection/collection.ts:14](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L14)
+[collection/collection.ts:14](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L14)
 
 ***
 
@@ -100,7 +100,7 @@ Sample tokens of the collection.
 
 #### Defined in
 
-[collection/collection.ts:38](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L38)
+[collection/collection.ts:38](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L38)
 
 ## Methods
 
@@ -122,7 +122,7 @@ The account to connect.
 
 #### Defined in
 
-[collection/collection.ts:86](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L86)
+[collection/collection.ts:86](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L86)
 
 ***
 
@@ -138,7 +138,7 @@ Fetches sample tokens from the baseUri.
 
 #### Defined in
 
-[collection/collection.ts:63](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L63)
+[collection/collection.ts:63](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L63)
 
 ***
 
@@ -172,7 +172,7 @@ If the minting process fails.
 
 #### Defined in
 
-[collection/collection.ts:97](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L97)
+[collection/collection.ts:97](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L97)
 
 ***
 
@@ -200,4 +200,4 @@ A promise that resolves to an Collection instance.
 
 #### Defined in
 
-[collection/collection.ts:156](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection.ts#L156)
+[collection/collection.ts:156](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/collection/collection.ts#L156)
