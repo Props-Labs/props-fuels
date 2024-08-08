@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, owner, base_uri, price},
-    setup::{defaults, setup, deploy_edition_with_builder_fee, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values, Metadata, State},
+    setup::{defaults, setup, deploy_edition_with_builder_fee, default_name, default_price, default_base_uri, default_symbol, State},
 };
 
 mod success {
@@ -11,7 +11,7 @@ mod success {
     async fn initializes() {
         let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = setup().await;
         let (
-            asset_id_1,
+            _asset_id_1,
             _asset_id_2,
             _asset_id_3,
             _sub_id_1,
@@ -20,9 +20,6 @@ mod success {
             owner_identity,
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
-
-        let metadata1 = Metadata::String(String::from("Friendly OpenSea Creature that enjoys long swims in the ocean."));
-        let key = String::from("description");
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
@@ -41,7 +38,7 @@ mod success {
     async fn initializes_fee() {
         let (owner_wallet, other_wallet, _another_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = deploy_edition_with_builder_fee(Some(0)).await;
         let (
-            asset_id_1,
+            _asset_id_1,
             _asset_id_2,
             _asset_id_3,
             _sub_id_1,
@@ -50,9 +47,6 @@ mod success {
             owner_identity,
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
-
-        let metadata1 = Metadata::String(String::from("Friendly OpenSea Creature that enjoys long swims in the ocean."));
-        let key = String::from("description");
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 

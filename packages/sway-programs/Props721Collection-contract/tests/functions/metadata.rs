@@ -1,8 +1,7 @@
 use crate::utils::{
     interface::{constructor, metadata, base_uri, mint},
-    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values, Metadata},
+    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, Metadata},
 };
-use fuels::types::Bytes;
 
 mod success {
 
@@ -22,8 +21,6 @@ mod success {
             owner_identity,
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
-        let metadata1 = Metadata::String(String::from("Fuel NFT Metadata"));
-        let key = String::from("key1");
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
         

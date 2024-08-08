@@ -189,34 +189,6 @@ pub(crate) async fn get_wallet_balance(wallet: &WalletUnlocked, asset: &AssetId)
     wallet.get_asset_balance(asset).await.unwrap()
 }
 
-pub fn default_metadata_keys() -> Vec<String> {
-    vec![
-        String::from("description"),
-        String::from("external_url"),
-        String::from("image"),
-        String::from("name"),
-        String::from("attributes"),
-    ]
-}
-
-pub fn default_metadata_values() -> Vec<Metadata> {
-    vec![
-        Metadata::String(String::from("Friendly OpenSea Creature that enjoys long swims in the ocean.")),
-        Metadata::String(String::from("https://openseacreatures.io/3")),
-        Metadata::String(String::from("https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png")),
-        Metadata::String(String::from("Dave Starbelly")),
-        Metadata::String(String::from("[]")), // Assuming attributes is an empty array for now
-    ]
-}
-
-pub fn default_metadata() -> Vec<(String, Metadata)> {
-    default_metadata_keys()
-        .into_iter()
-        .zip(default_metadata_values().into_iter())
-        .collect()
-}
-
-
 pub fn default_name() -> String {
     "My Props NFT Edition".to_string()
 }

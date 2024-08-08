@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{airdrop, constructor, total_assets, total_supply},
-    setup::{defaults, get_wallet_balance, setup, default_name, default_metadata_keys, default_metadata_values, default_symbol, default_price, default_base_uri},
+    setup::{defaults, get_wallet_balance, setup, default_name, default_symbol, default_price, default_base_uri},
 };
 
 mod success {
