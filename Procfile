@@ -1,1 +1,1 @@
-web: cd apps/docs && npm start
+web: cd apps/docs && pnpm start
