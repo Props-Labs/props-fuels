@@ -36,8 +36,9 @@ use sway_libs::{
         require_not_paused,
     },
     reentrancy::reentrancy_guard,
+    merkle::binary_proof::*,
 };
-use std::{hash::Hash, storage::storage_string::*, storage::storage_vec::*, string::String};
+use std::{hash::*, storage::storage_string::*, storage::storage_vec::*, string::String};
 use std::logging::log;
 use std::context::msg_amount;
 use std::call_frames::msg_asset_id;
@@ -83,7 +84,35 @@ storage {
     symbol: StorageString = StorageString {},
 
     /// The price of minting an NFT.
-    price: u64 = 0
+    price: u64 = 0,
+
+    /// The Merkle root for the whitelist.
+    ///
+    /// # Type
+    ///
+    /// `StorageString`
+    merkle_root: StorageString = StorageString {},
+
+    /// The URI for the Merkle tree data.
+    ///
+    /// # Type
+    ///
+    /// `StorageString`
+    merkle_uri: StorageString = StorageString {},
+
+    /// The start date for minting.
+    ///
+    /// # Type
+    ///
+    /// `u64`
+    start_date: u64 = 0,
+
+    /// The end date for minting.
+    ///
+    /// # Type
+    ///
+    /// `u64`
+    end_date: u64 = 0,
 }
 
 configurable {
@@ -331,9 +360,21 @@ impl SRC3PayableExtension for Contract {
     /// }
     /// ```
     #[storage(read, write), payable]
-    fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>) {
+    fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>, key: u64, proof: Vec<b256>) {
         reentrancy_guard();
         require_not_paused();
+
+        // Check if merkle root is set
+        if let Some(merkle_root) = storage.merkle_root.read_slice() {
+            // If merkle root is set, verify the proof
+            let leaf_data: String = recipient.as_address().unwrap().to_string() + amount.to_string();
+            let leaf_hash: b256 = leaf_digest(keccak256(leaf_data));
+            let num_leaves = proof.len() + 1;
+            let merkle_root_b256 = merkle_root.as_b256();
+            require(verify_proof(key, leaf_hash, merkle_root_b256, num_leaves, proof), MintError::InvalidProof);
+        }
+        // If merkle root is not set, continue without verification
+
 
         let mut total_price: u64 = 0;
         let mut total_fee: u64 = 0;
@@ -854,6 +895,170 @@ impl SetMintMetadata for Contract {
         let fee_splitter = abi(PropsFeeSplitter, FEE_CONTRACT_ID);
         let fee:u64 = fee_splitter.fee().unwrap_or(0);
         Some((fee, BUILDER_FEE))
+    }
+
+    /// Sets the Merkle root and URI for the contract.
+    ///
+    /// # Arguments
+    ///
+    /// * `root`: [String] - The Merkle root to set.
+    /// * `uri`: [String] - The URI to set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Writes: `2`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    /// use std::string::String;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let root = String::from_ascii_str("merkle_root");
+    ///     let uri = String::from_ascii_str("https://example.com/merkle_tree");
+    ///     mint_abi.set_merkle(root, uri);
+    /// }
+    /// ```
+    #[storage(write)]
+    fn set_merkle(root: String, uri: String) {
+        only_owner();
+        storage.merkle_root.write_slice(root);
+        storage.merkle_uri.write_slice(uri);
+    }
+
+    /// Returns the Merkle root of the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<String>] - The Merkle root if set, otherwise `None`.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let root = mint_abi.merkle_root();
+    ///     assert(root.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn merkle_root() -> Option<String> {
+        storage.merkle_root.read_slice()
+    }
+
+    /// Returns the Merkle URI of the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<String>] - The Merkle URI if set, otherwise `None`.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let uri = mint_abi.merkle_uri();
+    ///     assert(uri.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn merkle_uri() -> Option<String> {
+        storage.merkle_uri.read_slice()
+    }
+
+    /// Returns the start date of the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<u64>] - The start date if set, otherwise `None`.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let start = mint_abi.start_date();
+    ///     assert(start.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn start_date() -> Option<u64> {
+        Some(storage.start_date.try_read().unwrap_or(0))
+    }
+
+    /// Returns the end date of the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<u64>] - The end date if set, otherwise `None`.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let end = mint_abi.end_date();
+    ///     assert(end.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn end_date() -> Option<u64> {
+        Some(storage.end_date.try_read().unwrap_or(0))
+    }
+
+    /// Sets the start and end dates for the contract.
+    ///
+    /// # Arguments
+    ///
+    /// * `start`: [u64] - The start date to set.
+    /// * `end`: [u64] - The end date to set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Writes: `2`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     mint_abi.set_dates(1000, 2000);
+    ///     assert_eq!(mint_abi.start_date(), Some(1000));
+    ///     assert_eq!(mint_abi.end_date(), Some(2000));
+    /// }
+    /// ```
+    #[storage(write)]
+    fn set_dates(start: u64, end: u64) {
+        storage.start_date.write(start);
+        storage.end_date.write(end);
     }
 
 }

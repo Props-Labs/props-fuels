@@ -6,6 +6,7 @@ pub enum MintError {
     NFTAlreadyMinted: (),
     NotEnoughTokens: u64,
     InvalidAsset: (),
+    InvalidProof: (),
 }
 
 pub enum SetError {
