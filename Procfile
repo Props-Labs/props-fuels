@@ -1,0 +1,1 @@
+web: cd apps/docs && npm start

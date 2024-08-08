@@ -32,7 +32,7 @@ The configuration options for Props SDK.
 
 #### Defined in
 
-[core/core.ts:25](https://github.com/Props-Labs/octane/blob/64b8e201d568fb729aeacb4aaae3bcf8509bece3/packages/props-fuels/src/core/core.ts#L25)
+[core/core.ts:25](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/core/core.ts#L25)
 
 ## Methods
 
@@ -54,7 +54,7 @@ If the GraphQL URL is not available for the current network.
 
 #### Defined in
 
-[core/core.ts:78](https://github.com/Props-Labs/octane/blob/64b8e201d568fb729aeacb4aaae3bcf8509bece3/packages/props-fuels/src/core/core.ts#L78)
+[core/core.ts:78](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/core/core.ts#L78)
 
 ***
 
@@ -72,4 +72,4 @@ The network configuration.
 
 #### Defined in
 
-[core/core.ts:69](https://github.com/Props-Labs/octane/blob/64b8e201d568fb729aeacb4aaae3bcf8509bece3/packages/props-fuels/src/core/core.ts#L69)
+[core/core.ts:69](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/core/core.ts#L69)

@@ -122,7 +122,7 @@ temp/
 # Monorepo
 apps/demo-octane/.svelte-kit
 apps/demo-octane/node_modules
-apps/docs/.vitepress/dist
+# apps/docs/.vitepress/dist
 apps/docs/.vitepress/cache
 
 # VSCode

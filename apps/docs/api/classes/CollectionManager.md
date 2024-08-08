@@ -34,7 +34,7 @@ Creates a new instance of the CollectionManager class.
 
 #### Defined in
 
-[collection/collection-manager.ts:24](https://github.com/Props-Labs/octane/blob/64b8e201d568fb729aeacb4aaae3bcf8509bece3/packages/props-fuels/src/collection/collection-manager.ts#L24)
+[collection/collection-manager.ts:24](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection-manager.ts#L24)
 
 ## Methods
 
@@ -56,4 +56,4 @@ A promise that resolves to the ID of the created collection.
 
 #### Defined in
 
-[collection/collection-manager.ts:38](https://github.com/Props-Labs/octane/blob/64b8e201d568fb729aeacb4aaae3bcf8509bece3/packages/props-fuels/src/collection/collection-manager.ts#L38)
+[collection/collection-manager.ts:38](https://github.com/Props-Labs/octane/blob/5ddf1f6ec918b19be1516f349bcbaf667497f240/packages/props-fuels/src/collection/collection-manager.ts#L38)
