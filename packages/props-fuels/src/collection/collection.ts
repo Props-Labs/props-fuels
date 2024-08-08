@@ -1,6 +1,7 @@
 import { Account, Address, BN } from "fuels";
 import { Props721CollectionContractAbi, Props721CollectionContractAbi__factory } from "../sway-api/contracts";
 import { MintResult } from "../common/types";
+import { NFTMetadata } from "../common/types";
 
 /**
  * Represents an edition within the Props SDK.
@@ -25,20 +26,57 @@ export class Collection {
   account?: Account;
 
   /**
+   * The base URI for the collection's metadata.
+   * @type {string | undefined}
+   */
+  baseUri?: string;
+
+  /**
+   * Sample tokens of the collection.
+   * @type {NFTMetadata[]}
+   */
+  sampleTokens: NFTMetadata[] = [];
+
+  /**
    * Creates a new instance of the Collection class.
    * @param {string} id - The ID of the edition.
    * @param {Props721CollectionContractAbi} [contract] - Optional contract associated with the edition.
    * @param {Account} [account] - Optional account associated with the edition.
-   * @param {NFTMetadata} metadata - Metadata associated with the edition.
+   * @param {string} [baseUri] - Base URI for the collection's metadata.
    */
   constructor(
     id: string,
     contract?: Props721CollectionContractAbi,
     account?: Account,
+    baseUri?: string
   ) {
     this.id = id;
     this.contract = contract;
     this.account = account;
+    this.baseUri = baseUri;
+    this.fetchSampleTokens();
+  }
+
+  /**
+   * Fetches sample tokens from the baseUri.
+   */
+  public async fetchSampleTokens(): Promise<NFTMetadata[]> {
+    if (!this.baseUri) return [];
+
+    for (let i = 1; i <= 3; i++) {
+      try {
+        const response = await fetch(`${this.baseUri}${i}`);
+        if (!response.ok) {
+          console.warn(`Failed to fetch metadata for token ${i}`);
+          continue;
+        }
+        const metadata: NFTMetadata = await response.json();
+        this.sampleTokens.push(metadata);
+      } catch (error) {
+        console.error(`Error fetching metadata for token ${i}:`, error);
+      }
+    }
+    return this.sampleTokens;
   }
 
   /**
@@ -120,6 +158,7 @@ export class Collection {
       contractId,
       wallet
     );
-    return new Collection(contractId, contract, wallet);
+    const {value: baseUri} = await contract.functions.base_uri().get();
+    return new Collection(contractId, contract, wallet, baseUri);
   }
 }

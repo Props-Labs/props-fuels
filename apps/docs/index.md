@@ -36,7 +36,7 @@ const propsClient = new PropsSDK({
 });
 
 async function createEdition() {
-  const edition: Edition = await manager.create({
+  const edition: Edition = await propsClient.create({
     name:"Edition 1",
     symbol: "ED1",
     metadata: {

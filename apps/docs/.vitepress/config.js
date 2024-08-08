@@ -42,14 +42,8 @@ module.exports = {
               link: "/editions",
             },
             {
-              text: "Advanced",
-              items: [
-                { text: "Edition Metadata", link: "/editions/metadata" },
-                {
-                  text: "Edition Configuration",
-                  link: "/editions/configuration",
-                },
-              ],
+              text: "Collections",
+              link: "/collections",
             },
           ],
         },

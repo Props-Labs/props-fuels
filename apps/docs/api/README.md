@@ -6,6 +6,8 @@
 
 ## Classes
 
+- [Collection](classes/Collection.md)
+- [CollectionManager](classes/CollectionManager.md)
 - [Edition](classes/Edition.md)
 - [EditionManager](classes/EditionManager.md)
 - [PropsEvents](classes/PropsEvents.md)
@@ -13,4 +15,4 @@
 
 ## Type Aliases
 
-- [EditionMintResult](type-aliases/EditionMintResult.md)
+- [MintResult](type-aliases/MintResult.md)

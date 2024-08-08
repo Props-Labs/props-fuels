@@ -116,7 +116,7 @@ export class CollectionManager extends PropsEventEmitter {
     const { transactionResult } = await waitForResultConstructor();
 
     if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus") {
-      return new Collection(contract.id.toString(), contract, owner);
+      return new Collection(contract.id.toString(), contract, owner, baseUri);
     } else {
       throw new Error(
         "Failed to create collection: Transaction was not successful"
@@ -221,41 +221,5 @@ export class CollectionManager extends PropsEventEmitter {
     );
 
     return collections;
-  }
-
-  // /**
-  //  * Gets the details of a specific collection.
-  //  * @param {string} collectionId - The ID of the collection to retrieve.
-  //  * @returns {Promise<CollectionType>} A promise that resolves to the collection object.
-  //  */
-  // async get(collectionId: string): Promise<Collection> {
-  //   // TODO
-  // }
-  // /**
-  //  * Mints a new token in a specific collection.
-  //  * @param {string} collectionId - The ID of the collection.
-  //  * @param {string} recipient - The recipient address.
-  //  * @returns {Promise<Collection>} A promise that resolves to the ID of the minted token.
-  //  */
-  // async mint(collectionId: string, recipient: string): Promise<string> {
-  //   // Replace the following with the actual implementation to interact with the Fuel network
-  //   console.log(
-  //     `Minting token in collection: ${collectionId} for recipient: ${recipient}`
-  //   );
-  //   return "token-id";
-  // }
-
-  /**
-   * Updates the metadata of a specific collection.
-   * @param {string} collectionId - The ID of the collection.
-   * @param {NFTMetadata} metadata - The new metadata for the collection.
-   * @returns {Promise<void>} A promise that resolves when the metadata has been updated.
-   */
-  async updateMetadata(
-    collectionId: string,
-    metadata: NFTMetadata
-  ): Promise<void> {
-    // Replace the following with the actual implementation to interact with the Fuel network
-    console.log(`Updating metadata for collection: ${collectionId}`);
   }
 }

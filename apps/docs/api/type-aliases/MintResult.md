@@ -2,11 +2,11 @@
 
 ***
 
-[@props/fuels](../README.md) / EditionMintResult
+[@props/fuels](../README.md) / MintResult
 
-# Type Alias: EditionMintResult
+# Type Alias: MintResult
 
-> **EditionMintResult**: `object`
+> **MintResult**: `object`
 
 Represents the result of an edition mint operation.
 
@@ -26,4 +26,4 @@ The result of the transaction associated with the mint operation.
 
 ## Defined in
 
-[common/types/index.ts:149](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/common/types/index.ts#L149)
+[common/types/index.ts:208](https://github.com/Props-Labs/octane/blob/64b8e201d568fb729aeacb4aaae3bcf8509bece3/packages/props-fuels/src/common/types/index.ts#L208)

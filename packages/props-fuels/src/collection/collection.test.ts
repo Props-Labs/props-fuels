@@ -15,7 +15,7 @@ describe("Collection", () => {
     wallets = [wallet1, wallet2, wallet3, wallet4];
     provider = setupProvider;
     contract = await deployProps721CollectionContract(wallet1);
-    collection = new Collection("collection-id", contract, wallet1);
+    collection = new Collection("collection-id", contract, wallet1, "https://example.com/");
     console.log("Collection Contract: ", collection);
   });
 
@@ -23,6 +23,7 @@ describe("Collection", () => {
     console.log("Collection: ", collection);
     expect(collection).toBeInstanceOf(Collection);
     expect(collection.id).toBe("collection-id");
+    expect(collection.baseUri).toBe("https://example.com/");
   });
 
   it("should connect an account to the collection", () => {
