@@ -75,15 +75,30 @@ importers:
 
   apps/demo-props-fuels:
     dependencies:
+      '@beyonk/svelte-datepicker':
+        specifier: ^13.0.4
+        version: 13.0.4
       '@props/fuels':
         specifier: workspace:*
         version: link:../../packages/props-fuels
+      dayjs:
+        specifier: ^1.11.12
+        version: 1.11.12
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       lucide-svelte:
         specifier: ^0.424.0
         version: 0.424.0(svelte@3.59.2)
       svelte-fuels:
         specifier: workspace:*
         version: link:../../packages/svelte-fuels
+      svelte-select:
+        specifier: ^5.8.3
+        version: 5.8.3
+      svelty-picker:
+        specifier: ^5.2.9
+        version: 5.2.9(svelte@3.59.2)
     devDependencies:
       '@playwright/test':
         specifier: ^1.28.1
@@ -1098,6 +1113,9 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
+  '@beyonk/svelte-datepicker@13.0.4':
+    resolution: {integrity: sha512-Q80+vdDSqDLVCzjOVLiIxuXV/oaw5cnw2Zkj6eWjuIGGHE7ASPQ714++Ut2S343H+m0Cuw3GYuGqkvpBA6s88w==}
+
   '@bundled-es-modules/cookie@2.0.0':
     resolution: {integrity: sha512-Or6YHg/kamKHpxULAdSqhGqnWFneIXu1NKvvfBBzKGwpVsYuFIQ5aBPHDnnoR3ghW1nvSkALd+EF9iMtY7Vjxw==}
 
@@ -1759,6 +1777,15 @@ packages:
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
+
+  '@floating-ui/core@1.6.7':
+    resolution: {integrity: sha512-yDzVT/Lm101nQ5TCVeK65LtdN7Tj4Qpr9RTXJ2vPFLqtLxwOrpoxAHAJI8J3yYWUc40J0BDBheaitK5SJmno2g==}
+
+  '@floating-ui/dom@1.6.10':
+    resolution: {integrity: sha512-fskgCFv8J8OamCmyun8MfjB1Olfn+uZKjOKZ0vhYF3gRmEUXcGOjxWL8bBr7i4kIuPZ2KD2S3EUIOxnjC8kl2A==}
+
+  '@floating-ui/utils@0.2.7':
+    resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
 
   '@fuel-ts/abi-coder@0.92.0':
     resolution: {integrity: sha512-aZIxqlBR7xdCkyvm9JFpkE8hruIDd4mIbw5cIPuEKJK6fQ6qf56K6/ozxlxG2DSNvoRDBDF0a64GnMUUUpG+mA==}
@@ -6644,6 +6671,9 @@ packages:
       svelte:
         optional: true
 
+  svelte-floating-ui@1.5.8:
+    resolution: {integrity: sha512-dVvJhZ2bT+kQDHlE4Lep8t+sgEc0XD96fXLzAi2DDI2bsaegBbClxXVNMma0C2WsG+n9GJSYx292dTvA8CYRtw==}
+
   svelte-hmr@0.15.3:
     resolution: {integrity: sha512-41snaPswvSf8TJUhlkoJBekRrABDXDMdpNpT2tfHIv4JuhgvHqLMhEPGtaQn0BmbNSTkuz2Ed20DF2eHw0SmBQ==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
@@ -6693,6 +6723,9 @@ packages:
       typescript:
         optional: true
 
+  svelte-select@5.8.3:
+    resolution: {integrity: sha512-nQsvflWmTCOZjssdrNptzfD1Ok45hHVMTL5IHay5DINk7dfu5Er+8KsVJnZMJdSircqtR0YlT4YkCFlxOUhVPA==}
+
   svelte2tsx@0.7.15:
     resolution: {integrity: sha512-91RbLJI448FR1UEZqXSS3ucVMERuWo8ACOhxfkBPK1CL2ocGMOC5bwc8tzFvb/Ji8NqZ7wmSGfvRebcUsiauKA==}
     peerDependencies:
@@ -6706,6 +6739,11 @@ packages:
   svelte@4.2.18:
     resolution: {integrity: sha512-d0FdzYIiAePqRJEb90WlJDkjUEx42xhivxN8muUBmfZnP+tzUgz12DJ2hRJi8sIHCME7jeK1PTMgKPSfTd8JrA==}
     engines: {node: '>=16'}
+
+  svelty-picker@5.2.9:
+    resolution: {integrity: sha512-7W/Bu2A0CrZ0g7eJIsRy4CINMffIrunXFBHMs+e2e4uxpUgIWEPBac+zkspWfg1Stdihad1P02cbp1l3FaoEpw==}
+    peerDependencies:
+      svelte: ^3.53.0 || ^4.0.0 || ^5.0.0
 
   system-architecture@0.1.0:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
@@ -8763,6 +8801,8 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
+  '@beyonk/svelte-datepicker@13.0.4': {}
+
   '@bundled-es-modules/cookie@2.0.0':
     dependencies:
       cookie: 0.5.0
@@ -9186,6 +9226,17 @@ snapshots:
   '@ethersproject/logger@5.7.0': {}
 
   '@fastify/busboy@2.1.1': {}
+
+  '@floating-ui/core@1.6.7':
+    dependencies:
+      '@floating-ui/utils': 0.2.7
+
+  '@floating-ui/dom@1.6.10':
+    dependencies:
+      '@floating-ui/core': 1.6.7
+      '@floating-ui/utils': 0.2.7
+
+  '@floating-ui/utils@0.2.7': {}
 
   '@fuel-ts/abi-coder@0.92.0':
     dependencies:
@@ -15589,6 +15640,11 @@ snapshots:
     optionalDependencies:
       svelte: 4.2.18
 
+  svelte-floating-ui@1.5.8:
+    dependencies:
+      '@floating-ui/core': 1.6.7
+      '@floating-ui/dom': 1.6.10
+
   svelte-hmr@0.15.3(svelte@3.59.2):
     dependencies:
       svelte: 3.59.2
@@ -15625,6 +15681,10 @@ snapshots:
       postcss-load-config: 4.0.2(postcss@8.4.41)
       typescript: 5.5.4
 
+  svelte-select@5.8.3:
+    dependencies:
+      svelte-floating-ui: 1.5.8
+
   svelte2tsx@0.7.15(svelte@4.2.18)(typescript@5.5.4):
     dependencies:
       dedent-js: 1.0.1
@@ -15650,6 +15710,11 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.10
       periscopic: 3.1.0
+
+  svelty-picker@5.2.9(svelte@3.59.2):
+    dependencies:
+      '@floating-ui/dom': 1.6.10
+      svelte: 3.59.2
 
   system-architecture@0.1.0: {}
 

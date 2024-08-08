@@ -5,12 +5,14 @@
 	import List from '$lib/components/List.svelte';
 	import Grid from '$lib/components/Grid.svelte';
 	import { Loader2 } from 'lucide-svelte';
+	import CreateModal from '$lib/components/CreateModal.svelte';
 
     let editions:Edition[] = [];
     let editionsLoaded = false;
     let loading = false;
     let loadingMessage = '';
     let propsClient:PropsSDK|null;
+    let showCreate = false;
 
     onMount(() => {
         createWalletStore();
@@ -21,61 +23,6 @@
         })
         console.log("Octane initiated: ", propsClient);
     })
-
-    const handleCreateEdition = async () => {
-        // console.log("Creating edition...");
-        if(!propsClient || !$wallet) {
-            console.error("Props client not initialized");
-            return;
-        };
-
-        loading = true;
-
-        propsClient.editions.on('transaction', (data) => {
-            console.log("Waiting for transaction: ", data);
-            loadingMessage = "Please approve transaction " + data.transactionIndex + " of " + data.transactionCount;
-        });
-
-        propsClient.editions.on('pending', (data) => {
-            console.log("Pending transaction: ", data);
-            loadingMessage = "Please wait for transaction to clear...";
-        });
-
-        propsClient.editions.create({
-            name: 'My Edition',
-            symbol: 'Ed1',
-            metadata: {
-                name: 'Friendly OpenSea Creature',
-                description: 'Friendly OpenSea Creature that enjoys long swims in the ocean.',
-                image: 'https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png',
-                attributes: [
-                    {
-                        trait_type: 'Base',
-                        value: 'Aqua'
-                    },
-                    {
-                        trait_type: 'Eyes',
-                        value: 'Waves'
-                    },
-                    {
-                        trait_type: 'Mouth',
-                        value: 'Smile'
-                    }
-                ]
-            },
-            options: {
-                owner: $wallet,
-                maxSupply: 1000,
-            }
-        }).then((edition) => {
-            console.log("Edition created: ", edition)
-            editions.push(edition);
-        }).catch(error => {
-            console.error("Error creating edition: ", error);
-            loading = false;
-            loadingMessage = '';
-        });
-    }
 
     const listEditions = async () => {
         if(!propsClient || !$wallet) {
@@ -88,6 +35,16 @@
             console.log("Editions: ", editions);
         }).catch(error => {
             console.error("Error listing editions: ", error);
+        });
+    }
+
+    const mint = (edition: Edition) => {
+        console.log("Minting: ", edition);
+        if(!$wallet || !$wallet.address) return;
+        edition.mint($wallet?.address.toString(), 1).then((result) => {
+            console.log("Minted: ", result);
+        }).catch(error => {
+            console.error("Error minting: ", error);
         });
     }
 
@@ -105,7 +62,7 @@
             This is a demo application to showcase the PropsSDK for Fuel. You can create editions and list them here.
         </p>
         {#key loadingMessage}
-        <button disabled={loading} class="btn btn-primary btn-lg" on:click={handleCreateEdition}>
+        <button disabled={loading} class="btn btn-primary btn-lg" on:click|stopPropagation={() => showCreate = true}>
             {#if loading}
                 <span class="animate-spin mr-2">
                     <Loader2/>
@@ -124,7 +81,7 @@
     {#if $connected}
     <h2 class="text-3xl text-center">My Editions</h2>
     {#if editionsLoaded}
-        <Grid items={editions} />
+        <Grid items={editions} on:mint={(e) => mint(e.detail)} />
     {:else}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="w-full p-2 skeleton h-48 bg-base-200">
@@ -138,3 +95,5 @@
     {/if}
   </main>
 </div>
+
+<CreateModal open={showCreate} on:close={() => showCreate = false} on:created={(e) => editions = [e.detail,...editions]}/>

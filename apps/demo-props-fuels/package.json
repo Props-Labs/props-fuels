@@ -37,9 +37,14 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
+		"@beyonk/svelte-datepicker": "^13.0.4",
 		"@props/fuels": "workspace:*",
+		"dayjs": "^1.11.12",
+		"lodash": "^4.17.21",
 		"lucide-svelte": "^0.424.0",
-		"svelte-fuels": "workspace:*"
+		"svelte-fuels": "workspace:*",
+		"svelte-select": "^5.8.3",
+		"svelty-picker": "^5.2.9"
 	},
 	"type": "module"
 }
