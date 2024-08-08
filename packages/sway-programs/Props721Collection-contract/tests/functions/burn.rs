@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{burn, constructor, mint, pause, total_assets, total_supply},
-    setup::{defaults, get_wallet_balance, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values},
+    setup::{defaults, get_wallet_balance, setup, default_name, default_price, default_base_uri, default_symbol},
 };
 use fuels::prelude::{AssetId, CallParameters, TxPolicies};
 

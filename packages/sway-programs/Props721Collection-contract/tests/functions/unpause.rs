@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, is_paused, pause, unpause},
-    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values},
+    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol}
 };
 
 mod success {

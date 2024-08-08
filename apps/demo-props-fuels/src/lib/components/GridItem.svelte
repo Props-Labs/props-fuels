@@ -16,10 +16,12 @@
 
 <div class="card w-full bg-base-200 shadow-xl">
   {#if type === 'collection' && tokens && tokens.length > 0}
-    <figure class="bg-base-300 relative">
+    <figure class="bg-base-300 relative min-h-40 flex items-center justify-center">
+      <div class="w-64 h-64 relative">
       {#each tokens as token, index}
         <img src={token.image} alt={token.name || 'Image'} class="absolute max-w-40 min-w-40 min-h-40 m-6 border-base-100 border-2 bg-white rounded-md shadow-lg" style="top: {index * 10}px; left: {index * 10}px; z-index: {3 - index};" />
       {/each}
+      </div>
     </figure>
   {:else if item.metadata && item.metadata.image}
     <figure class="bg-base-300">

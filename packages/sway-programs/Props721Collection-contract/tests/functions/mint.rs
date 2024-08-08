@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{burn, constructor, mint, pause, total_assets, total_supply, set_fee, fee, fee_constructor, set_price},
-    setup::{defaults, get_wallet_balance, setup, deploy_edition_with_builder_fee, default_name, default_metadata_keys, default_metadata_values, default_symbol, default_price, default_base_uri},
+    setup::{defaults, get_wallet_balance, setup, deploy_edition_with_builder_fee, default_name, default_symbol, default_price, default_base_uri},
 };
 use fuels::{
     types::{Bits256,AssetId,Identity},

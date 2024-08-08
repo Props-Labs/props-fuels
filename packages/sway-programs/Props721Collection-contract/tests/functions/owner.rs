@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, owner},
-    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values, State},
+    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol,  State},
 };
 
 mod success {
