@@ -196,7 +196,7 @@
         </button>
         {:else}
         {#key loadingMessage}
-        <button disabled={loading || !isFormValid} class="btn btn-primary btn-lg" on:click|stopPropagation={handleCreateEdition}>
+        <button disabled={!isFormValid} class="btn btn-primary btn-lg" on:click|stopPropagation={handleCreateEdition}>
             {#if loading}
                 <span class="animate-spin mr-2">
                     <Loader2/>

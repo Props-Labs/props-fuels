@@ -96,8 +96,7 @@ export class EditionManager extends PropsEventEmitter {
       transactionCount: 2,
     });
 
-    console.log("metadata in sdk: ", metadata, encodeMetadataValues(metadata));
-    console.log("TESTTEST")
+    // console.log("metadata in sdk: ", metadata, encodeMetadataValues(metadata));
 
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
@@ -162,7 +161,7 @@ export class EditionManager extends PropsEventEmitter {
       variables
     );
 
-    console.log("transactionData", transactionData);
+    // console.log("transactionData", transactionData);
 
     const contractIds = transactionData.data.transactionsByOwner.nodes.flatMap(
       (node: any) =>
@@ -171,7 +170,7 @@ export class EditionManager extends PropsEventEmitter {
           .map((output: any) => output.contract)
     );
 
-    console.log("contractIds", contractIds);
+    // console.log("contractIds", contractIds);
 
     const matchingContracts: Array<string> = [];
 

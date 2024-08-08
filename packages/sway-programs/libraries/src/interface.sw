@@ -22,3 +22,29 @@ abi PropsFeeSplitter {
     #[storage(read, write)]
     fn distribute_funds(amount: u64);
 }
+
+abi SRC3PayableExtension {
+    #[payable]
+    #[storage(read, write)]
+    fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>);
+
+    #[storage(read, write)]
+    fn airdrop(recipient: Identity, amount: u64);
+
+    #[payable]
+    #[storage(read, write)]
+    fn burn(sub_id: SubId, amount: u64);
+}
+
+abi SetMintMetadata {
+    #[storage(write)]
+    fn set_price(price: u64);
+
+    #[storage(read)]
+    fn price() -> Option<u64>;
+
+    #[storage(read)]
+    fn total_price() -> Option<u64>;
+
+    fn fees() -> Option<(u64, u64)>;
+}
