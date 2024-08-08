@@ -10,7 +10,7 @@
   },
   "packageManager": "pnpm@9.4.0",
   "scripts": {
-    "build": "turbo run build --cache-dir=.turbo --filter=!demo-props-fuels --filter=!svelte-fuels",
+    "build": "turbo run build --cache-dir=.turbo --filter=docs",
     "build:packages": "turbo run build --filter=!docs --filter=!demo-props-fuels",
     "clean": "rimraf node_modules && rimraf apps/*/node_modules && rimraf packages/*/node_modules && rimraf dist",
     "dev": "pnpm build:packages && pnpm dev:apps",
