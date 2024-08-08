@@ -34,7 +34,7 @@ Creates a new instance of the EditionManager class.
 
 #### Defined in
 
-[edition/edition-manager.ts:24](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/edition/edition-manager.ts#L24)
+[edition/edition-manager.ts:24](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition-manager.ts#L24)
 
 ## Methods
 
@@ -56,7 +56,7 @@ A promise that resolves to the ID of the created edition.
 
 #### Defined in
 
-[edition/edition-manager.ts:38](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/edition/edition-manager.ts#L38)
+[edition/edition-manager.ts:38](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition-manager.ts#L38)
 
 ***
 
@@ -84,4 +84,4 @@ A promise that resolves when the metadata has been updated.
 
 #### Defined in
 
-[edition/edition-manager.ts:257](https://github.com/Props-Labs/octane/blob/3181d89fe38d99d6e0ad7e818f29246d1dfe1592/packages/props-fuels/src/edition/edition-manager.ts#L257)
+[edition/edition-manager.ts:257](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition-manager.ts#L257)

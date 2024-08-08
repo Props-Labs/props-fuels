@@ -1,10 +1,10 @@
 # Editions Overview
 
-Editions in the Props SDK represent a limited supply serial edition of a token. Each edition has a unique identifier, a name, and associated metadata. The metadata includes details such as the name, description, and image URL of the NFT. The metadata follows the standard equivalent of the ERC721 metadata as defined by [Opensea Standards](https://docs.opensea.io/docs/metadata-standards).
+Editions in the Props SDK represent a limited supply serial edition of a token. Each edition has a unique identifier, a name, and associated metadata stored on-chain. The metadata includes details such as the name, description, and image URL of the NFT. The metadata follows the standard equivalent of the ERC721 metadata as defined by [Opensea Standards](https://docs.opensea.io/docs/metadata-standards).
 
 ## Creating an Edition
 
-To create an edition, you need to use the `create` method of the `edition` object in the `Octane` SDK. Below is a guide on how to create an edition.
+To create an edition, you need to use the `create` method of the `edition` object in the `PropsSDK` SDK. Below is a guide on how to create an edition.
 
 Use the `create` method to create a new edition. You need to provide the name of the edition and its metadata.
 
@@ -96,7 +96,7 @@ await edition.mint('0x1234567890123456789012345678901234567890', 10);
 
 ## Listing Editions 
 
-To list editions, you need to use the `list` method of the `edition` object in the `Octane` SDK. Below is a guide on how to list editions.
+To list editions, you need to use the `list` method of the `edition` object in the `PropsSDK` SDK. Below is a guide on how to list editions.
 
 ```javascript
 const editions: Edition[] = await propsClient.editions.list();
@@ -134,3 +134,9 @@ propsClient.editions.on('waiting', (data) => {
 
 For more detailed information on the full API, please refer to the [API documentation here](/api/README.html).
 
+## Used Fuel Standards
+
+- Extended Payable version of SRC3
+- [SRC5](https://docs.fuel.network/docs/sway-standards/src-5-ownership/)
+- [SRC7](https://docs.fuel.network/docs/sway-standards/src-7-asset-metadata/)
+- [SRC20](https://docs.fuel.network/docs/sway-standards/src-20-native-asset/)

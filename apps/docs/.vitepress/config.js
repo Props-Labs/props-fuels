@@ -1,6 +1,6 @@
 module.exports = {
-  title: "PropsSDK for Fuel Docs",
-  description: "Octane minting SDK documentation for Fuel Network",
+  title: "PropsSDK for Fuel",
+  description: "PropsSDK minting documentation for Fuel Network",
   themeConfig: {
     logo: "/logo.svg",
     nav: [
@@ -13,8 +13,15 @@ module.exports = {
         {
           text: "API Documentation",
           items: [
+            { text: "Overview", link: "/api/README.html" },
+            { text: "PropsSDK", link: "/api/classes/PropsSDK" },
             { text: "EditionManager", link: "/api/classes/EditionManager" },
-            { text: "Octane", link: "/api/classes/Octane" },
+            { text: "Edition", link: "/api/classes/Edition" },
+            {
+              text: "CollectionManager",
+              link: "/api/classes/CollectionManager",
+            },
+            { text: "Collection", link: "/api/classes/Collection" },
           ],
         },
       ],
@@ -26,11 +33,8 @@ module.exports = {
             { text: "Getting Started", link: "/#getting-started" },
             { text: "Usage", link: "/#usage" },
             {
-              text: "Fees and Incentives",
-              items: [
-                { text: "Overview", link: "/fees" },
-                { text: "Builder Fees", link: "/fees/#builder-fees" },
-              ],
+              text: "Protocol Incentives",
+              link: "/incentives",
             },
           ],
         },

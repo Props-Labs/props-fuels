@@ -22,7 +22,7 @@ yarn add @props/fuels
 
 ## Usage
 
-To use the SDK, you must first create an instance of the `Octane` class:
+To use the SDK, you must first create an instance of the `PropsSDK` class:
 
 ```javascript
 import { PropsSDK } from '@props/fuels';

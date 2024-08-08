@@ -1,10 +1,10 @@
 # Collections Overview
 
-Collections in the Props SDK represent a limited supply serial collection of a token. Each collection has a unique identifier, a name, and associated metadata. The metadata includes details such as the name, description, and image URL of the NFT. The metadata follows the standard equivalent of the ERC721 metadata as defined by [Opensea Standards](https://docs.opensea.io/docs/metadata-standards).
+Collections in the Props SDK represent a large token collection similar to a 721 Collection. Each collection has a unique identifier, a name, and associated metadata. To support large collections like 10k tokens, metadata is stored off-chain similar to the `base_uri` / `token_uri` equivalent on the ERC721 Standard. The metadata includes details such as the name, description, and image URL of the NFT. The metadata follows the standard equivalent of the ERC721 metadata as defined by [Opensea Standards](https://docs.opensea.io/docs/metadata-standards).
 
 ## Creating an Collection
 
-To create an collection, you need to use the `create` method of the `collection` object in the `Octane` SDK. Below is a guide on how to create an collection.
+To create an collection, you need to use the `create` method of the `collection` object in the `PropsSDK` SDK. Below is a guide on how to create an collection.
 
 Use the `create` method to create a new collection. You need to provide the name of the collection and its metadata.
 
@@ -88,7 +88,7 @@ await collection.mint('0x1234567890123456789012345678901234567890', 10);
 
 ## Listing Collections 
 
-To list collections, you need to use the `list` method of the `collection` object in the `Octane` SDK. Below is a guide on how to list collections.
+To list collections, you need to use the `list` method of the `collection` object in the `PropsSDK` SDK. Below is a guide on how to list collections.
 
 ```javascript
 const collections: Collection[] = await propsClient.collections.list();
@@ -126,3 +126,9 @@ propsClient.collections.on('waiting', (data) => {
 
 For more detailed information on the full API, please refer to the [API documentation here](/api/README.html).
 
+## Used Fuel Standards
+
+- Extended Payable version of SRC3
+- [SRC5](https://docs.fuel.network/docs/sway-standards/src-5-ownership/)
+- Extended SRC7 due to large token constraint
+- [SRC20](https://docs.fuel.network/docs/sway-standards/src-20-native-asset/)
