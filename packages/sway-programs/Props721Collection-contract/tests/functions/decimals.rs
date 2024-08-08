@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, decimals},
-    setup::{defaults, setup, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values},
+    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values},
 };
 
 mod success {
@@ -21,7 +21,7 @@ mod success {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         assert_eq!(decimals(&instance_1, asset_id_1).await, Some(0u8));
     }
@@ -40,7 +40,7 @@ mod success {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         assert_eq!(decimals(&instance_1, asset_id_1).await, Some(0u8));
         assert_eq!(decimals(&instance_1, asset_id_2).await, Some(0u8));

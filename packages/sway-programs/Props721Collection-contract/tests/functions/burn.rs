@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{burn, constructor, mint, pause, total_assets, total_supply},
-    setup::{defaults, get_wallet_balance, setup, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values},
+    setup::{defaults, get_wallet_balance, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values},
 };
 use fuels::prelude::{AssetId, CallParameters, TxPolicies};
 
@@ -22,7 +22,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
@@ -50,7 +50,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id, None).await;
         mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id, None).await;
@@ -114,7 +114,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
@@ -145,7 +145,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
@@ -176,7 +176,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
@@ -207,7 +207,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         pause(&instance_1).await;

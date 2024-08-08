@@ -1,4 +1,4 @@
-use crate::utils::setup::{Metadata, State, Props721Edition, PropsFeeSplitter};
+use crate::utils::setup::{Metadata, State, Props721Collection, PropsFeeSplitter};
 use fuels::{
     prelude::{AssetId, CallParameters, TxPolicies, WalletUnlocked, ContractId, Bech32ContractId},
     programs::{call_response::FuelCallResponse, call_utils::TxDependencyExtension},
@@ -6,7 +6,7 @@ use fuels::{
 };
 use std::str::FromStr;
 
-pub(crate) async fn total_assets(contract: &Props721Edition<WalletUnlocked>) -> u64 {
+pub(crate) async fn total_assets(contract: &Props721Collection<WalletUnlocked>) -> u64 {
     contract
         .methods()
         .total_assets()
@@ -16,7 +16,7 @@ pub(crate) async fn total_assets(contract: &Props721Edition<WalletUnlocked>) -> 
         .value
 }
 
-pub(crate) async fn total_supply(contract: &Props721Edition<WalletUnlocked>, asset: AssetId) -> Option<u64> {
+pub(crate) async fn total_supply(contract: &Props721Collection<WalletUnlocked>, asset: AssetId) -> Option<u64> {
     contract
         .methods()
         .total_supply(asset)
@@ -26,15 +26,15 @@ pub(crate) async fn total_supply(contract: &Props721Edition<WalletUnlocked>, ass
         .value
 }
 
-pub(crate) async fn name(contract: &Props721Edition<WalletUnlocked>, asset: AssetId) -> Option<String> {
+pub(crate) async fn name(contract: &Props721Collection<WalletUnlocked>, asset: AssetId) -> Option<String> {
     contract.methods().name(asset).call().await.unwrap().value
 }
 
-pub(crate) async fn symbol(contract: &Props721Edition<WalletUnlocked>, asset: AssetId) -> Option<String> {
+pub(crate) async fn symbol(contract: &Props721Collection<WalletUnlocked>, asset: AssetId) -> Option<String> {
     contract.methods().symbol(asset).call().await.unwrap().value
 }
 
-pub(crate) async fn decimals(contract: &Props721Edition<WalletUnlocked>, asset: AssetId) -> Option<u8> {
+pub(crate) async fn decimals(contract: &Props721Collection<WalletUnlocked>, asset: AssetId) -> Option<u8> {
     contract
         .methods()
         .decimals(asset)
@@ -45,7 +45,7 @@ pub(crate) async fn decimals(contract: &Props721Edition<WalletUnlocked>, asset: 
 }
 
 pub(crate) async fn mint(
-    contract: &Props721Edition<WalletUnlocked>,
+    contract: &Props721Collection<WalletUnlocked>,
     recipient: Identity,
     sub_id: Bits256,
     amount: u64,
@@ -72,7 +72,7 @@ pub(crate) async fn mint(
 }
 
 pub(crate) async fn airdrop(
-    contract: &Props721Edition<WalletUnlocked>,
+    contract: &Props721Collection<WalletUnlocked>,
     recipient: Identity,
     amount: u64,
 ) -> FuelCallResponse<()> {
@@ -86,7 +86,7 @@ pub(crate) async fn airdrop(
 }
 
 pub(crate) async fn burn(
-    contract: &Props721Edition<WalletUnlocked>,
+    contract: &Props721Collection<WalletUnlocked>,
     asset_id: AssetId,
     sub_id: Bits256,
     amount: u64,
@@ -104,25 +104,24 @@ pub(crate) async fn burn(
         .unwrap()
 }
 
-pub(crate) async fn owner(contract: &Props721Edition<WalletUnlocked>) -> State {
+pub(crate) async fn owner(contract: &Props721Collection<WalletUnlocked>) -> State {
     contract.methods().owner().call().await.unwrap().value
 }
 
 pub(crate) async fn constructor(
-    contract: &Props721Edition<WalletUnlocked>,
+    contract: &Props721Collection<WalletUnlocked>,
     owner: Identity,
     name: String,
     symbol: String,
-    metadata_keys: Vec<String>,
-    metadata_values: Vec<Metadata>,
+    base_uri: String,
     price: u64,
 ) -> FuelCallResponse<()> {
-    let resp = contract.methods().constructor(owner, name, symbol, metadata_keys, metadata_values, price).call().await.unwrap();
+    let resp = contract.methods().constructor(owner, name, symbol, base_uri, price).call().await.unwrap();
     resp
 }
 
 pub(crate) async fn metadata(
-    contract: &Props721Edition<WalletUnlocked>,
+    contract: &Props721Collection<WalletUnlocked>,
     asset: AssetId,
     key: String,
 ) -> Option<Metadata> {
@@ -135,69 +134,40 @@ pub(crate) async fn metadata(
         .value
 }
 
-pub(crate) async fn set_metadata(
-    contract: &Props721Edition<WalletUnlocked>,
-    asset: AssetId,
-    key: String,
-    metadata: Metadata,
-) -> FuelCallResponse<()> {
-    contract
-        .methods()
-        .set_metadata(asset, key, metadata)
-        .call()
-        .await
-        .unwrap()
-}
-
-pub(crate) async fn total_metadata(
-    contract: &Props721Edition<WalletUnlocked>,
-    asset: AssetId,
-) -> Option<Vec<(String, Metadata)>> {
-    contract
-        .methods()
-        .total_metadata(asset)
-        .call()
-        .await
-        .unwrap()
-        .value
-}
-
-pub(crate) async fn metadata_keys(
-    contract: &Props721Edition<WalletUnlocked>,
-) -> Vec<String> {
-    contract
-        .methods()
-        .metadata_keys()
-        .call()
-        .await
-        .unwrap()
-        .value
-}
-
-
-
-pub(crate) async fn pause(contract: &Props721Edition<WalletUnlocked>) -> FuelCallResponse<()> {
+pub(crate) async fn pause(contract: &Props721Collection<WalletUnlocked>) -> FuelCallResponse<()> {
     contract.methods().pause().call().await.unwrap()
 }
 
-pub(crate) async fn unpause(contract: &Props721Edition<WalletUnlocked>) -> FuelCallResponse<()> {
+pub(crate) async fn unpause(contract: &Props721Collection<WalletUnlocked>) -> FuelCallResponse<()> {
     contract.methods().unpause().call().await.unwrap()
 }
 
-pub(crate) async fn is_paused(contract: &Props721Edition<WalletUnlocked>) -> bool {
+pub(crate) async fn is_paused(contract: &Props721Collection<WalletUnlocked>) -> bool {
     contract.methods().is_paused().call().await.unwrap().value
 }
 
 pub(crate) async fn set_price(
-    contract: &Props721Edition<WalletUnlocked>,
+    contract: &Props721Collection<WalletUnlocked>,
     price: u64,
 ) -> FuelCallResponse<()> {
     contract.methods().set_price(price).call().await.unwrap()
 }
 
-pub(crate) async fn price(contract: &Props721Edition<WalletUnlocked>) -> Option<u64> {
+pub(crate) async fn price(contract: &Props721Collection<WalletUnlocked>) -> Option<u64> {
     contract.methods().price().call().await.unwrap().value
 }
+
+pub(crate) async fn set_base_uri(
+    contract: &Props721Collection<WalletUnlocked>,
+    uri: String,
+) -> FuelCallResponse<()> {
+    contract.methods().set_base_uri(uri).call().await.unwrap()
+}
+
+pub(crate) async fn base_uri(contract: &Props721Collection<WalletUnlocked>) -> Option<String> {
+    contract.methods().base_uri().call().await.unwrap().value
+}
+
 
 // @dev Not very dry, should be moved into its own test-utils module
 

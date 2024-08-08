@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, price, set_price},
-    setup::{defaults, setup, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values},
+    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values},
 };
 
 mod success {
@@ -21,7 +21,7 @@ mod success {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         assert_eq!(
             price(&instance_1).await,
@@ -43,7 +43,7 @@ mod success {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         let new_price = 1000u64;
 
@@ -77,7 +77,7 @@ mod revert {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         let new_price = 1000u64;
         set_price(&instance_2, new_price).await;

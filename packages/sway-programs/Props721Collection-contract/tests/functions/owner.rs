@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, owner},
-    setup::{defaults, setup, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values, State},
+    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values, State},
 };
 
 mod success {
@@ -21,7 +21,7 @@ mod success {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         assert_eq!(owner(&instance_1).await, State::Initialized(owner_identity));
     }

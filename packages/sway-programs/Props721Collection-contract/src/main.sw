@@ -634,7 +634,7 @@ impl SRC7 for Contract {
             let token_id = <u64 as TryFrom<u256>>::try_from(sub_id.as_u256());
             let token_id_bytes = convert_num_to_ascii_bytes(token_id.unwrap());
             let mut full_uri = concat_with_bytes(base_uri, token_id_bytes);
-            full_uri = concat(full_uri, String::from_ascii_str(".json"));
+            // full_uri = concat(full_uri, String::from_ascii_str(".json")); //@dev TODO: remove this line
             Some(Metadata::String(full_uri))
         } else {
             storage.metadata.get(asset, key)
@@ -673,6 +673,37 @@ impl SetTokenUri for Contract {
     fn set_base_uri(uri: String) {
         only_owner();
         storage.base_uri.write_slice(uri);
+    }
+
+    /// Returns the base URI for the token metadata.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<String>] - The base URI if set, or None if not set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use src20::SetTokenUri;
+    /// use std::string::String;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let contract_abi = abi(SetTokenUri, contract_id);
+    ///     let base_uri = contract_abi.base_uri();
+    ///     if let Some(uri) = base_uri {
+    ///         log(uri);
+    ///     } else {
+    ///         log("Base URI not set");
+    ///     }
+    /// }
+    /// ```
+    #[storage(read)]
+    fn base_uri() -> Option<String> {
+        storage.base_uri.read_slice()
     }
 
 }

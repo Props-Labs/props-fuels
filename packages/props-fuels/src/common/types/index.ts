@@ -109,6 +109,65 @@ export type EditionCreateConfigurationOptions = {
   affiliateFeePercentage?: number;
 };
 
+export type CollectionCreateOptions = {
+    /**
+     * The name of the collection to create.
+     */
+    name: string;
+    /**
+     * The symbol of the collection.
+     */
+    symbol: string;
+    /**
+     * The base URI for the collection's token metadata.
+     */
+    baseUri: string;
+    /**
+     * The price of tokens in the collection (optional).
+     */
+    price?: number;
+    /**
+     * The configuration options for the collection creation.
+     */
+    options: CollectionCreateConfigurationOptions;
+};
+
+export type CollectionCreateConfigurationOptions = {
+    /**
+     * The account associated with the collection creation. Cannot be changed after deployment.
+     */
+    owner: Account;
+    /**
+     * The maximum number of tokens that can be minted for the collection. Defaults to unlimited. Cannot be changed after deployment.
+     */
+    maxSupply?: number;
+    /**
+     * The address where the builder fee will be sent (optional). Cannot be changed after deployment.
+     */
+    builderFeeAddress?: string;
+    /**
+     * The percentage of the builder fee (optional). Cannot be changed after deployment.
+     */
+    builderFee?: number;
+    /**
+     * The address where the builder's revenue share will be sent (optional). Cannot be changed after deployment.
+     */
+    builderRevenueShareAddress?: string;
+    /**
+     * The percentage of the builder's revenue share (optional). Cannot be changed after deployment.
+     */
+    builderRevenueSharePercentage?: number;
+    /**
+     * The percentage of the affiliate fee (optional). Cannot be changed after deployment.
+     */
+    affiliateFeePercentage?: number;
+    /**
+     * Flag to disable airdrop functionality (optional). Cannot be changed after deployment.
+     */
+    disableAirdrop?: boolean;
+};
+
+
 export type Network = {
     /**
      * The unique identifier for the network.
@@ -146,7 +205,7 @@ export type PropsConfigurationOptions = {
 /**
  * Represents the result of an edition mint operation.
  */
-export type EditionMintResult = {
+export type MintResult = {
     /**
      * The unique identifier for the minted edition.
      */
@@ -156,3 +215,4 @@ export type EditionMintResult = {
      */
     transactionResult: TransactionResult;
 };
+

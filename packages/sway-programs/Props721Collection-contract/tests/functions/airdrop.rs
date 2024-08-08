@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{airdrop, constructor, total_assets, total_supply},
-    setup::{defaults, get_wallet_balance, setup, default_name, default_metadata_keys, default_metadata_values, default_symbol, default_price},
+    setup::{defaults, get_wallet_balance, setup, default_name, default_metadata_keys, default_metadata_values, default_symbol, default_price, default_base_uri},
 };
 
 mod success {
@@ -21,7 +21,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -55,7 +55,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         // Attempt to mint from a non-owner wallet
         airdrop(&instance_2, other_identity, 1).await;

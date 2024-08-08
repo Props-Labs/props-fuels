@@ -4,14 +4,6 @@ use std::string::String;
 use std::vec::Vec;
 use standards::src7::Metadata;
 
-abi SRC7MetadataExtension {
-    #[storage(read)]
-    fn total_metadata(asset: AssetId) -> Option<Vec<(String, Metadata)>>;
-
-    #[storage(read)]
-    fn metadata_keys() -> Vec<String>;
-}
-
 abi SetMintMetadata {
     #[storage(write)]
     fn set_price(price: u64);
@@ -28,6 +20,9 @@ abi SetMintMetadata {
 abi SetTokenUri {
     #[storage(write)]
     fn set_base_uri(uri: String);
+
+    #[storage(read)]
+    fn base_uri() -> Option<String>;
 
 }
 

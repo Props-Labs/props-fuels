@@ -1,45 +1,45 @@
 import { Account, Address, BN, BytesLike } from "fuels";
-import { NFTMetadata, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
+import { NFTMetadata, CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
 import { PropsEventEmitter, PropsEvents } from "../core/events";
 import { defaultNetwork } from "../common/defaults";
-import { configurableOptionsTypeMapping, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/constants";
-import { Props721EditionContractAbi__factory } from "../sway-api/contracts";
-import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
-import type { MetadataInput } from "../sway-api/contracts/Props721EditionContractAbi";
+import { configurableOptionsTypeMapping, supportedProps721CollectionContractConfigurableOptions, supportedProps721CollectionContractConfigurableOptionsMapping } from "../common/constants";
+import { Props721CollectionContractAbi__factory } from "../sway-api/contracts";
+import bytecode from "../sway-api/contracts/Props721CollectionContractAbi.hex";
+import type { MetadataInput } from "../sway-api/contracts/Props721CollectionContractAbi";
 import { executeGraphQLQuery } from "../core/fuels-api";
-import { Edition } from "./edition";
+import { Collection } from "../collection/collection";
 import { randomBytes } from "fuels";
 import { encodeMetadataValues } from "../utils/metadata";
 
 /**
- * @class EditionManager
- * @classdesc Manages editions within the Props SDK on the Fuel network.
+ * @class CollectionManager
+ * @classdesc Manages collections within the Props SDK on the Fuel network.
  */
-export class EditionManager extends PropsEventEmitter {
+export class CollectionManager extends PropsEventEmitter {
   private events: PropsEvents;
 
   /**
-   * Creates a new instance of the EditionManager class.
+   * Creates a new instance of the CollectionManager class.
    */
   constructor() {
-    // Initialize the EditionManager class
+    // Initialize the CollectionManager class
     super();
     this.events = PropsEvents.getInstance();
   }
 
   /**
-   * Creates a new edition.
-   * @param {string} name - The name of the edition to create. This is the name of the contract and cannot be changed.
+   * Creates a new collection.
+   * @param {string} name - The name of the collection to create. This is the name of the contract and cannot be changed.
    * @param {string} symbol - The short form of the contract name.
-   * @param {NFTMetadata} metadata - The metadata for the edition.
-   * @param {EditionCreateConfigurationOptions} options - Additional configuration options for creating the edition.
-   * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
+   * @param {NFTMetadata} metadata - The metadata for the collection.
+   * @param {CollectionCreateConfigurationOptions} options - Additional configuration options for creating the collection.
+   * @returns {Promise<string>} A promise that resolves to the ID of the created collection.
    */
-  async create(params: EditionCreateOptions): Promise<Edition> {
-    const { name, symbol, metadata, price, options } = params;
+  async create(params: CollectionCreateOptions): Promise<Collection> {
+    const { name, symbol, baseUri, price, options } = params;
     // Replace the following with the actual implementation to interact with the Fuel network
     this.emit(this.events.transaction, {
-      params: { name, symbol, metadata, options },
+      params: { name, symbol, baseUri, options },
       message: "Awaiting transaction approval...",
       transactionIndex: 1,
       transactionCount: 2,
@@ -49,14 +49,14 @@ export class EditionManager extends PropsEventEmitter {
 
     const configurableConstants = Object.keys(options)
       .filter((key) =>
-        supportedProps721EditionContractConfigurableOptions.includes(key)
+        supportedProps721CollectionContractConfigurableOptions.includes(key)
       )
       .reduce(
         (obj, key) => {
           const mappedKey =
-            supportedProps721EditionContractConfigurableOptionsMapping[key];
+            supportedProps721CollectionContractConfigurableOptionsMapping[key];
           (obj as any)[mappedKey] = configurableOptionsTypeMapping[key](
-            options[key as keyof EditionCreateConfigurationOptions]
+            options[key as keyof CollectionCreateConfigurationOptions]
           );
           return obj;
         },
@@ -67,7 +67,7 @@ export class EditionManager extends PropsEventEmitter {
 
     const salt: BytesLike = randomBytes(32);
     const { waitForResult } =
-      await Props721EditionContractAbi__factory.deployContract(
+      await Props721CollectionContractAbi__factory.deployContract(
         bytecode,
         owner,
         {
@@ -77,7 +77,7 @@ export class EditionManager extends PropsEventEmitter {
       );
 
     this.emit(this.events.pending, {
-      params: { name, symbol, metadata, options },
+      params: { name, symbol, baseUri, options },
       message: "Waiting for transaction to clear...",
       transactionIndex: 1,
       transactionCount: 2,
@@ -90,27 +90,24 @@ export class EditionManager extends PropsEventEmitter {
     const addressIdentityInput = { Address: addressInput };
 
     this.emit(this.events.transaction, {
-      params: { name, symbol, metadata, options },
+      params: { name, symbol, baseUri, options },
       message: "Awaiting transaction approval...",
       transactionIndex: 2,
       transactionCount: 2,
     });
-
-    // console.log("metadata in sdk: ", metadata, encodeMetadataValues(metadata));
 
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
         addressIdentityInput,
         name,
         symbol,
-        Object.keys(metadata),
-        encodeMetadataValues(metadata),
+        baseUri,
         price ?? 0
       )
       .call();
 
     this.emit(this.events.pending, {
-      params: { name, symbol, metadata, options },
+      params: { name, symbol, baseUri, options },
       message: "Waiting for transaction to clear...",
       transactionIndex: 2,
       transactionCount: 2,
@@ -119,10 +116,10 @@ export class EditionManager extends PropsEventEmitter {
     const { transactionResult } = await waitForResultConstructor();
 
     if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus") {
-      return new Edition(contract.id.toString(), contract, owner, metadata);
+      return new Collection(contract.id.toString(), contract, owner);
     } else {
       throw new Error(
-        "Failed to create edition: Transaction was not successful"
+        "Failed to create collection: Transaction was not successful"
       );
     }
   }
@@ -130,7 +127,7 @@ export class EditionManager extends PropsEventEmitter {
   async list(
     owner: Account,
     network: Network = defaultNetwork
-  ): Promise<Array<Edition>> {
+  ): Promise<Array<Collection>> {
     const queryTransactions = `
       query Transactions($address: Address) {
         transactionsByOwner(owner: $address, first: 100) {
@@ -217,48 +214,48 @@ export class EditionManager extends PropsEventEmitter {
       }
     }
 
-    const editions = await Promise.all(
+    const collections = await Promise.all(
       matchingContracts.map(async (contractId) => {
-        return await Edition.fromContractIdAndWallet(contractId, owner);
+        return await Collection.fromContractIdAndWallet(contractId, owner);
       })
     );
 
-    return editions;
+    return collections;
   }
 
   // /**
-  //  * Gets the details of a specific edition.
-  //  * @param {string} editionId - The ID of the edition to retrieve.
-  //  * @returns {Promise<EditionType>} A promise that resolves to the edition object.
+  //  * Gets the details of a specific collection.
+  //  * @param {string} collectionId - The ID of the collection to retrieve.
+  //  * @returns {Promise<CollectionType>} A promise that resolves to the collection object.
   //  */
-  // async get(editionId: string): Promise<Edition> {
+  // async get(collectionId: string): Promise<Collection> {
   //   // TODO
   // }
   // /**
-  //  * Mints a new token in a specific edition.
-  //  * @param {string} editionId - The ID of the edition.
+  //  * Mints a new token in a specific collection.
+  //  * @param {string} collectionId - The ID of the collection.
   //  * @param {string} recipient - The recipient address.
-  //  * @returns {Promise<Edition>} A promise that resolves to the ID of the minted token.
+  //  * @returns {Promise<Collection>} A promise that resolves to the ID of the minted token.
   //  */
-  // async mint(editionId: string, recipient: string): Promise<string> {
+  // async mint(collectionId: string, recipient: string): Promise<string> {
   //   // Replace the following with the actual implementation to interact with the Fuel network
   //   console.log(
-  //     `Minting token in edition: ${editionId} for recipient: ${recipient}`
+  //     `Minting token in collection: ${collectionId} for recipient: ${recipient}`
   //   );
   //   return "token-id";
   // }
 
   /**
-   * Updates the metadata of a specific edition.
-   * @param {string} editionId - The ID of the edition.
-   * @param {NFTMetadata} metadata - The new metadata for the edition.
+   * Updates the metadata of a specific collection.
+   * @param {string} collectionId - The ID of the collection.
+   * @param {NFTMetadata} metadata - The new metadata for the collection.
    * @returns {Promise<void>} A promise that resolves when the metadata has been updated.
    */
   async updateMetadata(
-    editionId: string,
+    collectionId: string,
     metadata: NFTMetadata
   ): Promise<void> {
     // Replace the following with the actual implementation to interact with the Fuel network
-    console.log(`Updating metadata for edition: ${editionId}`);
+    console.log(`Updating metadata for collection: ${collectionId}`);
   }
 }

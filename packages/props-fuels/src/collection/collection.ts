@@ -1,13 +1,11 @@
 import { Account, Address, BN } from "fuels";
-import { Props721EditionContractAbi, Props721EditionContractAbi__factory } from "../sway-api/contracts";
-import { MintResult, NFTMetadata } from "../common/types";
-import { decode } from "punycode";
-import { decodeContractMetadata } from "../utils/metadata";
+import { Props721CollectionContractAbi, Props721CollectionContractAbi__factory } from "../sway-api/contracts";
+import { MintResult } from "../common/types";
 
 /**
  * Represents an edition within the Props SDK.
  */
-export class Edition {
+export class Collection {
   /**
    * The ID of the edition.
    * @type {string}
@@ -16,9 +14,9 @@ export class Edition {
 
   /**
    * Optional contract associated with the edition.
-   * @type {Props721EditionContractAbi | undefined}
+   * @type {Props721CollectionContractAbi | undefined}
    */
-  contract?: Props721EditionContractAbi;
+  contract?: Props721CollectionContractAbi;
 
   /**
    * Optional account associated with the edition.
@@ -27,28 +25,20 @@ export class Edition {
   account?: Account;
 
   /**
-   * Metadata associated with the edition.
-   * @type {NFTMetadata}
-   */
-  metadata?: NFTMetadata;
-
-  /**
-   * Creates a new instance of the Edition class.
+   * Creates a new instance of the Collection class.
    * @param {string} id - The ID of the edition.
-   * @param {Props721EditionContractAbi} [contract] - Optional contract associated with the edition.
+   * @param {Props721CollectionContractAbi} [contract] - Optional contract associated with the edition.
    * @param {Account} [account] - Optional account associated with the edition.
    * @param {NFTMetadata} metadata - Metadata associated with the edition.
    */
   constructor(
     id: string,
-    contract?: Props721EditionContractAbi,
+    contract?: Props721CollectionContractAbi,
     account?: Account,
-    metadata?: NFTMetadata
   ) {
     this.id = id;
     this.contract = contract;
     this.account = account;
-    this.metadata = metadata;
   }
 
   /**
@@ -87,7 +77,7 @@ export class Edition {
       if (!fees) {
         throw new Error("Fees not found");
       }
-      const totalFees = fees.reduce((acc, fee) => acc.add(fee), new BN(0));
+      const totalFees = fees.reduce((acc: { add: (arg0: any) => any; }, fee: any) => acc.add(fee), new BN(0));
       const price = priceValue.mul(amount).add(totalFees);
       const address = Address.fromDynamicInput(to);
       const addressInput = { bits: address.toB256() };
@@ -120,20 +110,16 @@ export class Edition {
   }
 
   /**
-   * Static method to create an Edition instance based on a contractId and a wallet.
+   * Static method to create an Collection instance based on a contractId and a wallet.
    * @param {string} contractId - The ID of the contract.
    * @param {Account} wallet - The wallet to connect.
-   * @returns {Promise<Edition>} A promise that resolves to an Edition instance.
+   * @returns {Promise<Collection>} A promise that resolves to an Collection instance.
    */
-  static async fromContractIdAndWallet(contractId: string, wallet: Account): Promise<Edition> {
-    const contract = Props721EditionContractAbi__factory.connect(
+  static async fromContractIdAndWallet(contractId: string, wallet: Account): Promise<Collection> {
+    const contract = Props721CollectionContractAbi__factory.connect(
       contractId,
       wallet
     );
-    // TODO consider just removing the need to pass AssetId to edition
-    const { value: metadata } = await contract.functions.total_metadata(
-      { bits: wallet.address.toB256() }
-    ).get();
-    return new Edition(contractId, contract, wallet, metadata ? decodeContractMetadata(metadata) : undefined);
+    return new Collection(contractId, contract, wallet);
   }
 }

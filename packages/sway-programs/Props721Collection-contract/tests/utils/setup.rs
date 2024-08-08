@@ -9,8 +9,8 @@ use fuels::{
 use sha2::{Digest, Sha256};
 
 abigen!(Contract(
-    name = "Props721Edition",
-    abi = "./Props721Edition-contract/out/debug/Props721Edition-contract-abi.json"
+    name = "Props721Collection",
+    abi = "./Props721Collection-contract/out/debug/Props721Collection-contract-abi.json"
 ),Contract(
     name = "PropsFeeSplitter",
     abi = "./PropsFeeSplitter-contract/out/debug/PropsFeeSplitter-contract-abi.json"
@@ -18,7 +18,7 @@ abigen!(Contract(
 
 const FEE_SPLITTER_CONTRACT_BINARY_PATH: &str = "../PropsFeeSplitter-contract/out/debug/PropsFeeSplitter-contract.bin";
 
-const NFT_CONTRACT_BINARY_PATH: &str = "./out/debug/Props721Edition-contract.bin";
+const NFT_CONTRACT_BINARY_PATH: &str = "./out/debug/Props721Collection-contract.bin";
 
 pub(crate) fn defaults(
     contract_id: ContractId,
@@ -65,8 +65,8 @@ pub(crate) async fn setup() -> (
     WalletUnlocked,
     WalletUnlocked,
     ContractId,
-    Props721Edition<WalletUnlocked>,
-    Props721Edition<WalletUnlocked>,
+    Props721Collection<WalletUnlocked>,
+    Props721Collection<WalletUnlocked>,
     ContractId,
     PropsFeeSplitter<WalletUnlocked>,
 ) {
@@ -95,8 +95,8 @@ pub(crate) async fn setup() -> (
         .await
         .unwrap();
 
-    let instance_1 = Props721Edition::new(id.clone(), wallet1.clone());
-    let instance_2 = Props721Edition::new(id.clone(), wallet2.clone());
+    let instance_1 = Props721Collection::new(id.clone(), wallet1.clone());
+    let instance_2 = Props721Collection::new(id.clone(), wallet2.clone());
 
     let fee_id = Contract::load_from(FEE_SPLITTER_CONTRACT_BINARY_PATH, LoadConfiguration::default())
         .unwrap()
@@ -116,8 +116,8 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
     WalletUnlocked,
     WalletUnlocked,
     ContractId,
-    Props721Edition<WalletUnlocked>,
-    Props721Edition<WalletUnlocked>,
+    Props721Collection<WalletUnlocked>,
+    Props721Collection<WalletUnlocked>,
     ContractId,
     PropsFeeSplitter<WalletUnlocked>,
 ) {
@@ -141,7 +141,7 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
     let wallet2 = wallets.pop().unwrap();
     let wallet3 = wallets.pop().unwrap();
 
-    let mut configurables = Props721EditionConfigurables::default();
+    let mut configurables = Props721CollectionConfigurables::default();
 
     if let Some(1) = mode {
         configurables = configurables
@@ -164,8 +164,8 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
         .await
         .unwrap();
 
-    let instance_1 = Props721Edition::new(id.clone(), wallet1.clone());
-    let instance_2 = Props721Edition::new(id.clone(), wallet2.clone());
+    let instance_1 = Props721Collection::new(id.clone(), wallet1.clone());
+    let instance_2 = Props721Collection::new(id.clone(), wallet2.clone());
 
     let fee_id = Contract::load_from(FEE_SPLITTER_CONTRACT_BINARY_PATH, LoadConfiguration::default())
         .unwrap()
@@ -227,4 +227,8 @@ pub fn default_symbol() -> String {
 
 pub fn default_price() -> u64 {
     0
+}
+
+pub fn default_base_uri() -> String {
+    "https://ipfs.io/ipfs/bafybeiaad7jp7bsk2fubp4wmks56yxevoz7ywst5fd4gqdschuqonpd2ee/".to_string()
 }

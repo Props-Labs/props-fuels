@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, mint, total_assets},
-    setup::{defaults, setup, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values},
+    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, default_metadata_keys, default_metadata_values},
 };
 
 mod success {
@@ -21,7 +21,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         assert_eq!(total_assets(&instance_1).await, 0);
 
@@ -43,7 +43,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
 
         assert_eq!(total_assets(&instance_1).await, 0);
 

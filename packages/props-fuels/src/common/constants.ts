@@ -23,6 +23,28 @@ export const supportedProps721EditionContractConfigurableOptionsMapping: Record<
   disableAirdrop: "DISABLE_AIRDROP",
 };
 
+export const supportedProps721CollectionContractConfigurableOptions: Array<string> =
+  [
+    "maxSupply",
+    "builderFeeAddress",
+    "builderFee",
+    "builderRevenueShareAddress",
+    "builderRevenueSharePercentage",
+    "disableAirdrop",
+  ];
+
+export const supportedProps721CollectionContractConfigurableOptionsMapping: Record<
+  string,
+  string
+> = {
+  maxSupply: "MAX_SUPPLY",
+  builderFeeAddress: "BUILDER_FEE_ADDRESS",
+  builderFee: "BUILDER_FEE",
+  builderRevenueShareAddress: "BUILDER_REVENUE_SHARE_ADDRESS",
+  builderRevenueSharePercentage: "BUILDER_REVENUE_SHARE_PERCENTAGE",
+  disableAirdrop: "DISABLE_AIRDROP",
+};
+
 export const configurableOptionsTypeMapping: Record<string, (value: any) => any> = {
   maxSupply: (value: number) => {
     if (typeof value !== 'number' || value < 0) {
