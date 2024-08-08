@@ -634,6 +634,7 @@ impl SRC7 for Contract {
             let token_id = <u64 as TryFrom<u256>>::try_from(sub_id.as_u256());
             let token_id_bytes = convert_num_to_ascii_bytes(token_id.unwrap());
             let mut full_uri = concat_with_bytes(base_uri, token_id_bytes);
+            full_uri = concat(full_uri, String::from_ascii_str(".json"));
             Some(Metadata::String(full_uri))
         } else {
             storage.metadata.get(asset, key)
