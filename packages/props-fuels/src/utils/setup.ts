@@ -53,6 +53,8 @@ export async function setup(): Promise<
 
     const { contract: feeSplitterContract, transactionResult } = await waitForResult();
 
+    console.log("Fee Splitter Contract: ", feeSplitterContract.id.toHexString());
+
     return { wallet1, wallet2, wallet3, wallet4, provider, feeSplitterContract };
 }
 

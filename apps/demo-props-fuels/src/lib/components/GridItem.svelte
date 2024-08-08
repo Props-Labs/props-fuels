@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
 	import type { Edition } from "@props/fuels";
-
-    export let item:Edition;
+  export let item:Edition;
+  const dispatch = createEventDispatcher();
 </script>
 
 <div class="card w-full bg-base-200 shadow-xl">
@@ -28,6 +29,6 @@
     <small class="truncate w-[200px]">ID: {item.id}</small>
   </div>
   <div class="card-actions justify-end p-4">
-    <button class="btn btn-primary btn-lg">Mint</button>
+    <button class="btn btn-primary btn-lg" on:click={() => dispatch('mint', item)}>Mint</button>
   </div>
 </div>

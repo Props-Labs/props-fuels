@@ -1,4 +1,4 @@
-import { Account, TransactionResult } from "fuels";
+import { Account, BN, TransactionResult } from "fuels";
 import { supportedNetworks } from "../constants";
 
 export type NFTMetadata = {

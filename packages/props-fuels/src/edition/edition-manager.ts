@@ -96,6 +96,9 @@ export class EditionManager extends PropsEventEmitter {
       transactionCount: 2,
     });
 
+    console.log("metadata in sdk: ", metadata, encodeMetadataValues(metadata));
+    console.log("TESTTEST")
+
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
         addressIdentityInput,
@@ -117,7 +120,7 @@ export class EditionManager extends PropsEventEmitter {
     const { transactionResult } = await waitForResultConstructor();
 
     if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus") {
-      return new Edition(contract.id.toString(), contract, owner);
+      return new Edition(contract.id.toString(), contract, owner, metadata);
     } else {
       throw new Error(
         "Failed to create edition: Transaction was not successful"
