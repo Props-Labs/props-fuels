@@ -4,7 +4,7 @@ module.exports = {
   themeConfig: {
     logo: {
       light: "/logo.svg",
-      dark: "/logo-white.svg"
+      dark: "/logo-white.svg",
     },
     nav: [
       { text: "Home", link: "/" },
@@ -53,6 +53,10 @@ module.exports = {
               link: "/collections",
             },
           ],
+        },
+        {
+          text: "Future Considerations",
+          link: "/future-considerations",
         },
       ],
     },
