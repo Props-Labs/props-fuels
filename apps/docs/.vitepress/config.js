@@ -2,7 +2,10 @@ module.exports = {
   title: "PropsSDK for Fuel",
   description: "PropsSDK minting documentation for Fuel Network",
   themeConfig: {
-    logo: "/logo.svg",
+    logo: {
+      light: "/logo.svg",
+      dark: "/logo-white.svg"
+    },
     nav: [
       { text: "Home", link: "/" },
       { text: "Editions", link: "/editions" },
