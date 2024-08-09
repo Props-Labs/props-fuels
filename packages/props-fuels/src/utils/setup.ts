@@ -107,8 +107,8 @@ export async function deployProps721CollectionContract(wallet1: Account): Promis
 
   const { contract, transactionResult } = await waitForResult();
 
-  console.log("Contract: ", contract);
-  console.log("Transaction Result: ", transactionResult);
+  // console.log("Contract: ", contract);
+  // console.log("Transaction Result: ", transactionResult);
 
   const address = Address.fromDynamicInput(wallet1.address);
   const addressInput = { bits: address.toB256() };

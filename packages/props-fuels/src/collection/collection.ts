@@ -67,13 +67,13 @@ export class Collection {
       try {
         const response = await fetch(`${this.baseUri}${i}`);
         if (!response.ok) {
-          console.warn(`Failed to fetch metadata for token ${i}`);
+          // console.warn(`Failed to fetch metadata for token ${i}`);
           continue;
         }
         const metadata: NFTMetadata = await response.json();
         this.sampleTokens.push(metadata);
       } catch (error) {
-        console.error(`Error fetching metadata for token ${i}:`, error);
+        // console.error(`Error fetching metadata for token ${i}:`, error);
       }
     }
     return this.sampleTokens;
