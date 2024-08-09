@@ -62,3 +62,9 @@ async function createEdition() {
 
 createEdition();
 ```
+
+
+## TODO
+
+- [ ] Merkle-Based Allowlists
+- [ ] Flexible Mint Dates

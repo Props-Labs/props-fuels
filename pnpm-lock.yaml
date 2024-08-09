@@ -8,12 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@vitest/coverage-v8':
-        specifier: ^2.0.5
-        version: 2.0.5(vitest@2.0.4(@types/node@20.14.11)(@vitest/browser@2.0.4)(terser@5.31.3))
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
       fuels:
         specifier: ^0.92.0
         version: 0.92.0
@@ -33,6 +27,12 @@ importers:
       '@vitest/coverage-istanbul':
         specifier: ^2.0.4
         version: 2.0.4(vitest@2.0.4(@types/node@20.14.11)(@vitest/browser@2.0.4)(terser@5.31.3))
+      '@vitest/coverage-v8':
+        specifier: ^2.0.5
+        version: 2.0.5(vitest@2.0.4(@types/node@20.14.11)(@vitest/browser@2.0.4)(terser@5.31.3))
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       eslint:
         specifier: ^9.7.0
         version: 9.7.0
