@@ -29,10 +29,7 @@ export class EditionManager extends PropsEventEmitter {
 
   /**
    * Creates a new edition.
-   * @param {string} name - The name of the edition to create. This is the name of the contract and cannot be changed.
-   * @param {string} symbol - The short form of the contract name.
-   * @param {NFTMetadata} metadata - The metadata for the edition.
-   * @param {EditionCreateConfigurationOptions} options - Additional configuration options for creating the edition.
+   * @param {EditionCreateOptions} params - Additional configuration options for creating the edition.
    * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
    */
   async create(params: EditionCreateOptions): Promise<Edition> {

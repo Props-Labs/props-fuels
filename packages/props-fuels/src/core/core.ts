@@ -19,8 +19,6 @@ export class PropsSDK {
    * Creates an instance of Props SDK.
    * @constructor
    * @param {PropsConfigurationOptions} options - The configuration options for Props SDK.
-   * @param {string} options.apiKey - The API key to authenticate requests. If no apiKey is supplied, a default rate-limited key will be used.
-   * @param {string} options.network - The network to connect to (e.g., 'beta-5', 'mainnet').
    */
   constructor(options: PropsConfigurationOptions) {
     /**

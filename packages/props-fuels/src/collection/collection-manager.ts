@@ -29,10 +29,7 @@ export class CollectionManager extends PropsEventEmitter {
 
   /**
    * Creates a new collection.
-   * @param {string} name - The name of the collection to create. This is the name of the contract and cannot be changed.
-   * @param {string} symbol - The short form of the contract name.
-   * @param {NFTMetadata} metadata - The metadata for the collection.
-   * @param {CollectionCreateConfigurationOptions} options - Additional configuration options for creating the collection.
+   * @param {CollectionCreateOptions} params - Additional configuration options for creating the collection.
    * @returns {Promise<string>} A promise that resolves to the ID of the created collection.
    */
   async create(params: CollectionCreateOptions): Promise<Collection> {
@@ -97,13 +94,7 @@ export class CollectionManager extends PropsEventEmitter {
     });
 
     const { waitForResult: waitForResultConstructor } = await contract.functions
-      .constructor(
-        addressIdentityInput,
-        name,
-        symbol,
-        baseUri,
-        price ?? 0
-      )
+      .constructor(addressIdentityInput, name, symbol, baseUri, price ?? 0)
       .call();
 
     this.emit(this.events.pending, {

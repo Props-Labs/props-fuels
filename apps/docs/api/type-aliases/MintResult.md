@@ -26,4 +26,4 @@ The result of the transaction associated with the mint operation.
 
 ## Defined in
 
-[common/types/index.ts:208](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/common/types/index.ts#L208)
+[packages/props-fuels/src/common/types/index.ts:208](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/common/types/index.ts#L208)

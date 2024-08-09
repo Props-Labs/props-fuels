@@ -7,8 +7,6 @@ module.exports = {
       dark: "/logo-white.svg",
     },
     nav: [
-      { text: "Home", link: "/" },
-      { text: "Editions", link: "/editions" },
       { text: "API", link: "/api/README" },
     ],
     sidebar: {

@@ -22,7 +22,7 @@ Creates a new instance of the Edition class.
 
 The ID of the edition.
 
-• **contract?**: `Props721EditionContractAbi`
+• **contract?**: [`Props721EditionContractAbi`](Props721EditionContractAbi.md)
 
 Optional contract associated with the edition.
 
@@ -30,7 +30,7 @@ Optional contract associated with the edition.
 
 Optional account associated with the edition.
 
-• **metadata?**: `NFTMetadata`
+• **metadata?**: [`NFTMetadata`](../type-aliases/NFTMetadata.md)
 
 Metadata associated with the edition.
 
@@ -40,7 +40,7 @@ Metadata associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:42](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L42)
+[packages/props-fuels/src/edition/edition.ts:42](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L42)
 
 ## Properties
 
@@ -52,19 +52,19 @@ Optional account associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:27](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L27)
+[packages/props-fuels/src/edition/edition.ts:27](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L27)
 
 ***
 
 ### contract?
 
-> `optional` **contract**: `Props721EditionContractAbi`
+> `optional` **contract**: [`Props721EditionContractAbi`](Props721EditionContractAbi.md)
 
 Optional contract associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:21](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L21)
+[packages/props-fuels/src/edition/edition.ts:21](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L21)
 
 ***
 
@@ -76,19 +76,19 @@ The ID of the edition.
 
 #### Defined in
 
-[edition/edition.ts:15](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L15)
+[packages/props-fuels/src/edition/edition.ts:15](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L15)
 
 ***
 
 ### metadata?
 
-> `optional` **metadata**: `NFTMetadata`
+> `optional` **metadata**: [`NFTMetadata`](../type-aliases/NFTMetadata.md)
 
 Metadata associated with the edition.
 
 #### Defined in
 
-[edition/edition.ts:33](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L33)
+[packages/props-fuels/src/edition/edition.ts:33](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L33)
 
 ## Methods
 
@@ -110,7 +110,7 @@ The account to connect.
 
 #### Defined in
 
-[edition/edition.ts:58](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L58)
+[packages/props-fuels/src/edition/edition.ts:58](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L58)
 
 ***
 
@@ -144,7 +144,7 @@ If the minting process fails.
 
 #### Defined in
 
-[edition/edition.ts:69](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L69)
+[packages/props-fuels/src/edition/edition.ts:69](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L69)
 
 ***
 
@@ -172,4 +172,4 @@ A promise that resolves to an Edition instance.
 
 #### Defined in
 
-[edition/edition.ts:128](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/edition/edition.ts#L128)
+[packages/props-fuels/src/edition/edition.ts:128](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L128)

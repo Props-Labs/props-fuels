@@ -22,7 +22,7 @@ Creates a new instance of the Collection class.
 
 The ID of the edition.
 
-• **contract?**: `Props721CollectionContractAbi`
+• **contract?**: [`Props721CollectionContractAbi`](Props721CollectionContractAbi.md)
 
 Optional contract associated with the edition.
 
@@ -40,7 +40,7 @@ Base URI for the collection's metadata.
 
 #### Defined in
 
-[collection/collection.ts:47](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L47)
+[packages/props-fuels/src/collection/collection.ts:47](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L47)
 
 ## Properties
 
@@ -52,7 +52,7 @@ Optional account associated with the edition.
 
 #### Defined in
 
-[collection/collection.ts:26](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L26)
+[packages/props-fuels/src/collection/collection.ts:26](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L26)
 
 ***
 
@@ -64,19 +64,19 @@ The base URI for the collection's metadata.
 
 #### Defined in
 
-[collection/collection.ts:32](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L32)
+[packages/props-fuels/src/collection/collection.ts:32](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L32)
 
 ***
 
 ### contract?
 
-> `optional` **contract**: `Props721CollectionContractAbi`
+> `optional` **contract**: [`Props721CollectionContractAbi`](Props721CollectionContractAbi.md)
 
 Optional contract associated with the edition.
 
 #### Defined in
 
-[collection/collection.ts:20](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L20)
+[packages/props-fuels/src/collection/collection.ts:20](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L20)
 
 ***
 
@@ -88,19 +88,19 @@ The ID of the edition.
 
 #### Defined in
 
-[collection/collection.ts:14](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L14)
+[packages/props-fuels/src/collection/collection.ts:14](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L14)
 
 ***
 
 ### sampleTokens
 
-> **sampleTokens**: `NFTMetadata`[] = `[]`
+> **sampleTokens**: [`NFTMetadata`](../type-aliases/NFTMetadata.md)[] = `[]`
 
 Sample tokens of the collection.
 
 #### Defined in
 
-[collection/collection.ts:38](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L38)
+[packages/props-fuels/src/collection/collection.ts:38](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L38)
 
 ## Methods
 
@@ -122,23 +122,23 @@ The account to connect.
 
 #### Defined in
 
-[collection/collection.ts:86](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L86)
+[packages/props-fuels/src/collection/collection.ts:86](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L86)
 
 ***
 
 ### fetchSampleTokens()
 
-> **fetchSampleTokens**(): `Promise`\<`NFTMetadata`[]\>
+> **fetchSampleTokens**(): `Promise`\<[`NFTMetadata`](../type-aliases/NFTMetadata.md)[]\>
 
 Fetches sample tokens from the baseUri.
 
 #### Returns
 
-`Promise`\<`NFTMetadata`[]\>
+`Promise`\<[`NFTMetadata`](../type-aliases/NFTMetadata.md)[]\>
 
 #### Defined in
 
-[collection/collection.ts:63](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L63)
+[packages/props-fuels/src/collection/collection.ts:63](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L63)
 
 ***
 
@@ -172,7 +172,7 @@ If the minting process fails.
 
 #### Defined in
 
-[collection/collection.ts:97](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L97)
+[packages/props-fuels/src/collection/collection.ts:97](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L97)
 
 ***
 
@@ -200,4 +200,4 @@ A promise that resolves to an Collection instance.
 
 #### Defined in
 
-[collection/collection.ts:156](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/collection/collection.ts#L156)
+[packages/props-fuels/src/collection/collection.ts:156](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L156)

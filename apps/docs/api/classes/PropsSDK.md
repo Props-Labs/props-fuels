@@ -22,7 +22,7 @@ Creates an instance of Props SDK.
 
 #### Parameters
 
-• **options**: `PropsConfigurationOptions`
+• **options**: [`PropsConfigurationOptions`](../type-aliases/PropsConfigurationOptions.md)
 
 The configuration options for Props SDK.
 
@@ -32,7 +32,37 @@ The configuration options for Props SDK.
 
 #### Defined in
 
-[core/core.ts:25](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/core/core.ts#L25)
+[packages/props-fuels/src/core/core.ts:23](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L23)
+
+## Properties
+
+### collections
+
+> **collections**: [`CollectionManager`](CollectionManager.md)
+
+#### Defined in
+
+[packages/props-fuels/src/core/core.ts:13](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L13)
+
+***
+
+### editions
+
+> **editions**: [`EditionManager`](EditionManager.md)
+
+#### Defined in
+
+[packages/props-fuels/src/core/core.ts:12](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L12)
+
+***
+
+### events
+
+> **events**: [`PropsEvents`](PropsEvents.md)
+
+#### Defined in
+
+[packages/props-fuels/src/core/core.ts:14](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L14)
 
 ## Methods
 
@@ -54,22 +84,22 @@ If the GraphQL URL is not available for the current network.
 
 #### Defined in
 
-[core/core.ts:78](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/core/core.ts#L78)
+[packages/props-fuels/src/core/core.ts:76](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L76)
 
 ***
 
 ### getNetwork()
 
-> **getNetwork**(): `Network`
+> **getNetwork**(): [`Network`](../type-aliases/Network.md)
 
 Returns the network configuration.
 
 #### Returns
 
-`Network`
+[`Network`](../type-aliases/Network.md)
 
 The network configuration.
 
 #### Defined in
 
-[core/core.ts:69](https://github.com/Props-Labs/octane/blob/dc41ebab04c3883347eca767c4166cea04688b60/packages/props-fuels/src/core/core.ts#L69)
+[packages/props-fuels/src/core/core.ts:67](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L67)
