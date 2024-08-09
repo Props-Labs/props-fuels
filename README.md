@@ -1,7 +1,6 @@
 # Props SDK
 
-Welcome to documentation of the Props SDK for Fuel Network. This SDK allows you to easily create, manage, and interact with NFTs on the Fuel network.
-
+The Props SDK allows anyone to integrate minting NFTs on Fuel with just a few lines of code with a powerful built-in incentive protocol that rewards builders, creators and collectors.
 
 ## Documentation
 
