@@ -1,6 +1,6 @@
 # Props SDK
 
-Welcome to the Props SDK documentation. This SDK allows you to easily create, manage, and interact with NFTs on the Fuel network.
+Welcome to documentation of the Props SDK for Fuel Network. This SDK allows you to easily create, manage, and interact with NFTs on the Fuel network.
 
 ## Getting Started
 
@@ -22,7 +22,7 @@ yarn add @props/fuels
 
 ## Usage
 
-To use the SDK, you must first create an instance of the `Octane` class:
+To use the SDK, you must first create an instance of the `PropsSDK` class:
 
 ```javascript
 import { PropsSDK } from '@props/fuels';
@@ -36,7 +36,7 @@ const propsClient = new PropsSDK({
 });
 
 async function createEdition() {
-  const edition: Edition = await manager.create({
+  const edition: Edition = await propsClient.create({
     name:"Edition 1",
     symbol: "ED1",
     metadata: {

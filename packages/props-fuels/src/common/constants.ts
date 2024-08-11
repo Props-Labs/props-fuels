@@ -8,6 +8,7 @@ export const supportedProps721EditionContractConfigurableOptions: Array<string> 
     "builderFee",
     "builderRevenueShareAddress",
     "builderRevenueSharePercentage",
+    "affiliateFeePercentage",
     "disableAirdrop"
   ];
 
@@ -20,6 +21,30 @@ export const supportedProps721EditionContractConfigurableOptionsMapping: Record<
   builderFee: "BUILDER_FEE",
   builderRevenueShareAddress: "BUILDER_REVENUE_SHARE_ADDRESS",
   builderRevenueSharePercentage: "BUILDER_REVENUE_SHARE_PERCENTAGE",
+  affiliateFeePercentage: "AFFILIATE_FEE_PERCENTAGE",
+  disableAirdrop: "DISABLE_AIRDROP",
+};
+
+export const supportedProps721CollectionContractConfigurableOptions: Array<string> =
+  [
+    "maxSupply",
+    "builderFeeAddress",
+    "builderFee",
+    "builderRevenueShareAddress",
+    "builderRevenueSharePercentage",
+    "disableAirdrop",
+  ];
+
+export const supportedProps721CollectionContractConfigurableOptionsMapping: Record<
+  string,
+  string
+> = {
+  maxSupply: "MAX_SUPPLY",
+  builderFeeAddress: "BUILDER_FEE_ADDRESS",
+  builderFee: "BUILDER_FEE",
+  builderRevenueShareAddress: "BUILDER_REVENUE_SHARE_ADDRESS",
+  builderRevenueSharePercentage: "BUILDER_REVENUE_SHARE_PERCENTAGE",
+  affiliateFeePercentage: "AFFILIATE_FEE_PERCENTAGE",
   disableAirdrop: "DISABLE_AIRDROP",
 };
 
@@ -53,6 +78,12 @@ export const configurableOptionsTypeMapping: Record<string, (value: any) => any>
   builderRevenueSharePercentage: (value: number) => {
     if (typeof value !== 'number' || value < 0 || value > 100) {
       throw new Error("Invalid builderRevenueSharePercentage: must be a number between 0 and 100");
+    }
+    return value;
+  },
+  affiliateFeePercentage: (value: number) => {
+    if (typeof value !== 'number' || value < 0 || value > 100) {
+      throw new Error("Invalid affiliateFeePercentage: must be a number between 0 and 100");
     }
     return value;
   },

@@ -2,6 +2,7 @@ import { EditionManager } from "../edition";
 import { supportedNetworks } from "../common/constants";
 import { Network, PropsConfigurationOptions } from "../common/types";
 import { PropsEvents } from "./events";
+import { CollectionManager } from "../collection";
 
 /**
  * @class Props
@@ -9,6 +10,7 @@ import { PropsEvents } from "./events";
  */
 export class PropsSDK {
   public editions: EditionManager;
+  public collections: CollectionManager;
   public events: PropsEvents;
   private network: Network;
   private apiKey: string;
@@ -17,8 +19,6 @@ export class PropsSDK {
    * Creates an instance of Props SDK.
    * @constructor
    * @param {PropsConfigurationOptions} options - The configuration options for Props SDK.
-   * @param {string} options.apiKey - The API key to authenticate requests. If no apiKey is supplied, a default rate-limited key will be used.
-   * @param {string} options.network - The network to connect to (e.g., 'beta-5', 'mainnet').
    */
   constructor(options: PropsConfigurationOptions) {
     /**
@@ -45,6 +45,12 @@ export class PropsSDK {
      * @public
      */
     this.editions = new EditionManager();
+
+    /**
+     * @property {CollectionManager} collections - The collection manager instance.
+     * @public
+     */
+    this.collections = new CollectionManager();
 
     /**
      * @property {PropsEvents}

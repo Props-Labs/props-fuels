@@ -1,4 +1,10 @@
 {
-	"name": "docs",
-	"version": "0.0.1"
+  "name": "docs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }

@@ -362,8 +362,6 @@ impl SRC3PayableExtension for Contract {
         let asset_id = msg_asset_id();
 
         require(asset_id == AssetId::base(), MintError::InvalidAsset);
-
-        // require(amount > 0, MintError::CannotMintMoreThanOneNFTWithSubId);
         require(
             total_assets + amount <= MAX_SUPPLY,
             MintError::MaxNFTsMinted,

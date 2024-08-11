@@ -1,19 +1,24 @@
 <script lang="ts">
     import { onMount } from 'svelte'
-    import { type Edition, PropsSDK } from '@props/fuels'
-    import { account, connect, connected, createWalletStore, wallet } from 'svelte-fuels';
+    import { type Edition, type Collection, PropsSDK } from '@props/fuels'
+    import { account, connect, connected, createWalletStore, wallet, loading as loadingWallet } from 'svelte-fuels';
 	import List from '$lib/components/List.svelte';
 	import Grid from '$lib/components/Grid.svelte';
 	import { Loader2 } from 'lucide-svelte';
 	import CreateModal from '$lib/components/CreateModal.svelte';
+	import CreateCollectionModal from '$lib/components/CreateCollectionModal.svelte';
 
     let editions:Edition[] = [];
+    let collections:Collection[] = [];
     let editionsLoaded = false;
+    let collectionsLoaded = false;
     let loading = false;
     let loadingMessage = '';
     let propsClient:PropsSDK|null;
-    let showCreate = false;
 
+    let showCreate = false;
+    let showCreateCollection = false;
+    
     onMount(() => {
         createWalletStore();
         console.log("We're here");
@@ -38,6 +43,20 @@
         });
     }
 
+    const listCollections = async () => {
+        if(!propsClient || !$wallet) {
+            console.error("Props client not initialized");
+            return;
+        };
+        propsClient.collections.list($wallet).then((result) => {
+            collections = result;
+            collectionsLoaded = true;
+            console.log("Collections: ", collections);
+        }).catch(error => {
+            console.error("Error listing collections: ", error);
+        });
+    }
+
     const mint = (edition: Edition) => {
         console.log("Minting: ", edition);
         if(!$wallet || !$wallet.address) return;
@@ -50,6 +69,7 @@
 
     $: if($connected && propsClient) {
         listEditions();
+        listCollections();
     }
 </script>
 
@@ -59,20 +79,36 @@
       <div class="max-w-md">
         <h1 class="text-5xl font-bold">Welcome to PropsSDK for Fuel Demo</h1>
         <p class="py-6">
-            This is a demo application to showcase the PropsSDK for Fuel. You can create editions and list them here.
+            This is a demo application to showcase the PropsSDK for Fuel. You can create editions and collections and list them here.
         </p>
-        {#key loadingMessage}
-        <button disabled={loading} class="btn btn-primary btn-lg" on:click|stopPropagation={() => showCreate = true}>
-            {#if loading}
-                <span class="animate-spin mr-2">
-                    <Loader2/>
-                </span>
-                <span>{loadingMessage}</span>
+        <div class="flex justify-center gap-4">
+            {#if $connected}
+            {#key loadingMessage}
+            <button disabled={loading} class="btn btn-primary btn-lg" on:click|stopPropagation={() => showCreate = true}>
+                {#if loading}
+                    <span class="animate-spin mr-2">
+                        <Loader2/>
+                    </span>
+                    <span>{loadingMessage}</span>
+                {:else}
+                    Create Edition
+                {/if}
+            </button>
+            {/key}
+            <button class="btn btn-secondary btn-lg" on:click|stopPropagation={() => showCreateCollection = true}>
+                Create Collection
+            </button>
             {:else}
-                Create Edition
+                <button disabled={$loadingWallet} class="btn btn-secondary btn-lg" on:click|stopPropagation={() => connect()}>
+                    {#if $loadingWallet}
+                        <span class="animate-spin mr-2">
+                            <Loader2/>
+                        </span>
+                    {/if}
+                    Connect Wallet
+                </button>
             {/if}
-        </button>
-        {/key}
+        </div>
       </div>
     </div>
   </div>
@@ -81,7 +117,33 @@
     {#if $connected}
     <h2 class="text-3xl text-center">My Editions</h2>
     {#if editionsLoaded}
-        <Grid items={editions} on:mint={(e) => mint(e.detail)} />
+        {#if editions.length > 0}
+            <Grid items={editions} on:mint={(e) => mint(e.detail)} />
+        {:else}
+            <div class="bg-base-200 p-8 text-center rounded-lg">
+                <p class="text-xl">No editions created yet</p>
+            </div>
+        {/if}
+    {:else}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="w-full p-2 skeleton h-48 bg-base-200">
+        </div>
+        <div class="w-full p-2 skeleton h-48 bg-base-200">
+        </div>
+        <div class="w-full p-2 skeleton h-48 bg-base-200">
+        </div>
+    </div>
+    {/if}
+
+    <h2 class="text-3xl text-center mt-8">My Collections</h2>
+    {#if collectionsLoaded}
+        {#if collections.length > 0}
+            <Grid items={collections} type="collection" />
+        {:else}
+            <div class="bg-base-200 p-8 text-center rounded-lg">
+                <p class="text-xl">No collections created yet</p>
+            </div>
+        {/if}
     {:else}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="w-full p-2 skeleton h-48 bg-base-200">
@@ -97,3 +159,4 @@
 </div>
 
 <CreateModal open={showCreate} on:close={() => showCreate = false} on:created={(e) => editions = [e.detail,...editions]}/>
+<CreateCollectionModal open={showCreateCollection} on:close={() => showCreateCollection = false} on:created={(e) => collections = [e.detail,...collections]}/>

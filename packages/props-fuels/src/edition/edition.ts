@@ -1,6 +1,6 @@
 import { Account, Address, BN } from "fuels";
 import { Props721EditionContractAbi, Props721EditionContractAbi__factory } from "../sway-api/contracts";
-import { EditionMintResult, NFTMetadata } from "../common/types";
+import { MintResult, NFTMetadata } from "../common/types";
 import { decode } from "punycode";
 import { decodeContractMetadata } from "../utils/metadata";
 
@@ -70,7 +70,7 @@ export class Edition {
     to: string,
     amount: number,
     affiliate?: string
-  ): Promise<EditionMintResult|Error> {
+  ): Promise<MintResult|Error> {
     if (!this.contract || !this.account) {
       throw new Error("Contract or account is not connected");
     }

@@ -29,10 +29,7 @@ export class EditionManager extends PropsEventEmitter {
 
   /**
    * Creates a new edition.
-   * @param {string} name - The name of the edition to create. This is the name of the contract and cannot be changed.
-   * @param {string} symbol - The short form of the contract name.
-   * @param {NFTMetadata} metadata - The metadata for the edition.
-   * @param {EditionCreateConfigurationOptions} options - Additional configuration options for creating the edition.
+   * @param {EditionCreateOptions} params - Additional configuration options for creating the edition.
    * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
    */
   async create(params: EditionCreateOptions): Promise<Edition> {
@@ -96,8 +93,7 @@ export class EditionManager extends PropsEventEmitter {
       transactionCount: 2,
     });
 
-    console.log("metadata in sdk: ", metadata, encodeMetadataValues(metadata));
-    console.log("TESTTEST")
+    // console.log("metadata in sdk: ", metadata, encodeMetadataValues(metadata));
 
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
@@ -162,7 +158,7 @@ export class EditionManager extends PropsEventEmitter {
       variables
     );
 
-    console.log("transactionData", transactionData);
+    // console.log("transactionData", transactionData);
 
     const contractIds = transactionData.data.transactionsByOwner.nodes.flatMap(
       (node: any) =>
@@ -171,7 +167,7 @@ export class EditionManager extends PropsEventEmitter {
           .map((output: any) => output.contract)
     );
 
-    console.log("contractIds", contractIds);
+    // console.log("contractIds", contractIds);
 
     const matchingContracts: Array<string> = [];
 

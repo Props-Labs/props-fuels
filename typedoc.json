@@ -2,9 +2,9 @@
   "entryPoints": ["packages/props-fuels/src/index.ts"],
   "out": "apps/docs/api",
   "plugin": ["typedoc-plugin-markdown"],
-  "exclude": ["**/sway-api/**", "**/demo-props-fuels/**", "apps/demo-props-fuels/**/*"],
+  "exclude": ["**/demo-props-fuels/**", "apps/demo-props-fuels/**/*"],
   "excludePrivate": true,
   "excludeProtected": true,
   "excludeExternals": true,
-  "excludeNotDocumented": true
+  "excludeNotDocumented": false,
 }

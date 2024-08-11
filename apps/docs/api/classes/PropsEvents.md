@@ -22,7 +22,7 @@ Event state indicating a completed status.
 
 #### Defined in
 
-[core/events.ts:33](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L33)
+[packages/props-fuels/src/core/events.ts:33](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L33)
 
 ***
 
@@ -34,7 +34,7 @@ Event state indicating an error status.
 
 #### Defined in
 
-[core/events.ts:40](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L40)
+[packages/props-fuels/src/core/events.ts:40](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L40)
 
 ***
 
@@ -46,7 +46,7 @@ Event state indicating an initialized status.
 
 #### Defined in
 
-[core/events.ts:47](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L47)
+[packages/props-fuels/src/core/events.ts:47](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L47)
 
 ***
 
@@ -58,7 +58,7 @@ Event state indicating a paused status.
 
 #### Defined in
 
-[core/events.ts:54](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L54)
+[packages/props-fuels/src/core/events.ts:54](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L54)
 
 ***
 
@@ -70,7 +70,7 @@ Event state indicating a waiting status.
 
 #### Defined in
 
-[core/events.ts:26](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L26)
+[packages/props-fuels/src/core/events.ts:26](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L26)
 
 ***
 
@@ -82,7 +82,7 @@ Event state indicating a transaction that requires approval.
 
 #### Defined in
 
-[core/events.ts:19](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L19)
+[packages/props-fuels/src/core/events.ts:19](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L19)
 
 ***
 
@@ -94,7 +94,7 @@ Event state indicating an unpaused status.
 
 #### Defined in
 
-[core/events.ts:61](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L61)
+[packages/props-fuels/src/core/events.ts:61](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L61)
 
 ## Methods
 
@@ -114,4 +114,4 @@ The singleton instance of the PropsEvents class.
 
 #### Defined in
 
-[core/events.ts:77](https://github.com/Props-Labs/octane/blob/aef20887c820bfc32c249ec8fecfb239e9508080/packages/props-fuels/src/core/events.ts#L77)
+[packages/props-fuels/src/core/events.ts:77](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L77)

@@ -1,0 +1,16 @@
+mod burn;
+mod constructor;
+mod decimals;
+mod is_paused;
+mod metadata;
+mod mint;
+mod airdrop;
+mod name;
+mod owner;
+mod pause;
+mod symbol;
+mod total_assets;
+mod total_supply;
+mod unpause;
+mod price;
+mod set_base_uri;

@@ -1,13 +1,15 @@
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte';
 	import GridItem from "./GridItem.svelte";
+	import type { Edition } from '@props/fuels';
 
-    export let items;
+    export let items: Array<Edition | Collection>;
+    export let type: 'collection' | 'edition' = 'edition';
     const dispatch = createEventDispatcher();
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     {#each items as item (item.id)}
-        <GridItem {item}  on:mint={() => dispatch('mint', item)}/>
+        <GridItem {item} {type} on:mint={() => dispatch('mint', item)}/>
     {/each}
 </div>
