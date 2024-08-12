@@ -78,8 +78,8 @@ const propsClient = new PropsSDK({
   network: 'testnet',
 });
 
-const startDate = new Date('2024-10-01').getTime();
-const endDate = new Date('2025-01-31').getTime();
+const startDate = new Date('2024-10-01').getTime().toString();
+const endDate = new Date('2025-01-31').getTime().toString();
 
 const collection: Collection = await propsClient.collections.create({
   name:"Collection 1",
