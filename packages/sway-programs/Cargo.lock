@@ -16,8 +16,10 @@ dependencies = [
 name = "Props721Collection-contract"
 version = "0.0.0"
 dependencies = [
+ "fuel-merkle 0.50.0",
  "fuels",
  "sha2 0.10.8",
+ "tai64",
  "tokio",
 ]
 

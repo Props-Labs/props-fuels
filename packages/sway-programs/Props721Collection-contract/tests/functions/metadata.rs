@@ -24,7 +24,7 @@ mod success {
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
         
-        mint(&instance_1, other_identity, sub_id_1, 3, 0, fee_id, None).await;
+        mint(&instance_1, other_identity, sub_id_1, 3, 0, fee_id, None, None, None, None, None).await;
 
         assert_eq!(base_uri(&instance_1).await, Some(default_base_uri()));
         let metadata1 = Metadata::String(String::from(default_base_uri() + "1"));

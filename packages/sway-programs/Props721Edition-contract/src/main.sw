@@ -384,35 +384,12 @@ impl SRC3PayableExtension for Contract {
         let root = storage.merkle_root.try_read().unwrap_or(b256::zero());
         if root != b256::zero() {
             let recipient_bits:b256 = recipient.bits();
-            log("recipient_bits");
-            log(recipient_bits);
             let mut recipient_bytes:Bytes = recipient_bits.to_le_bytes();
             let amount_bytes = max_amount.unwrap_or(amount).to_le_bytes();
-            log("amount_bytes");
-            log(amount_bytes);
             recipient_bytes.append(amount_bytes);
 
-            log("recipient_bytes");
-            log(recipient_bytes);
-
-            log("sha256(recipient_bytes)");
-            log(sha256(recipient_bytes));
-
             let hashed_leaf = leaf_digest(sha256(recipient_bytes));
-            log("hashed_leaf");
-            log(hashed_leaf);
 
-            log("root");
-            log(root);
-
-            log("proof");
-            log(proof.unwrap());
-
-            log("key");
-            log(key);
-
-            log("num_leaves");
-            log(num_leaves);
             // Verify the Merkle proof
             require(
                 verify_proof(
@@ -432,7 +409,6 @@ impl SRC3PayableExtension for Contract {
                 MintError::ExceededMaxMintLimit
             );
         }
-        
 
         let mut total_price: u64 = 0;
         let mut total_fee: u64 = 0;
