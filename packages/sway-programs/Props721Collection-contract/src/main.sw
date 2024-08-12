@@ -423,33 +423,6 @@ impl SRC3PayableExtension for Contract {
             MintError::MaxNFTsMinted,
         );
 
-        let mut minted_count = 0;
-
-        while minted_count < amount {
-            let new_minted_id = last_minted_id + 1;
-            let new_sub_id = new_minted_id.as_u256().as_b256();
-            let asset = AssetId::new(ContractId::this(), new_sub_id);
-
-            storage.assets_to_sub_id.insert(asset, new_sub_id);
-
-            // Mint the NFT
-            let _ = _mint(
-                storage
-                    .total_assets,
-                storage
-                    .total_supply,
-                recipient,
-                new_sub_id,
-                1,
-            );
-
-            last_minted_id = new_minted_id;
-            minted_count += 1;
-        }
-
-        // Update last minted id in storage
-        storage.last_minted_id.write(last_minted_id);
-
         // Check and transfer builder fee
         if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
             if BUILDER_FEE > 0 {
@@ -506,6 +479,33 @@ impl SRC3PayableExtension for Contract {
                 }
             }
         }
+
+        let mut minted_count = 0;
+
+        while minted_count < amount {
+            let new_minted_id = last_minted_id + 1;
+            let new_sub_id = new_minted_id.as_u256().as_b256();
+            let asset = AssetId::new(ContractId::this(), new_sub_id);
+
+            storage.assets_to_sub_id.insert(asset, new_sub_id);
+
+            // Mint the NFT
+            let _ = _mint(
+                storage
+                    .total_assets,
+                storage
+                    .total_supply,
+                recipient,
+                new_sub_id,
+                1,
+            );
+
+            last_minted_id = new_minted_id;
+            minted_count += 1;
+        }
+
+        // Update last minted id in storage
+        storage.last_minted_id.write(last_minted_id);
 
     }
 

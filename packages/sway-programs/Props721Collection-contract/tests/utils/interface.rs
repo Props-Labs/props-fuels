@@ -58,7 +58,7 @@ pub(crate) async fn mint(
         ContractId::from_str("0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a")
         .unwrap(),
     );
-    println!("fee_contract_id: {:?}", fee_contract_id);
+    // println!("fee_contract_id: {:?}", fee_contract_id);
     contract
         .methods()
         .mint(recipient, sub_id, amount, affilate)

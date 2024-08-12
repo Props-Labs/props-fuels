@@ -51,17 +51,20 @@ pub(crate) async fn mint(
     amount: u64,
     price: u64,
     fee_contract_id: ContractId,
-    affilate: Option<Identity>
+    affilate: Option<Identity>,
+    proof: Option<Vec<Bits256>>,
+    key: Option<u64>,
+    num_leaves: Option<u64>,
 ) -> FuelCallResponse<()> {
     // @dev TODO: This is a hack to get the contract id, should be refactored
     let id = Bech32ContractId::from(
         ContractId::from_str("0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a")
         .unwrap(),
     );
-    println!("fee_contract_id: {:?}", fee_contract_id);
+    // println!("fee_contract_id: {:?}", fee_contract_id);
     contract
         .methods()
-        .mint(recipient, sub_id, amount, affilate)
+        .mint(recipient, sub_id, amount, affilate, proof, key, num_leaves)
         .with_contract_ids(&[id.clone()])
         .append_variable_outputs(4)
         .call_params(CallParameters::new(price, AssetId::zeroed(), 1_000_000))
@@ -252,3 +255,26 @@ pub(crate) async fn set_dates(
         .await
         .unwrap()
 }
+
+pub(crate) async fn set_merkle_root(
+    contract: &Props721Edition<WalletUnlocked>,
+    root: Bits256,
+) -> FuelCallResponse<()> {
+    contract
+        .methods()
+        .set_merkle_root(root)
+        .call()
+        .await
+        .unwrap()
+}
+
+pub(crate) async fn merkle_root(contract: &Props721Edition<WalletUnlocked>) -> Option<Bits256> {
+    contract
+        .methods()
+        .merkle_root()
+        .call()
+        .await
+        .unwrap()
+        .value
+}
+

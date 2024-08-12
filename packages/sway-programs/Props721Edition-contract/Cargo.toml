@@ -10,6 +10,7 @@ fuels = { version = "0.62.0", features = ["fuel-core-lib"] }
 sha2 = { version = "0.10.7" }
 tokio = { version = "1.12", features = ["rt", "macros"] }
 tai64 = { version = "4.0.0", default-features = false }
+fuel-merkle = { version = "0.50.0" }
 
 [[test]]
 harness = true
