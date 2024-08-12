@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, metadata, base_uri, mint},
-    setup::{defaults, setup, default_name, default_price, default_base_uri, default_symbol, Metadata},
+    setup::{defaults, default_start_date, default_end_date,setup, default_name, default_price, default_base_uri, default_symbol, Metadata},
 };
 
 mod success {
@@ -22,7 +22,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
         
         mint(&instance_1, other_identity, sub_id_1, 3, 0, fee_id, None).await;
 
@@ -61,7 +61,7 @@ mod success {
     //     let metadata3 = Metadata::String(String::from("Fuel NFT Metadata 3"));
     //     let key = String::from("key1");
 
-    //     constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+    //     constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
     //     assert_eq!(metadata(&instance_1, asset_id_1, key.clone()).await, None);
     //     set_metadata(&instance_1, asset_id_1, key.clone(), metadata1.clone()).await;
@@ -107,7 +107,7 @@ mod success {
     //     let key2 = String::from("key2");
     //     let key3 = String::from("key3");
 
-    //     constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+    //     constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
     //     assert_eq!(metadata(&instance_1, asset_id_1, key1.clone()).await, None);
     //     set_metadata(&instance_1, asset_id_1, key1.clone(), metadata1.clone()).await;

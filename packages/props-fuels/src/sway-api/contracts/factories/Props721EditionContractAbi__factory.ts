@@ -176,6 +176,11 @@ const _abi = {
           "name": "InvalidAsset",
           "type": 0,
           "typeArguments": null
+        },
+        {
+          "name": "OutsideMintingPeriod",
+          "type": 26,
+          "typeArguments": null
         }
       ],
       "typeParameters": null
@@ -2969,6 +2974,155 @@ const _abi = {
     },
     {
       "inputs": [],
+      "name": "end_date",
+      "output": {
+        "name": "",
+        "type": 11,
+        "typeArguments": [
+          {
+            "name": "",
+            "type": 28,
+            "typeArguments": null
+          }
+        ]
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the end date of the contract."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * [Option<u64>] - The end date if set, otherwise `None`."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Reads: `1`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let end = mint_abi.end_date();"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     assert(end.is_some());"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [],
       "name": "fees",
       "output": {
         "name": "",
@@ -3256,6 +3410,172 @@ const _abi = {
     {
       "inputs": [
         {
+          "name": "start",
+          "type": 28,
+          "typeArguments": null
+        },
+        {
+          "name": "end",
+          "type": 28,
+          "typeArguments": null
+        }
+      ],
+      "name": "set_dates",
+      "output": {
+        "name": "",
+        "type": 0,
+        "typeArguments": null
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Sets the start and end dates for the contract."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `start`: [u64] - The start date to set."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `end`: [u64] - The end date to set."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Writes: `2`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     mint_abi.set_dates(1000, 2000);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     assert_eq!(mint_abi.start_date(), Some(1000));"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     assert_eq!(mint_abi.end_date(), Some(2000));"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "write"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
           "name": "price",
           "type": 28,
           "typeArguments": null
@@ -3422,6 +3742,155 @@ const _abi = {
           "name": "storage",
           "arguments": [
             "write"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [],
+      "name": "start_date",
+      "output": {
+        "name": "",
+        "type": 11,
+        "typeArguments": [
+          {
+            "name": "",
+            "type": 28,
+            "typeArguments": null
+          }
+        ]
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the start date of the contract."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * [Option<u64>] - The start date if set, otherwise `None`."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Reads: `1`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let start = mint_abi.start_date();"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     assert(start.is_some());"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read"
           ]
         }
       ]
@@ -4041,6 +4510,16 @@ const _abi = {
           "name": "price",
           "type": 28,
           "typeArguments": null
+        },
+        {
+          "name": "start_date",
+          "type": 28,
+          "typeArguments": null
+        },
+        {
+          "name": "end_date",
+          "type": 28,
+          "typeArguments": null
         }
       ],
       "name": "constructor",
@@ -4317,7 +4796,7 @@ const _abi = {
         "type": 28,
         "typeArguments": null
       },
-      "offset": 61840
+      "offset": 65808
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
@@ -4326,7 +4805,7 @@ const _abi = {
         "type": 19,
         "typeArguments": []
       },
-      "offset": 61760
+      "offset": 65728
     },
     {
       "name": "BUILDER_FEE",
@@ -4335,7 +4814,7 @@ const _abi = {
         "type": 28,
         "typeArguments": null
       },
-      "offset": 61752
+      "offset": 65720
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
@@ -4344,7 +4823,7 @@ const _abi = {
         "type": 19,
         "typeArguments": []
       },
-      "offset": 61792
+      "offset": 65760
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
@@ -4353,7 +4832,7 @@ const _abi = {
         "type": 28,
         "typeArguments": null
       },
-      "offset": 61824
+      "offset": 65792
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
@@ -4362,7 +4841,7 @@ const _abi = {
         "type": 28,
         "typeArguments": null
       },
-      "offset": 61744
+      "offset": 65712
     },
     {
       "name": "DISABLE_AIRDROP",
@@ -4371,7 +4850,7 @@ const _abi = {
         "type": 4,
         "typeArguments": null
       },
-      "offset": 61832
+      "offset": 65800
     }
   ]
 };
@@ -4382,7 +4861,15 @@ const _storageSlots: StorageSlot[] = [
     "value": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   {
+    "key": "6ff1aad450c6efa5fb25018d766e89657bdc402a52fd18534d3dd8e57754bb5a",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
     "key": "93b67ee4f0f76b71456fb4385c86aec15689e1ce5f6f6ac63b71716afa052998",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+    "key": "c7c3b07214edcb8f48f059d96016a2e10272a59bc773f5305c81935422e55e83",
     "value": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   {

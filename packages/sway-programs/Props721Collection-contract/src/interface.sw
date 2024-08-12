@@ -28,5 +28,5 @@ abi SetTokenUri {
 
 abi Props721Collection {
     #[storage(read, write)]
-    fn constructor(owner: Identity, name: String, symbol: String, baseUri: String, price: u64);
+    fn constructor(owner: Identity, name: String, symbol: String, baseUri: String, price: u64, startDate: u64, endDate: u64);
 }

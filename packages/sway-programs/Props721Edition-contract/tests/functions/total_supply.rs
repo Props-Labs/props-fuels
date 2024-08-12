@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{burn, constructor, mint, total_supply},
-    setup::{defaults, setup, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values},
+    setup::{defaults, setup, default_start_date, default_end_date, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values},
 };
 
 mod success {
@@ -21,7 +21,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
@@ -42,7 +42,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
@@ -71,7 +71,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
@@ -98,7 +98,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 

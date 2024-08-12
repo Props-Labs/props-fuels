@@ -25,20 +25,7 @@ abi SRC7MetadataExtension {
     fn metadata_keys() -> Vec<String>;
 }
 
-abi SetMintMetadata {
-    #[storage(write)]
-    fn set_price(price: u64);
-
-    #[storage(read)]
-    fn price() -> Option<u64>;
-
-    #[storage(read)]
-    fn total_price() -> Option<u64>;
-
-    fn fees() -> Option<(u64, u64)>;
-}
-
 abi Props721Edition {
     #[storage(read, write)]
-    fn constructor(owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64);
+    fn constructor(owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64, start_date: u64, end_date: u64);
 }

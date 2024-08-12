@@ -35,8 +35,8 @@ export enum InitializationErrorInput { CannotReinitialized = 'CannotReinitialize
 export enum InitializationErrorOutput { CannotReinitialized = 'CannotReinitialized' };
 export type MetadataInput = Enum<{ B256: string, Bytes: Bytes, Int: BigNumberish, String: StdString }>;
 export type MetadataOutput = Enum<{ B256: string, Bytes: Bytes, Int: BN, String: StdString }>;
-export type MintErrorInput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BigNumberish, InvalidAsset: [] }>;
-export type MintErrorOutput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BN, InvalidAsset: [] }>;
+export type MintErrorInput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BigNumberish, InvalidAsset: [], OutsideMintingPeriod: StdString }>;
+export type MintErrorOutput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BN, InvalidAsset: [], OutsideMintingPeriod: StdString }>;
 export enum PauseErrorInput { Paused = 'Paused', NotPaused = 'NotPaused' };
 export enum PauseErrorOutput { Paused = 'Paused', NotPaused = 'NotPaused' };
 export enum ReentrancyErrorInput { NonReentrant = 'NonReentrant' };
@@ -77,9 +77,12 @@ export interface Props721CollectionContractAbiInterface extends Interface {
     base_uri: FunctionFragment;
     set_base_uri: FunctionFragment;
     owner: FunctionFragment;
+    end_date: FunctionFragment;
     fees: FunctionFragment;
     price: FunctionFragment;
+    set_dates: FunctionFragment;
     set_price: FunctionFragment;
+    start_date: FunctionFragment;
     total_price: FunctionFragment;
     is_paused: FunctionFragment;
     pause: FunctionFragment;
@@ -103,13 +106,16 @@ export class Props721CollectionContractAbi extends Contract {
     base_uri: InvokeFunction<[], Option<StdString>>;
     set_base_uri: InvokeFunction<[uri: StdString], void>;
     owner: InvokeFunction<[], StateOutput>;
+    end_date: InvokeFunction<[], Option<BN>>;
     fees: InvokeFunction<[], Option<[BN, BN]>>;
     price: InvokeFunction<[], Option<BN>>;
+    set_dates: InvokeFunction<[start: BigNumberish, end: BigNumberish], void>;
     set_price: InvokeFunction<[price: BigNumberish], void>;
+    start_date: InvokeFunction<[], Option<BN>>;
     total_price: InvokeFunction<[], Option<BN>>;
     is_paused: InvokeFunction<[], boolean>;
     pause: InvokeFunction<[], void>;
     unpause: InvokeFunction<[], void>;
-    constructor: InvokeFunction<[owner: IdentityInput, name: StdString, symbol: StdString, base_uri: StdString, price: BigNumberish], void>;
+    constructor: InvokeFunction<[owner: IdentityInput, name: StdString, symbol: StdString, base_uri: StdString, price: BigNumberish, start_date: BigNumberish, end_date: BigNumberish], void>;
   };
 }

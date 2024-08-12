@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, metadata, set_metadata},
-    setup::{defaults, setup, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values, Metadata},
+    setup::{defaults, setup, default_start_date, default_end_date, default_name, default_price, default_symbol, default_metadata_keys, default_metadata_values, Metadata},
 };
 use fuels::types::Bytes;
 
@@ -25,7 +25,7 @@ mod success {
         let metadata1 = Metadata::String(String::from("Fuel NFT Metadata"));
         let key = String::from("key1");
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(metadata(&instance_1, asset_id_1, key.clone()).await, None);
 
@@ -55,7 +55,7 @@ mod success {
         let metadata3 = Metadata::String(String::from("Fuel NFT Metadata 3"));
         let key = String::from("key1");
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(metadata(&instance_1, asset_id_1, key.clone()).await, None);
         set_metadata(&instance_1, asset_id_1, key.clone(), metadata1.clone()).await;
@@ -98,7 +98,7 @@ mod success {
         let metadata3 = Metadata::String(String::from("Fuel NFT Metadata 3"));
         let key = String::from("key1");
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(metadata(&instance_1, asset_id_1, key.clone()).await, None);
         set_metadata(&instance_1, asset_id_1, key.clone(), metadata1.clone()).await;
@@ -158,7 +158,7 @@ mod success {
         let key2 = String::from("key2");
         let key3 = String::from("key3");
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(metadata(&instance_1, asset_id_1, key1.clone()).await, None);
         set_metadata(&instance_1, asset_id_1, key1.clone(), metadata1.clone()).await;
@@ -217,7 +217,7 @@ mod revert {
         let metadata1 = Metadata::String(String::from("Fuel NFT Metadata 1"));
         let key = String::from("key1");
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         set_metadata(&instance_2, asset_id_1, key, metadata1).await;
     }
@@ -240,7 +240,7 @@ mod revert {
         let metadata1 = Metadata::String(String::from("Fuel NFT Metadata 1"));
         let key = String::from("key1");
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_metadata_keys(), default_metadata_values(), default_price(), default_start_date(), default_end_date()).await;
 
         set_metadata(&instance_1, asset_id_1, key.clone(), metadata1.clone()).await;
         set_metadata(&instance_1, asset_id_1, key, metadata1).await;

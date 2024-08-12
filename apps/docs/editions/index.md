@@ -72,6 +72,40 @@ const edition: Edition = await propsClient.editions.create({
 });
 ```
 
+### With Dates
+
+The example below demonstrates how to create an edition with start and end dates. The `startDate` is the date when the edition will start, and the `endDate` is the date when the edition will end.
+
+```javascript
+import { Wallet } from 'fuels';
+import { PropsSDK, Edition } from '@props/fuels';
+
+const wallet = new Wallet('private_key');
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
+const startDate = new Date('2024-10-01').getTime().toString();
+const endDate = new Date('2025-01-31').getTime().toString();
+
+const edition: Edition = await propsClient.editions.create({
+  name: "Edition 1",
+  symbol: "ED1",
+  metadata: {
+    name: "Edition 1",
+    description: "First edition",
+    image: "image_url",
+  },
+  startDate,
+  endDate,
+  options: {
+    owner: wallet,
+    maxSupply: 1000,
+  }
+});
+```
+
 ## Minting Tokens from an Edition
 
 To mint tokens, you need to use the `mint` method of the `Edition` class. Below is a guide on how to mint tokens from an edition.

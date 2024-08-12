@@ -43,6 +43,7 @@ use std::context::msg_amount;
 use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
 use std::bytes::Bytes;
+use std::block::timestamp;
 
 use libraries::{PropsFeeSplitter, SRC3PayableExtension, SetMintMetadata};
 
@@ -89,6 +90,20 @@ storage {
 
     /// The price of minting an NFT.
     price: u64 = 0,
+
+    /// The start date for minting.
+    ///
+    /// # Type
+    ///
+    /// `u64`
+    start_date: u64 = 0,
+
+    /// The end date for minting.
+    ///
+    /// # Type
+    ///
+    /// `u64`
+    end_date: u64 = 0,
 
     /// The base URI for the NFT collection.
     base_uri: StorageString = StorageString {},
@@ -374,6 +389,20 @@ impl SRC3PayableExtension for Contract {
     fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>) {
         reentrancy_guard();
         require_not_paused();
+
+        let current_time = timestamp();
+        let start_date = storage.start_date.try_read().unwrap_or(0);
+        let end_date = storage.end_date.try_read().unwrap_or(0);
+
+        require(
+            current_time >= start_date,
+            MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has not started yet."))
+        );
+
+        require(
+            current_time <= end_date,
+            MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has ended."))
+        );
 
         let mut total_price: u64 = 0;
         let mut total_fee: u64 = 0;
@@ -853,6 +882,88 @@ impl SetMintMetadata for Contract {
         Some((fee, BUILDER_FEE))
     }
 
+    /// Returns the start date of the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<u64>] - The start date if set, otherwise `None`.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let start = mint_abi.start_date();
+    ///     assert(start.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn start_date() -> Option<u64> {
+        Some(storage.start_date.try_read().unwrap_or(0))
+    }
+
+    /// Returns the end date of the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<u64>] - The end date if set, otherwise `None`.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let end = mint_abi.end_date();
+    ///     assert(end.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn end_date() -> Option<u64> {
+        Some(storage.end_date.try_read().unwrap_or(0))
+    }
+
+    /// Sets the start and end dates for the contract.
+    ///
+    /// # Arguments
+    ///
+    /// * `start`: [u64] - The start date to set.
+    /// * `end`: [u64] - The end date to set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Writes: `2`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     mint_abi.set_dates(1000, 2000);
+    ///     assert_eq!(mint_abi.start_date(), Some(1000));
+    ///     assert_eq!(mint_abi.end_date(), Some(2000));
+    /// }
+    /// ```
+    #[storage(write)]
+    fn set_dates(start: u64, end: u64) {
+        only_owner();
+        storage.start_date.write(start);
+        storage.end_date.write(end);
+    }
+
 }
 
 impl Pausable for Contract {
@@ -967,12 +1078,14 @@ impl Props721Collection for Contract {
     ///     assert(src_5_abi.owner() == State::Initialized(owner));
     /// }
     #[storage(read, write)]
-    fn constructor(owner: Identity, name: String, symbol: String, base_uri: String, price: u64) {
+    fn constructor(owner: Identity, name: String, symbol: String, base_uri: String, price: u64, start_date: u64, end_date: u64) {
         initialize_ownership(owner);
 
         storage.name.write_slice(name);
         storage.symbol.write_slice(symbol);
         storage.price.write(price);
         storage.base_uri.write_slice(base_uri);
+        storage.start_date.write(start_date);
+        storage.end_date.write(end_date);
     }
 }

@@ -228,3 +228,16 @@ pub fn default_symbol() -> String {
 pub fn default_price() -> u64 {
     0
 }
+
+pub fn default_start_date() -> u64 {
+    // TAI64 timestamp for 1970-01-01 00:00:00 UTC (Unix epoch)
+    // 4611686018427387904 (decimal) = 0x4000000000000000 (hex)
+    4611686018427387904
+}
+
+pub fn default_end_date() -> u64 {
+    // TAI64 timestamp for 2050-01-01 00:00:00 UTC
+    // This is approximately 80 years after the Unix epoch
+    // 4643769087344304128 (decimal) = 0x4061A1CAC0000000 (hex)
+    4643769087344304128
+}
