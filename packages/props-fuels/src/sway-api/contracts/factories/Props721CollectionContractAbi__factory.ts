@@ -4484,7 +4484,7 @@ const _abi = {
         "type": 24,
         "typeArguments": null
       },
-      "offset": 49528
+      "offset": 57544
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
@@ -4493,7 +4493,7 @@ const _abi = {
         "type": 17,
         "typeArguments": []
       },
-      "offset": 49448
+      "offset": 57464
     },
     {
       "name": "BUILDER_FEE",
@@ -4502,7 +4502,7 @@ const _abi = {
         "type": 24,
         "typeArguments": null
       },
-      "offset": 49440
+      "offset": 57456
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
@@ -4511,7 +4511,7 @@ const _abi = {
         "type": 17,
         "typeArguments": []
       },
-      "offset": 49480
+      "offset": 57496
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
@@ -4520,7 +4520,7 @@ const _abi = {
         "type": 24,
         "typeArguments": null
       },
-      "offset": 49512
+      "offset": 57528
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
@@ -4529,7 +4529,7 @@ const _abi = {
         "type": 24,
         "typeArguments": null
       },
-      "offset": 49432
+      "offset": 57448
     },
     {
       "name": "DISABLE_AIRDROP",
@@ -4538,7 +4538,7 @@ const _abi = {
         "type": 3,
         "typeArguments": null
       },
-      "offset": 49520
+      "offset": 57536
     }
   ]
 };

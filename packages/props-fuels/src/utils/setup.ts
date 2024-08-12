@@ -1,10 +1,11 @@
-import { WalletUnlocked, Provider, BytesLike, Address, BN, Account, randomBytes } from "fuels";
+import { WalletUnlocked, Provider, BytesLike, Address, BN, Account, randomBytes, BigNumberish } from "fuels";
 import { launchTestNode, AssetId, TestMessage } from "fuels/test-utils";
 import { Props721EditionContractAbi__factory, PropsFeeSplitterContractAbi, PropsFeeSplitterContractAbi__factory, Props721CollectionContractAbi__factory, Props721CollectionContractAbi } from "../sway-api/contracts";
 import octaneFeeSplitterBytecode from "../sway-api/contracts/PropsFeeSplitterContractAbi.hex";
 import crypto from "crypto";
 import { Props721EditionContractAbi } from "../sway-api/contracts/Props721EditionContractAbi";
 import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
+import { defaultEndDate, defaultStartDate } from "../common/defaults";
 
 export async function setup(): Promise<
     {
@@ -83,8 +84,14 @@ export async function deployProps721EditionContract(wallet1:Account): Promise<Pr
         "Test Edition",
         "TEST",
         ["name", "description", "image"],
-        [{ String: "Test Edition" }, { String: "A test edition" }, { String: "test_image_url" }],
-        0
+        [
+          { String: "Test Edition" },
+          { String: "A test edition" },
+          { String: "test_image_url" },
+        ],
+        0,
+        defaultStartDate,
+        defaultEndDate
       )
       .call();
 
@@ -120,7 +127,9 @@ export async function deployProps721CollectionContract(wallet1: Account): Promis
       "Test Collection",
       "TESTC",
       "https://example.com/metadata/",
-      0
+      0,
+      defaultStartDate,
+      defaultEndDate
     )
     .call();
 
