@@ -47,4 +47,13 @@ abi SetMintMetadata {
     fn total_price() -> Option<u64>;
 
     fn fees() -> Option<(u64, u64)>;
+
+    #[storage(read)]
+    fn start_date() -> Option<u64>;
+
+    #[storage(read)]
+    fn end_date() -> Option<u64>;
+
+    #[storage(write)]
+    fn set_dates(start: u64, end: u64);
 }

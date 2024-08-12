@@ -1,7 +1,7 @@
-import { Account, Address, BN, BytesLike } from "fuels";
+import { Account, Address, DateTime, BytesLike } from "fuels";
 import { NFTMetadata, CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
 import { PropsEventEmitter, PropsEvents } from "../core/events";
-import { defaultNetwork } from "../common/defaults";
+import { defaultEndDate, defaultNetwork, defaultStartDate } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721CollectionContractConfigurableOptions, supportedProps721CollectionContractConfigurableOptionsMapping } from "../common/constants";
 import { Props721CollectionContractAbi__factory } from "../sway-api/contracts";
 import bytecode from "../sway-api/contracts/Props721CollectionContractAbi.hex";
@@ -33,7 +33,7 @@ export class CollectionManager extends PropsEventEmitter {
    * @returns {Promise<string>} A promise that resolves to the ID of the created collection.
    */
   async create(params: CollectionCreateOptions): Promise<Collection> {
-    const { name, symbol, baseUri, price, options } = params;
+    const { name, symbol, baseUri, price, startDate, endDate, options } = params;
     // Replace the following with the actual implementation to interact with the Fuel network
     this.emit(this.events.transaction, {
       params: { name, symbol, baseUri, options },
@@ -59,8 +59,6 @@ export class CollectionManager extends PropsEventEmitter {
         },
         {} as Partial<Record<string, any>>
       );
-
-    // console.log("configurableConstants", configurableConstants);
 
     const salt: BytesLike = randomBytes(32);
     const { waitForResult } =
@@ -93,8 +91,15 @@ export class CollectionManager extends PropsEventEmitter {
       transactionCount: 2,
     });
 
+    const startDateTai = startDate
+      ? DateTime.fromUnixMilliseconds(startDate).toTai64()
+      : defaultStartDate;
+    const endDateTai = endDate
+      ? DateTime.fromUnixMilliseconds(endDate).toTai64()
+      : defaultEndDate;
+
     const { waitForResult: waitForResultConstructor } = await contract.functions
-      .constructor(addressIdentityInput, name, symbol, baseUri, price ?? 0)
+      .constructor(addressIdentityInput, name, symbol, baseUri, price ?? 0, startDateTai, endDateTai)
       .call();
 
     this.emit(this.events.pending, {

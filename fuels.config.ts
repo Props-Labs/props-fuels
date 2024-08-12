@@ -16,6 +16,7 @@ export default createConfig({
   ],
   output: "./packages/props-fuels/src/sway-api",
   fuelCorePort,
+  forcBuildFlags: ['--release'],
   providerUrl: process.env.NODE_URL,
 });
 

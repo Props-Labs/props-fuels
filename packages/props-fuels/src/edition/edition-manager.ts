@@ -1,7 +1,7 @@
-import { Account, Address, BN, BytesLike } from "fuels";
+import { Account, Address, BN, BytesLike, DateTime } from "fuels";
 import { NFTMetadata, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
 import { PropsEventEmitter, PropsEvents } from "../core/events";
-import { defaultNetwork } from "../common/defaults";
+import { defaultEndDate, defaultNetwork, defaultStartDate } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/constants";
 import { Props721EditionContractAbi__factory } from "../sway-api/contracts";
 import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
@@ -33,7 +33,7 @@ export class EditionManager extends PropsEventEmitter {
    * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
    */
   async create(params: EditionCreateOptions): Promise<Edition> {
-    const { name, symbol, metadata, price, options } = params;
+    const { name, symbol, metadata, price, startDate, endDate, options } = params;
     // Replace the following with the actual implementation to interact with the Fuel network
     this.emit(this.events.transaction, {
       params: { name, symbol, metadata, options },
@@ -95,6 +95,13 @@ export class EditionManager extends PropsEventEmitter {
 
     // console.log("metadata in sdk: ", metadata, encodeMetadataValues(metadata));
 
+    const startDateTai = startDate
+      ? DateTime.fromUnixMilliseconds(startDate).toTai64()
+      : defaultStartDate;
+    const endDateTai = endDate
+      ? DateTime.fromUnixMilliseconds(endDate).toTai64()
+      : defaultEndDate;
+
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
         addressIdentityInput,
@@ -102,7 +109,9 @@ export class EditionManager extends PropsEventEmitter {
         symbol,
         Object.keys(metadata),
         encodeMetadataValues(metadata),
-        price ?? 0
+        price ?? 0,
+        startDateTai,
+        endDateTai,
       )
       .call();
 

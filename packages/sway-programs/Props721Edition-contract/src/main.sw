@@ -4,7 +4,7 @@ mod errors;
 mod interface;
 
 use errors::{MintError, SetError};
-use interface::{Props721Edition, SetMintMetadata, SRC3PayableExtension, SRC7MetadataExtension};
+use interface::{Props721Edition, SRC3PayableExtension, SRC7MetadataExtension};
 use standards::{src20::SRC20, src3::SRC3, src5::{SRC5, State}, src7::{Metadata, SRC7},};
 use sway_libs::{
     asset::{
@@ -43,8 +43,9 @@ use std::logging::log;
 use std::context::msg_amount;
 use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
+use std::block::timestamp;
 
-use libraries::{PropsFeeSplitter};
+use libraries::{PropsFeeSplitter,SetMintMetadata};
 
 const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
 
@@ -349,6 +350,20 @@ impl SRC3PayableExtension for Contract {
     fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>) {
         reentrancy_guard();
         require_not_paused();
+
+        let current_time = timestamp();
+        let start_date = storage.start_date.try_read().unwrap_or(0);
+        let end_date = storage.end_date.try_read().unwrap_or(0);
+
+        require(
+            current_time >= start_date,
+            MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has not started yet."))
+        );
+
+        require(
+            current_time <= end_date,
+            MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has ended."))
+        );
 
         let mut total_price: u64 = 0;
         let mut total_fee: u64 = 0;
@@ -946,6 +961,7 @@ impl SetMintMetadata for Contract {
     /// ```
     #[storage(write)]
     fn set_dates(start: u64, end: u64) {
+        only_owner();
         storage.start_date.write(start);
         storage.end_date.write(end);
     }

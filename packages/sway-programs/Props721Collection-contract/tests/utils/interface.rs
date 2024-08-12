@@ -115,8 +115,10 @@ pub(crate) async fn constructor(
     symbol: String,
     base_uri: String,
     price: u64,
+    start_date: u64,
+    end_date: u64,
 ) -> FuelCallResponse<()> {
-    let resp = contract.methods().constructor(owner, name, symbol, base_uri, price).call().await.unwrap();
+    let resp = contract.methods().constructor(owner, name, symbol, base_uri, price, start_date, end_date).call().await.unwrap();
     resp
 }
 
@@ -198,4 +200,25 @@ pub(crate) async fn fee(contract: &PropsFeeSplitter<WalletUnlocked>) -> Option<u
         .await
         .unwrap()
         .value
+}
+
+pub(crate) async fn start_date(contract: &Props721Collection<WalletUnlocked>) -> Option<u64> {
+    contract.methods().start_date().call().await.unwrap().value
+}
+
+pub(crate) async fn end_date(contract: &Props721Collection<WalletUnlocked>) -> Option<u64> {
+    contract.methods().end_date().call().await.unwrap().value
+}
+
+pub(crate) async fn set_dates(
+    contract: &Props721Collection<WalletUnlocked>,
+    start_date: u64,
+    end_date: u64,
+) -> FuelCallResponse<()> {
+    contract
+        .methods()
+        .set_dates(start_date, end_date)
+        .call()
+        .await
+        .unwrap()
 }

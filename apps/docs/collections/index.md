@@ -64,6 +64,36 @@ const collection: Collection = await propsClient.collections.create({
 });
 ```
 
+### With Dates
+
+The example below demonstrates how to create a collection with start and end dates. The `startDate` is the date when the collection will start, and the `endDate` is the date when the collection will end.
+
+```javascript
+import { Wallet } from 'fuels';
+import { PropsSDK, Collection } from '@props/fuels';
+
+const wallet = new Wallet('private_key');
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
+const startDate = new Date('2024-10-01').getTime();
+const endDate = new Date('2025-01-31').getTime();
+
+const collection: Collection = await propsClient.collections.create({
+  name:"Collection 1",
+  symbol: "ED1",
+  baseUri: "ipfs://bafybeiaad7jp7bsk2fubp4wmks56yxevoz7ywst5fd4gqdschuqonpd2ee/",
+  startDate,
+  endDate,
+  options: {
+    owner: wallet,
+    maxSupply: 1000,
+  }
+});
+```
+
 ## Minting Tokens from an Collection
 
 To mint tokens, you need to use the `mint` method of the `Collection` class. Below is a guide on how to mint tokens from an collection.

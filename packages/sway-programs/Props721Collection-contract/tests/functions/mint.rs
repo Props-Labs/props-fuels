@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{burn, constructor, mint, pause, total_assets, total_supply, set_fee, fee, fee_constructor, set_price},
-    setup::{defaults, get_wallet_balance, setup, deploy_edition_with_builder_fee, default_name, default_symbol, default_price, default_base_uri},
+    setup::{defaults, default_start_date, default_end_date,get_wallet_balance, setup, deploy_edition_with_builder_fee, default_name, default_symbol, default_price, default_base_uri},
 };
 use fuels::{
     types::{Bits256,AssetId,Identity},
@@ -24,7 +24,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -54,7 +54,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 1);
@@ -96,7 +96,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -144,7 +144,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -188,7 +188,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -241,7 +241,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -291,7 +291,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -349,7 +349,7 @@ mod success {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(get_wallet_balance(&other_wallet, &asset_id_1).await, 0);
         assert_eq!(total_supply(&instance_1, asset_id_1).await, None);
@@ -410,7 +410,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet);
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         pause(&instance_1).await;
 
@@ -432,7 +432,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet);
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id, None).await;
@@ -455,7 +455,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet);
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
         mint(&instance_1, other_identity, sub_id_1, 1, 0, fee_id, None).await;
         mint(&instance_1, other_identity, sub_id_2, 1, 0, fee_id, None).await;
         mint(&instance_1, other_identity, sub_id_3, 1, 0, fee_id, None).await;
@@ -480,7 +480,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet);
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
         set_price(&instance_1, 1_000).await;
 
         mint(&instance_1, other_identity, sub_id_1, 1, 500, fee_id, None).await;
@@ -501,7 +501,7 @@ mod revert {
             other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
         set_price(&instance_1, 1_000).await;
 
         fee_constructor(&fee_instance_1, owner_identity).await;

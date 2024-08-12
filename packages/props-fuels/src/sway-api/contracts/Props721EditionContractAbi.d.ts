@@ -35,8 +35,8 @@ export enum InitializationErrorInput { CannotReinitialized = 'CannotReinitialize
 export enum InitializationErrorOutput { CannotReinitialized = 'CannotReinitialized' };
 export type MetadataInput = Enum<{ B256: string, Bytes: Bytes, Int: BigNumberish, String: StdString }>;
 export type MetadataOutput = Enum<{ B256: string, Bytes: Bytes, Int: BN, String: StdString }>;
-export type MintErrorInput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BigNumberish, InvalidAsset: [] }>;
-export type MintErrorOutput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BN, InvalidAsset: [] }>;
+export type MintErrorInput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BigNumberish, InvalidAsset: [], OutsideMintingPeriod: StdString }>;
+export type MintErrorOutput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BN, InvalidAsset: [], OutsideMintingPeriod: StdString }>;
 export enum PauseErrorInput { Paused = 'Paused', NotPaused = 'NotPaused' };
 export enum PauseErrorOutput { Paused = 'Paused', NotPaused = 'NotPaused' };
 export enum ReentrancyErrorInput { NonReentrant = 'NonReentrant' };
@@ -80,9 +80,12 @@ export interface Props721EditionContractAbiInterface extends Interface {
     total_metadata: FunctionFragment;
     owner: FunctionFragment;
     set_metadata: FunctionFragment;
+    end_date: FunctionFragment;
     fees: FunctionFragment;
     price: FunctionFragment;
+    set_dates: FunctionFragment;
     set_price: FunctionFragment;
+    start_date: FunctionFragment;
     total_price: FunctionFragment;
     is_paused: FunctionFragment;
     pause: FunctionFragment;
@@ -107,13 +110,16 @@ export class Props721EditionContractAbi extends Contract {
     total_metadata: InvokeFunction<[asset: AssetIdInput], Option<Vec<[StdString, MetadataOutput]>>>;
     owner: InvokeFunction<[], StateOutput>;
     set_metadata: InvokeFunction<[asset: AssetIdInput, key: StdString, metadata: MetadataInput], void>;
+    end_date: InvokeFunction<[], Option<BN>>;
     fees: InvokeFunction<[], Option<[BN, BN]>>;
     price: InvokeFunction<[], Option<BN>>;
+    set_dates: InvokeFunction<[start: BigNumberish, end: BigNumberish], void>;
     set_price: InvokeFunction<[price: BigNumberish], void>;
+    start_date: InvokeFunction<[], Option<BN>>;
     total_price: InvokeFunction<[], Option<BN>>;
     is_paused: InvokeFunction<[], boolean>;
     pause: InvokeFunction<[], void>;
     unpause: InvokeFunction<[], void>;
-    constructor: InvokeFunction<[owner: IdentityInput, name: StdString, symbol: StdString, metadata_keys: Vec<StdString>, metadata_values: Vec<MetadataInput>, price: BigNumberish], void>;
+    constructor: InvokeFunction<[owner: IdentityInput, name: StdString, symbol: StdString, metadata_keys: Vec<StdString>, metadata_values: Vec<MetadataInput>, price: BigNumberish, start_date: BigNumberish, end_date: BigNumberish], void>;
   };
 }

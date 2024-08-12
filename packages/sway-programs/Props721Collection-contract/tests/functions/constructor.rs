@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, owner, base_uri, price},
-    setup::{defaults, setup, deploy_edition_with_builder_fee, default_name, default_price, default_base_uri, default_symbol, State},
+    setup::{defaults, default_start_date, default_end_date,setup, deploy_edition_with_builder_fee, default_name, default_price, default_base_uri, default_symbol, State},
 };
 
 mod success {
@@ -21,7 +21,7 @@ mod success {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(owner(&instance_1).await, State::Initialized(owner_identity));
         assert_eq!(base_uri(&instance_1).await,
@@ -48,7 +48,7 @@ mod success {
             _other_identity,
         ) = defaults(id, owner_wallet, other_wallet.clone());
 
-        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price()).await;
+        constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
 
         assert_eq!(owner(&instance_1).await, State::Initialized(owner_identity));
         assert_eq!(base_uri(&instance_1).await,

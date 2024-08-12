@@ -56,26 +56,34 @@ export type NFTMetadata = {
 };
 
 export type EditionCreateOptions = {
-    /**
-     * The name of the edition to create.
-     */
-    name: string;
-    /**
-     * The symbol of the edition to create.
-     */
-    symbol: string;
-    /**
-     * The metadata for the edition.
-     */
-    metadata: NFTMetadata;
-    /**
-     * The price of the edition on the Base Asset (Wei, ETH).
-     */
-    price?: number;
-    /**
-     * The configuration options for the edition creation.
-     */
-    options: EditionCreateConfigurationOptions;
+  /**
+   * The name of the edition to create.
+   */
+  name: string;
+  /**
+   * The symbol of the edition to create.
+   */
+  symbol: string;
+  /**
+   * The metadata for the edition.
+   */
+  metadata: NFTMetadata;
+  /**
+   * The price of the edition on the Base Asset (Wei, ETH).
+   */
+  price?: number;
+  /**
+   * The start date for minting tokens in the edition, in Unix milliseconds (optional).
+   */
+  startDate?: number;
+  /**
+   * The end date for minting tokens in the edition, in Unix milliseconds (optional).
+   */
+  endDate?: number;
+  /**
+   * The configuration options for the edition creation.
+   */
+  options: EditionCreateConfigurationOptions;
 };
 
 export type EditionCreateConfigurationOptions = {
@@ -126,6 +134,16 @@ export type CollectionCreateOptions = {
      * The price of tokens in the collection (optional).
      */
     price?: number;
+    /**
+     * The start date for minting tokens in the collection (optional).
+     * Represented as Unix milliseconds (milliseconds since January 1, 1970).
+     */
+    startDate?: number;
+    /**
+     * The end date for minting tokens in the collection (optional).
+     * Represented as Unix milliseconds (milliseconds since January 1, 1970).
+     */
+    endDate?: number;
     /**
      * The configuration options for the collection creation.
      */
