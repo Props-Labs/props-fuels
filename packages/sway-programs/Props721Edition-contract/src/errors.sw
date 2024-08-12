@@ -10,6 +10,7 @@ pub enum MintError {
     InvalidAsset: (),
     OutsideMintingPeriod: String,
     InvalidProof: (),
+    ExceededMaxMintLimit: (),
 }
 
 pub enum SetError {

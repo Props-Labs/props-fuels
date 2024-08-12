@@ -107,6 +107,13 @@ storage {
     ///
     /// `b256`
     merkle_root: b256 = 0x0000000000000000000000000000000000000000000000000000000000000000,
+
+    /// A mapping to track the number of NFTs minted by each address.
+    ///
+    /// # Type
+    ///
+    /// `StorageMap<Identity, u64>`
+    minted_by_address: StorageMap<Identity, u64> = StorageMap {},
 }
 
 configurable {
@@ -354,7 +361,7 @@ impl SRC3PayableExtension for Contract {
     /// }
     /// ```
     #[storage(read, write), payable]
-    fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>, proof: Option<Vec<b256>>, key: Option<u64>, num_leaves: Option<u64>) {
+    fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>, proof: Option<Vec<b256>>, key: Option<u64>, num_leaves: Option<u64>, max_amount: Option<u64>) {
         reentrancy_guard();
         require_not_paused();
 
@@ -380,7 +387,7 @@ impl SRC3PayableExtension for Contract {
             log("recipient_bits");
             log(recipient_bits);
             let mut recipient_bytes:Bytes = recipient_bits.to_le_bytes();
-            let amount_bytes = amount.to_le_bytes();
+            let amount_bytes = max_amount.unwrap_or(amount).to_le_bytes();
             log("amount_bytes");
             log(amount_bytes);
             recipient_bytes.append(amount_bytes);
@@ -416,6 +423,13 @@ impl SRC3PayableExtension for Contract {
                     proof.unwrap()
                 ),
                 MintError::InvalidProof
+            );
+
+            // Check if the recipient has not exceeded their maximum minting limit
+            let minted_count: u64 = storage.minted_by_address.get(recipient).try_read().unwrap_or(0);
+            require(
+                minted_count + amount <= max_amount.unwrap_or(0),
+                MintError::ExceededMaxMintLimit
             );
         }
         
@@ -518,6 +532,8 @@ impl SRC3PayableExtension for Contract {
 
         // Update last minted id in storage
         storage.last_minted_id.write(last_minted_id);
+        let existing_count: u64 = storage.minted_by_address.get(recipient).try_read().unwrap_or(0);
+        storage.minted_by_address.insert(recipient, existing_count + minted_count);
 
     }
 

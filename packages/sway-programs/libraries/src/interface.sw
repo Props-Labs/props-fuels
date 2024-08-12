@@ -29,7 +29,7 @@ abi PropsFeeSplitter {
 abi SRC3PayableExtension {
     #[payable]
     #[storage(read, write)]
-    fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>, proof: Option<Vec<b256>>, key: Option<u64>, num_leaves: Option<u64>);
+    fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>, proof: Option<Vec<b256>>, key: Option<u64>, num_leaves: Option<u64>, max_amount: Option<u64>);
 
     #[storage(read, write)]
     fn airdrop(recipient: Identity, amount: u64);
