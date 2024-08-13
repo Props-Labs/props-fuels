@@ -28,12 +28,12 @@ const _abi = {
       "components": [
         {
           "name": "__tuple_element",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         },
         {
           "name": "__tuple_element",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         }
       ],
@@ -81,12 +81,12 @@ const _abi = {
       "components": [
         {
           "name": "Address",
-          "type": 17,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "ContractId",
-          "type": 20,
+          "type": 21,
           "typeArguments": null
         }
       ],
@@ -115,17 +115,17 @@ const _abi = {
         },
         {
           "name": "Bytes",
-          "type": 19,
+          "type": 20,
           "typeArguments": null
         },
         {
           "name": "Int",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         },
         {
           "name": "String",
-          "type": 23,
+          "type": 25,
           "typeArguments": null
         }
       ],
@@ -152,7 +152,7 @@ const _abi = {
         },
         {
           "name": "NotEnoughTokens",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         },
         {
@@ -162,7 +162,17 @@ const _abi = {
         },
         {
           "name": "OutsideMintingPeriod",
-          "type": 23,
+          "type": 25,
+          "typeArguments": null
+        },
+        {
+          "name": "InvalidProof",
+          "type": 0,
+          "typeArguments": null
+        },
+        {
+          "name": "ExceededMaxMintLimit",
+          "type": 0,
           "typeArguments": null
         }
       ],
@@ -179,12 +189,12 @@ const _abi = {
         },
         {
           "name": "Some",
-          "type": 14,
+          "type": 15,
           "typeArguments": null
         }
       ],
       "typeParameters": [
-        14
+        15
       ]
     },
     {
@@ -206,6 +216,23 @@ const _abi = {
     },
     {
       "typeId": 12,
+      "type": "enum ProofError",
+      "components": [
+        {
+          "name": "InvalidKey",
+          "type": 0,
+          "typeArguments": null
+        },
+        {
+          "name": "InvalidProofLength",
+          "type": 0,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 13,
       "type": "enum ReentrancyError",
       "components": [
         {
@@ -217,7 +244,7 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 13,
+      "typeId": 14,
       "type": "enum State",
       "components": [
         {
@@ -239,25 +266,25 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 14,
+      "typeId": 15,
       "type": "generic T",
       "components": null,
       "typeParameters": null
     },
     {
-      "typeId": 15,
+      "typeId": 16,
       "type": "raw untyped ptr",
       "components": null,
       "typeParameters": null
     },
     {
-      "typeId": 16,
+      "typeId": 17,
       "type": "str",
       "components": null,
       "typeParameters": null
     },
     {
-      "typeId": 17,
+      "typeId": 18,
       "type": "struct Address",
       "components": [
         {
@@ -269,7 +296,7 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 18,
+      "typeId": 19,
       "type": "struct AssetId",
       "components": [
         {
@@ -281,24 +308,24 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 19,
+      "typeId": 20,
       "type": "struct Bytes",
       "components": [
         {
           "name": "buf",
-          "type": 22,
+          "type": 23,
           "typeArguments": null
         },
         {
           "name": "len",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         }
       ],
       "typeParameters": null
     },
     {
-      "typeId": 20,
+      "typeId": 21,
       "type": "struct ContractId",
       "components": [
         {
@@ -310,7 +337,7 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 21,
+      "typeId": 22,
       "type": "struct OwnershipSet",
       "components": [
         {
@@ -322,29 +349,17 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 22,
+      "typeId": 23,
       "type": "struct RawBytes",
       "components": [
         {
           "name": "ptr",
-          "type": 15,
+          "type": 16,
           "typeArguments": null
         },
         {
           "name": "cap",
-          "type": 24,
-          "typeArguments": null
-        }
-      ],
-      "typeParameters": null
-    },
-    {
-      "typeId": 23,
-      "type": "struct String",
-      "components": [
-        {
-          "name": "bytes",
-          "type": 19,
+          "type": 27,
           "typeArguments": null
         }
       ],
@@ -352,12 +367,68 @@ const _abi = {
     },
     {
       "typeId": 24,
+      "type": "struct RawVec",
+      "components": [
+        {
+          "name": "ptr",
+          "type": 16,
+          "typeArguments": null
+        },
+        {
+          "name": "cap",
+          "type": 27,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": [
+        15
+      ]
+    },
+    {
+      "typeId": 25,
+      "type": "struct String",
+      "components": [
+        {
+          "name": "bytes",
+          "type": 20,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 26,
+      "type": "struct Vec",
+      "components": [
+        {
+          "name": "buf",
+          "type": 24,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 15,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "len",
+          "type": 27,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": [
+        15
+      ]
+    },
+    {
+      "typeId": 27,
       "type": "u64",
       "components": null,
       "typeParameters": null
     },
     {
-      "typeId": 25,
+      "typeId": 28,
       "type": "u8",
       "components": null,
       "typeParameters": null
@@ -368,7 +439,7 @@ const _abi = {
       "inputs": [
         {
           "name": "_asset",
-          "type": 18,
+          "type": 19,
           "typeArguments": null
         }
       ],
@@ -379,7 +450,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 25,
+            "type": 28,
             "typeArguments": null
           }
         ]
@@ -547,7 +618,7 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 18,
+          "type": 19,
           "typeArguments": null
         }
       ],
@@ -558,7 +629,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 23,
+            "type": 25,
             "typeArguments": null
           }
         ]
@@ -732,7 +803,7 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 18,
+          "type": 19,
           "typeArguments": null
         }
       ],
@@ -743,7 +814,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 23,
+            "type": 25,
             "typeArguments": null
           }
         ]
@@ -918,7 +989,7 @@ const _abi = {
       "name": "total_assets",
       "output": {
         "name": "",
-        "type": 24,
+        "type": 27,
         "typeArguments": null
       },
       "attributes": [
@@ -1060,7 +1131,7 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 18,
+          "type": 19,
           "typeArguments": null
         }
       ],
@@ -1071,7 +1142,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 24,
+            "type": 27,
             "typeArguments": null
           }
         ]
@@ -1268,7 +1339,7 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         }
       ],
@@ -1459,7 +1530,7 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         }
       ],
@@ -1707,7 +1778,7 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         },
         {
@@ -1717,6 +1788,56 @@ const _abi = {
             {
               "name": "",
               "type": 6,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "proof",
+          "type": 10,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 26,
+              "typeArguments": [
+                {
+                  "name": "",
+                  "type": 2,
+                  "typeArguments": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "key",
+          "type": 10,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 27,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "num_leaves",
+          "type": 10,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 27,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "max_amount",
+          "type": 10,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 27,
               "typeArguments": null
             }
           ]
@@ -1962,12 +2083,12 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 18,
+          "type": 19,
           "typeArguments": null
         },
         {
           "name": "key",
-          "type": 23,
+          "type": 25,
           "typeArguments": null
         }
       ],
@@ -2169,7 +2290,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 23,
+            "type": 25,
             "typeArguments": null
           }
         ]
@@ -2343,7 +2464,7 @@ const _abi = {
       "inputs": [
         {
           "name": "uri",
-          "type": 23,
+          "type": 25,
           "typeArguments": null
         }
       ],
@@ -2523,7 +2644,7 @@ const _abi = {
       "name": "owner",
       "output": {
         "name": "",
-        "type": 13,
+        "type": 14,
         "typeArguments": null
       },
       "attributes": [
@@ -2694,7 +2815,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 24,
+            "type": 27,
             "typeArguments": null
           }
         ]
@@ -2973,6 +3094,304 @@ const _abi = {
     },
     {
       "inputs": [],
+      "name": "merkle_root",
+      "output": {
+        "name": "",
+        "type": 10,
+        "typeArguments": [
+          {
+            "name": "",
+            "type": 2,
+            "typeArguments": null
+          }
+        ]
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the Merkle root for the contract."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * [Option<b256>] - The Merkle root if set, or None if not set."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Reads: `1`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let root = mint_abi.merkle_root();"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     assert(root.is_some());"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [],
+      "name": "merkle_uri",
+      "output": {
+        "name": "",
+        "type": 10,
+        "typeArguments": [
+          {
+            "name": "",
+            "type": 25,
+            "typeArguments": null
+          }
+        ]
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the Merkle URI for the contract."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * [Option<String>] - The Merkle URI if set, or None if not set."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Reads: `1`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let uri = mint_abi.merkle_uri();"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     assert(uri.is_some());"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [],
       "name": "price",
       "output": {
         "name": "",
@@ -2980,7 +3399,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 24,
+            "type": 27,
             "typeArguments": null
           }
         ]
@@ -3124,12 +3543,12 @@ const _abi = {
       "inputs": [
         {
           "name": "start",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         },
         {
           "name": "end",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         }
       ],
@@ -3289,8 +3708,323 @@ const _abi = {
     {
       "inputs": [
         {
+          "name": "root",
+          "type": 2,
+          "typeArguments": null
+        },
+        {
+          "name": "uri",
+          "type": 25,
+          "typeArguments": null
+        }
+      ],
+      "name": "set_merkle",
+      "output": {
+        "name": "",
+        "type": 0,
+        "typeArguments": null
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Sets the Merkle root and URI for the contract."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `root`: [b256] - The Merkle root to set."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `uri`: [String] - The Merkle URI to set."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Writes: `2`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let root = 0x1234567890123456789012345678901234567890123456789012345678901234;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let uri = \"https://example.com/merkle\";"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     mint_abi.set_merkle(root, uri);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "write"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
+          "name": "root",
+          "type": 2,
+          "typeArguments": null
+        }
+      ],
+      "name": "set_merkle_root",
+      "output": {
+        "name": "",
+        "type": 0,
+        "typeArguments": null
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Sets the Merkle root for the contract."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `root`: [b256] - The Merkle root to set."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Writes: `1`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let root = 0x1234567890123456789012345678901234567890123456789012345678901234;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     mint_abi.set_merkle_root(root);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "write"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
           "name": "price",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         }
       ],
@@ -3468,7 +4202,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 24,
+            "type": 27,
             "typeArguments": null
           }
         ]
@@ -3617,7 +4351,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 24,
+            "type": 27,
             "typeArguments": null
           }
         ]
@@ -4189,32 +4923,32 @@ const _abi = {
         },
         {
           "name": "name",
-          "type": 23,
+          "type": 25,
           "typeArguments": null
         },
         {
           "name": "symbol",
-          "type": 23,
+          "type": 25,
           "typeArguments": null
         },
         {
           "name": "base_uri",
-          "type": 23,
+          "type": 25,
           "typeArguments": null
         },
         {
           "name": "price",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         },
         {
           "name": "start_date",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         },
         {
           "name": "end_date",
-          "type": 24,
+          "type": 27,
           "typeArguments": null
         }
       ],
@@ -4414,7 +5148,7 @@ const _abi = {
       "logId": "10098701174489624218",
       "loggedType": {
         "name": "",
-        "type": 16,
+        "type": 17,
         "typeArguments": null
       }
     },
@@ -4454,6 +5188,14 @@ const _abi = {
       "logId": "5557842539076482339",
       "loggedType": {
         "name": "",
+        "type": 13,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "13375681076267723605",
+      "loggedType": {
+        "name": "",
         "type": 12,
         "typeArguments": []
       }
@@ -4470,7 +5212,7 @@ const _abi = {
       "logId": "16280289466020123285",
       "loggedType": {
         "name": "",
-        "type": 21,
+        "type": 22,
         "typeArguments": []
       }
     }
@@ -4481,55 +5223,55 @@ const _abi = {
       "name": "MAX_SUPPLY",
       "configurableType": {
         "name": "",
-        "type": 24,
+        "type": 27,
         "typeArguments": null
       },
-      "offset": 57544
+      "offset": 68912
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "configurableType": {
         "name": "",
-        "type": 17,
+        "type": 18,
         "typeArguments": []
       },
-      "offset": 57464
+      "offset": 68832
     },
     {
       "name": "BUILDER_FEE",
       "configurableType": {
         "name": "",
-        "type": 24,
+        "type": 27,
         "typeArguments": null
       },
-      "offset": 57456
+      "offset": 68824
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "configurableType": {
         "name": "",
-        "type": 17,
+        "type": 18,
         "typeArguments": []
       },
-      "offset": 57496
+      "offset": 68864
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "configurableType": {
         "name": "",
-        "type": 24,
+        "type": 27,
         "typeArguments": null
       },
-      "offset": 57528
+      "offset": 68896
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "configurableType": {
         "name": "",
-        "type": 24,
+        "type": 27,
         "typeArguments": null
       },
-      "offset": 57448
+      "offset": 68816
     },
     {
       "name": "DISABLE_AIRDROP",
@@ -4538,12 +5280,16 @@ const _abi = {
         "type": 3,
         "typeArguments": null
       },
-      "offset": 57536
+      "offset": 68904
     }
   ]
 };
 
 const _storageSlots: StorageSlot[] = [
+  {
+    "key": "2286c543d98eb1477657cc97f5ff083c4e5424854400fc126892df3080d5405a",
+    "value": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
   {
     "key": "6918a1552dcf7d9e72629ca9e424bda2ddfc322d7cba9d11f213f650ab7f04b9",
     "value": "0000000000000000000000000000000000000000000000000000000000000000"

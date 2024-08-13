@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / EditionCreateConfigurationOptions
+[@props/fuels](../globals.md) / EditionCreateConfigurationOptions
 
 # Type Alias: EditionCreateConfigurationOptions
 
@@ -54,4 +54,4 @@ The account associated with the edition creation. Cannot be changed after deploy
 
 ## Defined in
 
-[packages/props-fuels/src/common/types/index.ts:81](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/common/types/index.ts#L81)
+[packages/props-fuels/src/common/types/index.ts:89](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/common/types/index.ts#L89)

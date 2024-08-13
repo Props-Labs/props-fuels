@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / CollectionManager
+[@props/fuels](../globals.md) / CollectionManager
 
 # Class: CollectionManager
 
@@ -14,7 +14,7 @@ Manages collections within the Props SDK on the Fuel network.
 
 ## Extends
 
-- [`PropsEventEmitter`](PropsEventEmitter.md)
+- `PropsContractManager`
 
 ## Constructors
 
@@ -30,11 +30,25 @@ Creates a new instance of the CollectionManager class.
 
 #### Overrides
 
-[`PropsEventEmitter`](PropsEventEmitter.md).[`constructor`](PropsEventEmitter.md#constructors)
+`PropsContractManager.constructor`
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection-manager.ts:24](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection-manager.ts#L24)
+[packages/props-fuels/src/collection/collection-manager.ts:23](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection-manager.ts#L23)
+
+## Properties
+
+### events
+
+> **events**: [`PropsEvents`](PropsEvents.md)
+
+#### Inherited from
+
+`PropsContractManager.events`
+
+#### Defined in
+
+packages/props-fuels/src/contract/contract-manager.ts:8
 
 ## Methods
 
@@ -58,7 +72,7 @@ A promise that resolves to the ID of the created collection.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection-manager.ts:35](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection-manager.ts#L35)
+[packages/props-fuels/src/collection/collection-manager.ts:33](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection-manager.ts#L33)
 
 ***
 
@@ -78,11 +92,11 @@ A promise that resolves to the ID of the created collection.
 
 #### Inherited from
 
-[`PropsEventEmitter`](PropsEventEmitter.md).[`emit`](PropsEventEmitter.md#emit)
+`PropsContractManager.emit`
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:95](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L95)
+[packages/props-fuels/src/core/events.ts:95](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L95)
 
 ***
 
@@ -102,7 +116,7 @@ A promise that resolves to the ID of the created collection.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection-manager.ts:118](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection-manager.ts#L118)
+[packages/props-fuels/src/collection/collection-manager.ts:130](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection-manager.ts#L130)
 
 ***
 
@@ -122,11 +136,11 @@ A promise that resolves to the ID of the created collection.
 
 #### Inherited from
 
-[`PropsEventEmitter`](PropsEventEmitter.md).[`on`](PropsEventEmitter.md#on)
+`PropsContractManager.on`
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:88](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L88)
+[packages/props-fuels/src/core/events.ts:88](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L88)
 
 ***
 
@@ -144,11 +158,11 @@ A promise that resolves to the ID of the created collection.
 
 #### Inherited from
 
-[`PropsEventEmitter`](PropsEventEmitter.md).[`removeAllListeners`](PropsEventEmitter.md#removealllisteners)
+`PropsContractManager.removeAllListeners`
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:109](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L109)
+[packages/props-fuels/src/core/events.ts:109](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L109)
 
 ***
 
@@ -168,8 +182,8 @@ A promise that resolves to the ID of the created collection.
 
 #### Inherited from
 
-[`PropsEventEmitter`](PropsEventEmitter.md).[`removeListener`](PropsEventEmitter.md#removelistener)
+`PropsContractManager.removeListener`
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:101](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L101)
+[packages/props-fuels/src/core/events.ts:101](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L101)

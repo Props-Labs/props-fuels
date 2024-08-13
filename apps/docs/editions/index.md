@@ -72,7 +72,7 @@ const edition: Edition = await propsClient.editions.create({
 });
 ```
 
-### With Dates
+### Setting Start and End Dates
 
 The example below demonstrates how to create an edition with start and end dates. The `startDate` is the date when the edition will start, and the `endDate` is the date when the edition will end.
 
@@ -106,6 +106,7 @@ const edition: Edition = await propsClient.editions.create({
 });
 ```
 
+
 ## Minting Tokens from an Edition
 
 To mint tokens, you need to use the `mint` method of the `Edition` class. Below is a guide on how to mint tokens from an edition.
@@ -134,6 +135,44 @@ To list editions, you need to use the `list` method of the `edition` object in t
 
 ```javascript
 const editions: Edition[] = await propsClient.editions.list();
+```
+
+## Setting an Allowlist
+
+You can limit who can mint and how many they can mint by setting an allowlist. The allowlist is a list of addresses and the number of tokens they can mint.
+
+> **Note:** You can also create an allowlist without having a specific edition ready by calling the `propsClient.utils.createAllowlist` method.
+
+
+```javascript
+const rawAllowlist = [
+  { address: '0x1234567890123456789012345678901234567890', amount: 10 },
+  { address: '0x1234567890123456789012345678901234567891', amount: 10 },
+];
+
+const { root, allowlist } = edition.createAllowlist(rawAllowlist);
+
+// Save the returned allowlist as .json file 
+// and upload the file to e.g. IPFS or S3
+// ...
+
+// set the allowlist on the edition
+await edition.setAllowlist(root, "ipfs://your-allowlist.json");
+```
+
+Now only the addresses in the allowlist can mint the tokens up to the max amount they are allowed to mint.
+These addresses can be updated later by calling the `setAllowlist` method again with the new allowlist.
+
+## Setting Mint Dates
+
+When creating an edition, you can set the start and end dates for minting. This ensures that tokens can only be minted within the specified time frame.
+You can set the start and end dates by passing the dates as parameters to the `create` method as seen in [this example](#setting-start-and-end-dates), or update them later by calling the `setDates` method.
+
+
+```javascript
+const startDate = new Date('2024-10-01').getTime().toString();
+const endDate = new Date('2025-01-31').getTime().toString();
+await edition.setDates(startDate, endDate);
 ```
 
 ## Events

@@ -1,6 +1,5 @@
 import { Account, Address, DateTime, BytesLike } from "fuels";
 import { NFTMetadata, CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
-import { PropsEventEmitter, PropsEvents } from "../core/events";
 import { defaultEndDate, defaultNetwork, defaultStartDate } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721CollectionContractConfigurableOptions, supportedProps721CollectionContractConfigurableOptionsMapping } from "../common/constants";
 import { Props721CollectionContractAbi__factory } from "../sway-api/contracts";
@@ -10,13 +9,13 @@ import { executeGraphQLQuery } from "../core/fuels-api";
 import { Collection } from "../collection/collection";
 import { randomBytes } from "fuels";
 import { encodeMetadataValues } from "../utils/metadata";
+import { PropsContractManager } from "../contract/contract-manager";
 
 /**
  * @class CollectionManager
  * @classdesc Manages collections within the Props SDK on the Fuel network.
  */
-export class CollectionManager extends PropsEventEmitter {
-  private events: PropsEvents;
+export class CollectionManager extends PropsContractManager {
 
   /**
    * Creates a new instance of the CollectionManager class.
@@ -24,7 +23,6 @@ export class CollectionManager extends PropsEventEmitter {
   constructor() {
     // Initialize the CollectionManager class
     super();
-    this.events = PropsEvents.getInstance();
   }
 
   /**
@@ -33,7 +31,8 @@ export class CollectionManager extends PropsEventEmitter {
    * @returns {Promise<string>} A promise that resolves to the ID of the created collection.
    */
   async create(params: CollectionCreateOptions): Promise<Collection> {
-    const { name, symbol, baseUri, price, startDate, endDate, options } = params;
+    const { name, symbol, baseUri, price, startDate, endDate, options } =
+      params;
     // Replace the following with the actual implementation to interact with the Fuel network
     this.emit(this.events.transaction, {
       params: { name, symbol, baseUri, options },
@@ -99,7 +98,15 @@ export class CollectionManager extends PropsEventEmitter {
       : defaultEndDate;
 
     const { waitForResult: waitForResultConstructor } = await contract.functions
-      .constructor(addressIdentityInput, name, symbol, baseUri, price ?? 0, startDateTai, endDateTai)
+      .constructor(
+        addressIdentityInput,
+        name,
+        symbol,
+        baseUri,
+        price ?? 0,
+        startDateTai,
+        endDateTai
+      )
       .call();
 
     this.emit(this.events.pending, {

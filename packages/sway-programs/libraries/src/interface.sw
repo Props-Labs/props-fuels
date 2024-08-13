@@ -65,6 +65,12 @@ abi SetMintMetadata {
 
     #[storage(read)]
     fn merkle_root() -> Option<b256>;
+
+    #[storage(read)]
+    fn merkle_uri() -> Option<String>;
+
+    #[storage(write)]
+    fn set_merkle(root: b256, uri: String);
 }
 
 pub fn concat(a: String, b: String) -> String {

@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / CollectionCreateOptions
+[@props/fuels](../globals.md) / CollectionCreateOptions
 
 # Type Alias: CollectionCreateOptions
 
@@ -15,6 +15,13 @@
 > **baseUri**: `string`
 
 The base URI for the collection's token metadata.
+
+### endDate?
+
+> `optional` **endDate**: `number`
+
+The end date for minting tokens in the collection (optional).
+Represented as Unix milliseconds (milliseconds since January 1, 1970).
 
 ### name
 
@@ -34,6 +41,13 @@ The configuration options for the collection creation.
 
 The price of tokens in the collection (optional).
 
+### startDate?
+
+> `optional` **startDate**: `number`
+
+The start date for minting tokens in the collection (optional).
+Represented as Unix milliseconds (milliseconds since January 1, 1970).
+
 ### symbol
 
 > **symbol**: `string`
@@ -42,4 +56,4 @@ The symbol of the collection.
 
 ## Defined in
 
-[packages/props-fuels/src/common/types/index.ts:112](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/common/types/index.ts#L112)
+[packages/props-fuels/src/common/types/index.ts:120](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/common/types/index.ts#L120)

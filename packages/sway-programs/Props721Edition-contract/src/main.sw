@@ -114,6 +114,13 @@ storage {
     ///
     /// `StorageMap<Identity, u64>`
     minted_by_address: StorageMap<Identity, u64> = StorageMap {},
+
+    /// The Merkle URI for the allowlist.
+    ///
+    /// # Type
+    ///
+    /// `StorageString`
+    merkle_uri: StorageString = StorageString {},
 }
 
 configurable {
@@ -1064,6 +1071,62 @@ impl SetMintMetadata for Contract {
     #[storage(read)]
     fn merkle_root() -> Option<b256> {
         Some(storage.merkle_root.read())
+    }
+
+    /// Returns the Merkle URI for the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<String>] - The Merkle URI if set, or None if not set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let uri = mint_abi.merkle_uri();
+    ///     assert(uri.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn merkle_uri() -> Option<String> {
+        Some(storage.merkle_uri.read_slice().unwrap())
+    }
+
+    /// Sets the Merkle root and URI for the contract.
+    ///
+    /// # Arguments
+    ///
+    /// * `root`: [b256] - The Merkle root to set.
+    /// * `uri`: [String] - The Merkle URI to set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Writes: `2`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let root = 0x1234567890123456789012345678901234567890123456789012345678901234;
+    ///     let uri = "https://example.com/merkle";
+    ///     mint_abi.set_merkle(root, uri);
+    /// }
+    /// ```
+    #[storage(write)]
+    fn set_merkle(root: b256, uri: String) {
+        only_owner();
+        storage.merkle_root.write(root);
+        storage.merkle_uri.write_slice(uri);
     }
 
 }

@@ -2,13 +2,19 @@
 
 ***
 
-[@props/fuels](../README.md) / EditionCreateOptions
+[@props/fuels](../globals.md) / EditionCreateOptions
 
 # Type Alias: EditionCreateOptions
 
 > **EditionCreateOptions**: `object`
 
 ## Type declaration
+
+### endDate?
+
+> `optional` **endDate**: `number`
+
+The end date for minting tokens in the edition, in Unix milliseconds (optional).
 
 ### metadata
 
@@ -34,6 +40,12 @@ The configuration options for the edition creation.
 
 The price of the edition on the Base Asset (Wei, ETH).
 
+### startDate?
+
+> `optional` **startDate**: `number`
+
+The start date for minting tokens in the edition, in Unix milliseconds (optional).
+
 ### symbol
 
 > **symbol**: `string`
@@ -42,4 +54,4 @@ The symbol of the edition to create.
 
 ## Defined in
 
-[packages/props-fuels/src/common/types/index.ts:58](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/common/types/index.ts#L58)
+[packages/props-fuels/src/common/types/index.ts:58](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/common/types/index.ts#L58)

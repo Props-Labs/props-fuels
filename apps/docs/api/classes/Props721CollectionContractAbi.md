@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / Props721CollectionContractAbi
+[@props/fuels](../globals.md) / Props721CollectionContractAbi
 
 # Class: Props721CollectionContractAbi
 
@@ -66,11 +66,15 @@ A collection of functions available on the contract.
 
 #### constructor
 
-> **constructor**: `InvokeFunction`\<[`IdentityInput`, `string`, `string`, `string`, `BigNumberish`], `void`\>
+> **constructor**: `InvokeFunction`\<[`IdentityInput`, `string`, `string`, `string`, `BigNumberish`, `BigNumberish`, `BigNumberish`], `void`\>
 
 #### decimals
 
 > **decimals**: `InvokeFunction`\<[`AssetIdInput`], `Option`\<`number`\>\>
+
+#### end\_date
+
+> **end\_date**: `InvokeFunction`\<[], `Option`\<`BN`\>\>
 
 #### fees
 
@@ -80,13 +84,21 @@ A collection of functions available on the contract.
 
 > **is\_paused**: `InvokeFunction`\<[], `boolean`\>
 
+#### merkle\_root
+
+> **merkle\_root**: `InvokeFunction`\<[], `Option`\<`string`\>\>
+
+#### merkle\_uri
+
+> **merkle\_uri**: `InvokeFunction`\<[], `Option`\<`string`\>\>
+
 #### metadata
 
 > **metadata**: `InvokeFunction`\<[`AssetIdInput`, `string`], `Option`\<`MetadataOutput`\>\>
 
 #### mint
 
-> **mint**: `InvokeFunction`\<[`IdentityInput`, `string`, `BigNumberish`, `Option`\<`IdentityInput`\>], `void`\>
+> **mint**: `InvokeFunction`\<[`IdentityInput`, `string`, `BigNumberish`, `Option`\<`IdentityInput`\>, `Option`\<`Vec`\<`string`\>\>, `Option`\<`BigNumberish`\>, `Option`\<`BigNumberish`\>, `Option`\<`BigNumberish`\>], `void`\>
 
 #### name
 
@@ -108,9 +120,25 @@ A collection of functions available on the contract.
 
 > **set\_base\_uri**: `InvokeFunction`\<[`string`], `void`\>
 
+#### set\_dates
+
+> **set\_dates**: `InvokeFunction`\<[`BigNumberish`, `BigNumberish`], `void`\>
+
+#### set\_merkle
+
+> **set\_merkle**: `InvokeFunction`\<[`string`, `string`], `void`\>
+
+#### set\_merkle\_root
+
+> **set\_merkle\_root**: `InvokeFunction`\<[`string`], `void`\>
+
 #### set\_price
 
 > **set\_price**: `InvokeFunction`\<[`BigNumberish`], `void`\>
+
+#### start\_date
+
+> **start\_date**: `InvokeFunction`\<[], `Option`\<`BN`\>\>
 
 #### symbol
 
@@ -138,7 +166,7 @@ A collection of functions available on the contract.
 
 #### Defined in
 
-[packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts:93](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts#L93)
+[packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts:102](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts#L102)
 
 ***
 
@@ -154,4 +182,4 @@ The contract's ABI interface.
 
 #### Defined in
 
-[packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts:92](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts#L92)
+[packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts:101](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/sway-api/contracts/Props721CollectionContractAbi.d.ts#L101)

@@ -46,4 +46,44 @@ describe("Collection", () => {
     const invalidCollection = new Collection("invalid-id");
     await expect(invalidCollection.mint(wallets[2].address.toB256(), 1)).rejects.toThrow("Contract or account is not connected");
   });
+
+  it("should mint tokens with an allowlist", async () => {
+    const entries = [
+      { address: wallets[0].address.toHexString(), amount: 3 },
+      { address: wallets[1].address.toHexString(), amount: 2 },
+    ];
+
+    const { root, allowlist } = Collection.createAllowlist(entries);
+    await collection.setAllowlist(root, "https://example.com/allowlist");
+
+    const originalFetch = global.fetch;
+
+    // @ts-ignore
+    global.fetch = vi.fn((url, options) => {
+      if (url === "https://example.com/allowlist") {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(allowlist),
+        });
+      }
+      // For all other URLs, use the original fetch
+      return originalFetch(url, options);
+    });
+
+    // Mint tokens for an address in the allowlist
+    await collection.mint(wallets[0].address.toB256(), 1);
+
+    const subId =
+      "0x0000000000000000000000000000000000000000000000000000000000000001";
+    const assetId = getMintedAssetId(
+      collection?.contract?.id.toB256() ?? "",
+      subId
+    );
+
+    const balance: BN = await wallets[0].getBalance(assetId);
+    expect(balance.toString()).toBe("1");
+
+    // Restore the original fetch function
+    global.fetch = originalFetch;
+  });
 });

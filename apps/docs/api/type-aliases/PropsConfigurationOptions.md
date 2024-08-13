@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / PropsConfigurationOptions
+[@props/fuels](../globals.md) / PropsConfigurationOptions
 
 # Type Alias: PropsConfigurationOptions
 
@@ -24,4 +24,4 @@ The network to connect to, identified by its unique ID.
 
 ## Defined in
 
-[packages/props-fuels/src/common/types/index.ts:194](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/common/types/index.ts#L194)
+[packages/props-fuels/src/common/types/index.ts:212](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/common/types/index.ts#L212)

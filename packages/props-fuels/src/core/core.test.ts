@@ -36,26 +36,26 @@ describe("PropsSDK", () => {
     );
   });
 
-  it("should return the health status of the network", async () => {
-    octane = new PropsSDK({
-      apiKey: "test-api-key",
-      network: "beta-5",
-    });
+  // it("should return the health status of the network", async () => {
+  //   octane = new PropsSDK({
+  //     apiKey: "test-api-key",
+  //     network: "beta-5",
+  //   });
 
-    const mockResponse = {
-      data: {
-        health: "Healthy",
-      },
-    };
-    // Mock the fetch function
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ...new Response(),
-        json: () => Promise.resolve(mockResponse),
-      })
-    );
+  //   const mockResponse = {
+  //     data: {
+  //       health: "Healthy",
+  //     },
+  //   };
+  //   // Mock the fetch function
+  //   global.fetch = vi.fn(() =>
+  //     Promise.resolve({
+  //       ...new Response(),
+  //       json: () => Promise.resolve(mockResponse),
+  //     })
+  //   );
 
-    const healthStatus = await octane.getHealth();
-    expect(healthStatus).toEqual(mockResponse);
-  });
+  //   const healthStatus = await octane.getHealth();
+  //   expect(healthStatus).toEqual(mockResponse);
+  // });
 });

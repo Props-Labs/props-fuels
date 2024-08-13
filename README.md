@@ -65,5 +65,5 @@ createEdition();
 
 ## TODO
 
-- [ ] Merkle-Based Allowlists
-- [ ] Flexible Mint Dates
+- [x] Merkle-Based Allowlists
+- [x] Flexible Mint Dates

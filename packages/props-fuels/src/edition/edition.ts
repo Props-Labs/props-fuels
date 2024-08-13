@@ -3,29 +3,12 @@ import { Props721EditionContractAbi, Props721EditionContractAbi__factory } from 
 import { MintResult, NFTMetadata } from "../common/types";
 import { decode } from "punycode";
 import { decodeContractMetadata } from "../utils/metadata";
+import { PropsContract } from "../contract";
 
 /**
  * Represents an edition within the Props SDK.
  */
-export class Edition {
-  /**
-   * The ID of the edition.
-   * @type {string}
-   */
-  id: string;
-
-  /**
-   * Optional contract associated with the edition.
-   * @type {Props721EditionContractAbi | undefined}
-   */
-  contract?: Props721EditionContractAbi;
-
-  /**
-   * Optional account associated with the edition.
-   * @type {Account | undefined}
-   */
-  account?: Account;
-
+export class Edition extends PropsContract {
   /**
    * Metadata associated with the edition.
    * @type {NFTMetadata}
@@ -45,9 +28,7 @@ export class Edition {
     account?: Account,
     metadata?: NFTMetadata
   ) {
-    this.id = id;
-    this.contract = contract;
-    this.account = account;
+    super(id, contract, account);
     this.metadata = metadata;
   }
 
@@ -94,6 +75,25 @@ export class Edition {
       const addressIdentityInput = { Address: addressInput };
       const subId = new BN(0).toHex(32);
 
+      const { value: merkleRoot } = await this.contract.functions.merkle_root().get();
+      let allowlistEntry;
+      let numLeaves = undefined;
+      let proof = undefined;
+      let key = undefined;
+      let maxAmount = undefined;
+
+      if (
+        merkleRoot !==
+        "0x0000000000000000000000000000000000000000000000000000000000000000"
+      ) {
+        const { entry, num_leaves } = await this.getAllowlistEntryByAddress(to);
+        allowlistEntry = entry;
+        numLeaves = num_leaves;
+        proof = entry.proof;
+        key = entry.key;
+        maxAmount = entry.amount;
+      }
+
       const { waitForResult } = await this.contract.functions
         .mint(
           addressIdentityInput,
@@ -103,7 +103,11 @@ export class Edition {
             ? {
                 Address: { bits: Address.fromDynamicInput(affiliate).toB256() },
               }
-            : undefined
+            : undefined,
+          proof,
+          key,
+          numLeaves,
+          maxAmount,
         )
         .callParams({
           forward: [price, baseAssetId],
