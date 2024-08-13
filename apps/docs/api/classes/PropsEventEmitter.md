@@ -2,14 +2,9 @@
 
 ***
 
-[@props/fuels](../README.md) / PropsEventEmitter
+[@props/fuels](../globals.md) / PropsEventEmitter
 
 # Class: PropsEventEmitter
-
-## Extended by
-
-- [`EditionManager`](EditionManager.md)
-- [`CollectionManager`](CollectionManager.md)
 
 ## Constructors
 
@@ -39,7 +34,7 @@
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:95](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L95)
+[packages/props-fuels/src/core/events.ts:95](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L95)
 
 ***
 
@@ -59,7 +54,7 @@
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:88](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L88)
+[packages/props-fuels/src/core/events.ts:88](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L88)
 
 ***
 
@@ -77,7 +72,7 @@
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:109](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L109)
+[packages/props-fuels/src/core/events.ts:109](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L109)
 
 ***
 
@@ -97,4 +92,4 @@
 
 #### Defined in
 
-[packages/props-fuels/src/core/events.ts:101](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/events.ts#L101)
+[packages/props-fuels/src/core/events.ts:101](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/events.ts#L101)

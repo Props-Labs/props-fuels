@@ -2,29 +2,12 @@ import { Account, Address, BN } from "fuels";
 import { Props721CollectionContractAbi, Props721CollectionContractAbi__factory } from "../sway-api/contracts";
 import { MintResult } from "../common/types";
 import { NFTMetadata } from "../common/types";
+import { PropsContract } from "../contract";
 
 /**
  * Represents an edition within the Props SDK.
  */
-export class Collection {
-  /**
-   * The ID of the edition.
-   * @type {string}
-   */
-  id: string;
-
-  /**
-   * Optional contract associated with the edition.
-   * @type {Props721CollectionContractAbi | undefined}
-   */
-  contract?: Props721CollectionContractAbi;
-
-  /**
-   * Optional account associated with the edition.
-   * @type {Account | undefined}
-   */
-  account?: Account;
-
+export class Collection extends PropsContract {
   /**
    * The base URI for the collection's metadata.
    * @type {string | undefined}
@@ -50,6 +33,7 @@ export class Collection {
     account?: Account,
     baseUri?: string
   ) {
+    super(id, contract, account);
     this.id = id;
     this.contract = contract;
     this.account = account;
@@ -122,6 +106,27 @@ export class Collection {
       const addressIdentityInput = { Address: addressInput };
       const subId = new BN(0).toHex(32);
 
+      const { value: merkleRoot } = await this.contract.functions
+        .merkle_root()
+        .get();
+      let allowlistEntry;
+      let numLeaves = undefined;
+      let proof = undefined;
+      let key = undefined;
+      let maxAmount = undefined;
+
+      if (
+        merkleRoot !==
+        "0x0000000000000000000000000000000000000000000000000000000000000000"
+      ) {
+        const { entry, num_leaves } = await this.getAllowlistEntryByAddress(to);
+        allowlistEntry = entry;
+        numLeaves = num_leaves;
+        proof = entry.proof;
+        key = entry.key;
+        maxAmount = entry.amount;
+      }
+
       const { waitForResult } = await this.contract.functions
         .mint(
           addressIdentityInput,
@@ -131,7 +136,11 @@ export class Collection {
             ? {
                 Address: { bits: Address.fromDynamicInput(affiliate).toB256() },
               }
-            : undefined
+            : undefined,
+          proof,
+          key,
+          numLeaves,
+          maxAmount
         )
         .callParams({
           forward: [price, baseAssetId],

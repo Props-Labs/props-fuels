@@ -1,5 +1,8 @@
 library;
 
+use std::string::String;
+use std::bytes::Bytes;
+
 abi PropsFeeSplitter {
     #[storage(read, write)]
     fn set_fee(amount: u64);
@@ -26,7 +29,7 @@ abi PropsFeeSplitter {
 abi SRC3PayableExtension {
     #[payable]
     #[storage(read, write)]
-    fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>);
+    fn mint(recipient: Identity, sub_id: SubId, amount: u64, affiliate: Option<Identity>, proof: Option<Vec<b256>>, key: Option<u64>, num_leaves: Option<u64>, max_amount: Option<u64>);
 
     #[storage(read, write)]
     fn airdrop(recipient: Identity, amount: u64);
@@ -56,4 +59,48 @@ abi SetMintMetadata {
 
     #[storage(write)]
     fn set_dates(start: u64, end: u64);
+
+    #[storage(write)]
+    fn set_merkle_root(root: b256);
+
+    #[storage(read)]
+    fn merkle_root() -> Option<b256>;
+
+    #[storage(read)]
+    fn merkle_uri() -> Option<String>;
+
+    #[storage(write)]
+    fn set_merkle(root: b256, uri: String);
+}
+
+pub fn concat(a: String, b: String) -> String {
+    let mut a = a.as_bytes();
+    let b = b.as_bytes();
+    a.append(b);
+    String::from_ascii(a)
+}
+
+pub fn concat_with_bytes(a: String, b: Bytes) -> String {
+    let mut a = a.as_bytes();
+    a.append(b);
+    String::from_ascii(a)
+}
+
+pub fn convert_num_to_ascii_bytes(num: u64) -> Bytes {
+    let mut bytes = Bytes::new();
+    let mut n = num;
+    if n == 0 {
+        bytes.push(48);
+        return bytes;
+    }
+    while n != 0 {
+        // 48 - is an ASCII offset for digits
+        bytes.push(((n % 10) + 48).try_as_u8().unwrap());
+        n /= 10;
+    }
+    let mut reversed_bytes = Bytes::with_capacity(bytes.len());
+    while !bytes.is_empty() {
+        reversed_bytes.push(bytes.pop().unwrap());
+    }
+    return reversed_bytes;
 }

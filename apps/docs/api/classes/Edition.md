@@ -2,11 +2,15 @@
 
 ***
 
-[@props/fuels](../README.md) / Edition
+[@props/fuels](../globals.md) / Edition
 
 # Class: Edition
 
 Represents an edition within the Props SDK.
+
+## Extends
+
+- `PropsContract`
 
 ## Constructors
 
@@ -38,9 +42,13 @@ Metadata associated with the edition.
 
 [`Edition`](Edition.md)
 
+#### Overrides
+
+`PropsContract.constructor`
+
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:42](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L42)
+[packages/props-fuels/src/edition/edition.ts:25](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/edition/edition.ts#L25)
 
 ## Properties
 
@@ -48,23 +56,31 @@ Metadata associated with the edition.
 
 > `optional` **account**: `Account`
 
-Optional account associated with the edition.
+Optional account associated with the contract.
+
+#### Inherited from
+
+`PropsContract.account`
 
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:27](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L27)
+packages/props-fuels/src/contract/contract.ts:23
 
 ***
 
 ### contract?
 
-> `optional` **contract**: [`Props721EditionContractAbi`](Props721EditionContractAbi.md)
+> `optional` **contract**: [`Props721EditionContractAbi`](Props721EditionContractAbi.md) \| [`Props721CollectionContractAbi`](Props721CollectionContractAbi.md)
 
-Optional contract associated with the edition.
+Optional contract associated with the contract.
+
+#### Inherited from
+
+`PropsContract.contract`
 
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:21](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L21)
+packages/props-fuels/src/contract/contract.ts:18
 
 ***
 
@@ -72,11 +88,15 @@ Optional contract associated with the edition.
 
 > **id**: `string`
 
-The ID of the edition.
+The ID of the contract.
+
+#### Inherited from
+
+`PropsContract.id`
 
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:15](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L15)
+packages/props-fuels/src/contract/contract.ts:13
 
 ***
 
@@ -88,7 +108,7 @@ Metadata associated with the edition.
 
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:33](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L33)
+[packages/props-fuels/src/edition/edition.ts:16](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/edition/edition.ts#L16)
 
 ## Methods
 
@@ -110,7 +130,39 @@ The account to connect.
 
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:58](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L58)
+[packages/props-fuels/src/edition/edition.ts:39](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/edition/edition.ts#L39)
+
+***
+
+### getAllowlistAllocationByAddress()
+
+> **getAllowlistAllocationByAddress**(`address`): `Promise`\<`number`\>
+
+Represents the allowlist allocation for an address.
+
+#### Parameters
+
+• **address**: `string`
+
+The address to get the allocation for.
+
+#### Returns
+
+`Promise`\<`number`\>
+
+A promise that resolves to the allocation amount for the address.
+
+#### Throws
+
+If the contract or account is not connected, or if the fetch or JSON parsing fails.
+
+#### Inherited from
+
+`PropsContract.getAllowlistAllocationByAddress`
+
+#### Defined in
+
+packages/props-fuels/src/contract/contract.ts:124
 
 ***
 
@@ -144,7 +196,79 @@ If the minting process fails.
 
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:69](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L69)
+[packages/props-fuels/src/edition/edition.ts:50](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/edition/edition.ts#L50)
+
+***
+
+### setAllowlist()
+
+> **setAllowlist**(`root`, `uri`): `Promise`\<`void`\>
+
+Sets the allowlist for the contract by setting the Merkle root and URI.
+
+#### Parameters
+
+• **root**: `string`
+
+The Merkle root to set.
+
+• **uri**: `string`
+
+The Merkle URI to set.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+A promise that resolves when the allowlist has been set.
+
+#### Throws
+
+If the contract or account is not connected, or if the set_merkle function fails.
+
+#### Inherited from
+
+`PropsContract.setAllowlist`
+
+#### Defined in
+
+packages/props-fuels/src/contract/contract.ts:60
+
+***
+
+### createAllowlist()
+
+> `static` **createAllowlist**(`entries`): `object`
+
+Creates an allowlist for a given set of addresses and amounts.
+
+#### Parameters
+
+• **entries**: [`AllowListInput`](../type-aliases/AllowListInput.md)
+
+The entries to include in the allowlist.
+
+#### Returns
+
+`object`
+
+An object containing the Merkle root and the allowlist with proofs.
+
+##### allowlist
+
+> **allowlist**: [`Allowlist`](../type-aliases/Allowlist.md)
+
+##### root
+
+> **root**: `string`
+
+#### Inherited from
+
+`PropsContract.createAllowlist`
+
+#### Defined in
+
+packages/props-fuels/src/contract/contract.ts:46
 
 ***
 
@@ -172,4 +296,4 @@ A promise that resolves to an Edition instance.
 
 #### Defined in
 
-[packages/props-fuels/src/edition/edition.ts:128](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/edition/edition.ts#L128)
+[packages/props-fuels/src/edition/edition.ts:132](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/edition/edition.ts#L132)

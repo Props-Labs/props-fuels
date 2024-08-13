@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / PropsSDK
+[@props/fuels](../globals.md) / PropsSDK
 
 # Class: PropsSDK
 
@@ -32,7 +32,7 @@ The configuration options for Props SDK.
 
 #### Defined in
 
-[packages/props-fuels/src/core/core.ts:23](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L23)
+[packages/props-fuels/src/core/core.ts:25](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/core.ts#L25)
 
 ## Properties
 
@@ -42,7 +42,7 @@ The configuration options for Props SDK.
 
 #### Defined in
 
-[packages/props-fuels/src/core/core.ts:13](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L13)
+[packages/props-fuels/src/core/core.ts:14](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/core.ts#L14)
 
 ***
 
@@ -52,7 +52,7 @@ The configuration options for Props SDK.
 
 #### Defined in
 
-[packages/props-fuels/src/core/core.ts:12](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L12)
+[packages/props-fuels/src/core/core.ts:13](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/core.ts#L13)
 
 ***
 
@@ -62,7 +62,17 @@ The configuration options for Props SDK.
 
 #### Defined in
 
-[packages/props-fuels/src/core/core.ts:14](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L14)
+[packages/props-fuels/src/core/core.ts:15](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/core.ts#L15)
+
+***
+
+### utils
+
+> **utils**: `PropsUtilities`
+
+#### Defined in
+
+[packages/props-fuels/src/core/core.ts:16](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/core.ts#L16)
 
 ## Methods
 
@@ -84,7 +94,7 @@ If the GraphQL URL is not available for the current network.
 
 #### Defined in
 
-[packages/props-fuels/src/core/core.ts:76](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L76)
+[packages/props-fuels/src/core/core.ts:88](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/core.ts#L88)
 
 ***
 
@@ -102,4 +112,4 @@ The network configuration.
 
 #### Defined in
 
-[packages/props-fuels/src/core/core.ts:67](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/core/core.ts#L67)
+[packages/props-fuels/src/core/core.ts:79](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/core/core.ts#L79)

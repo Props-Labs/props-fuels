@@ -234,3 +234,15 @@ export type MintResult = {
     transactionResult: TransactionResult;
 };
 
+export type AllowlistEntry = {
+    amount: number;
+    proof: string[];
+    key: number;
+};
+
+export type AllowListInput = Array<{ address: string; amount: number }>;
+
+export type Allowlist = {
+  [key: string]: AllowlistEntry;
+};
+

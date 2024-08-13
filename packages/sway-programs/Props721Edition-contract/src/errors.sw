@@ -9,6 +9,8 @@ pub enum MintError {
     NotEnoughTokens: u64,
     InvalidAsset: (),
     OutsideMintingPeriod: String,
+    InvalidProof: (),
+    ExceededMaxMintLimit: (),
 }
 
 pub enum SetError {

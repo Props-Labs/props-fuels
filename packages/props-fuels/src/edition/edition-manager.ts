@@ -1,6 +1,5 @@
 import { Account, Address, BN, BytesLike, DateTime } from "fuels";
 import { NFTMetadata, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
-import { PropsEventEmitter, PropsEvents } from "../core/events";
 import { defaultEndDate, defaultNetwork, defaultStartDate } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/constants";
 import { Props721EditionContractAbi__factory } from "../sway-api/contracts";
@@ -10,13 +9,13 @@ import { executeGraphQLQuery } from "../core/fuels-api";
 import { Edition } from "./edition";
 import { randomBytes } from "fuels";
 import { encodeMetadataValues } from "../utils/metadata";
+import { PropsContractManager } from "../contract/contract-manager";
 
 /**
  * @class EditionManager
  * @classdesc Manages editions within the Props SDK on the Fuel network.
  */
-export class EditionManager extends PropsEventEmitter {
-  private events: PropsEvents;
+export class EditionManager extends PropsContractManager {
 
   /**
    * Creates a new instance of the EditionManager class.
@@ -24,7 +23,6 @@ export class EditionManager extends PropsEventEmitter {
   constructor() {
     // Initialize the EditionManager class
     super();
-    this.events = PropsEvents.getInstance();
   }
 
   /**

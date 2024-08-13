@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / Props721EditionContractAbi
+[@props/fuels](../globals.md) / Props721EditionContractAbi
 
 # Class: Props721EditionContractAbi
 
@@ -62,11 +62,15 @@ A collection of functions available on the contract.
 
 #### constructor
 
-> **constructor**: `InvokeFunction`\<[`IdentityInput`, `string`, `string`, `Vec`\<`string`\>, `Vec`\<`MetadataInput`\>, `BigNumberish`], `void`\>
+> **constructor**: `InvokeFunction`\<[`IdentityInput`, `string`, `string`, `Vec`\<`string`\>, `Vec`\<`MetadataInput`\>, `BigNumberish`, `BigNumberish`, `BigNumberish`], `void`\>
 
 #### decimals
 
 > **decimals**: `InvokeFunction`\<[`AssetIdInput`], `Option`\<`number`\>\>
+
+#### end\_date
+
+> **end\_date**: `InvokeFunction`\<[], `Option`\<`BN`\>\>
 
 #### fees
 
@@ -75,6 +79,14 @@ A collection of functions available on the contract.
 #### is\_paused
 
 > **is\_paused**: `InvokeFunction`\<[], `boolean`\>
+
+#### merkle\_root
+
+> **merkle\_root**: `InvokeFunction`\<[], `Option`\<`string`\>\>
+
+#### merkle\_uri
+
+> **merkle\_uri**: `InvokeFunction`\<[], `Option`\<`string`\>\>
 
 #### metadata
 
@@ -86,7 +98,7 @@ A collection of functions available on the contract.
 
 #### mint
 
-> **mint**: `InvokeFunction`\<[`IdentityInput`, `string`, `BigNumberish`, `Option`\<`IdentityInput`\>], `void`\>
+> **mint**: `InvokeFunction`\<[`IdentityInput`, `string`, `BigNumberish`, `Option`\<`IdentityInput`\>, `Option`\<`Vec`\<`string`\>\>, `Option`\<`BigNumberish`\>, `Option`\<`BigNumberish`\>, `Option`\<`BigNumberish`\>], `void`\>
 
 #### name
 
@@ -104,6 +116,18 @@ A collection of functions available on the contract.
 
 > **price**: `InvokeFunction`\<[], `Option`\<`BN`\>\>
 
+#### set\_dates
+
+> **set\_dates**: `InvokeFunction`\<[`BigNumberish`, `BigNumberish`], `void`\>
+
+#### set\_merkle
+
+> **set\_merkle**: `InvokeFunction`\<[`string`, `string`], `void`\>
+
+#### set\_merkle\_root
+
+> **set\_merkle\_root**: `InvokeFunction`\<[`string`], `void`\>
+
 #### set\_metadata
 
 > **set\_metadata**: `InvokeFunction`\<[`AssetIdInput`, `string`, `MetadataInput`], `void`\>
@@ -111,6 +135,10 @@ A collection of functions available on the contract.
 #### set\_price
 
 > **set\_price**: `InvokeFunction`\<[`BigNumberish`], `void`\>
+
+#### start\_date
+
+> **start\_date**: `InvokeFunction`\<[], `Option`\<`BN`\>\>
 
 #### symbol
 
@@ -142,7 +170,7 @@ A collection of functions available on the contract.
 
 #### Defined in
 
-[packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts:96](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts#L96)
+[packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts:105](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts#L105)
 
 ***
 
@@ -158,4 +186,4 @@ The contract's ABI interface.
 
 #### Defined in
 
-[packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts:95](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts#L95)
+[packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts:104](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/sway-api/contracts/Props721EditionContractAbi.d.ts#L104)

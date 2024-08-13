@@ -23,7 +23,7 @@ import type {
   StrSlice,
 } from 'fuels';
 
-import type { Option, Enum } from "./common";
+import type { Option, Enum, Vec } from "./common";
 
 export enum AccessErrorInput { NotOwner = 'NotOwner' };
 export enum AccessErrorOutput { NotOwner = 'NotOwner' };
@@ -35,10 +35,12 @@ export enum InitializationErrorInput { CannotReinitialized = 'CannotReinitialize
 export enum InitializationErrorOutput { CannotReinitialized = 'CannotReinitialized' };
 export type MetadataInput = Enum<{ B256: string, Bytes: Bytes, Int: BigNumberish, String: StdString }>;
 export type MetadataOutput = Enum<{ B256: string, Bytes: Bytes, Int: BN, String: StdString }>;
-export type MintErrorInput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BigNumberish, InvalidAsset: [], OutsideMintingPeriod: StdString }>;
-export type MintErrorOutput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BN, InvalidAsset: [], OutsideMintingPeriod: StdString }>;
+export type MintErrorInput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BigNumberish, InvalidAsset: [], OutsideMintingPeriod: StdString, InvalidProof: [], ExceededMaxMintLimit: [] }>;
+export type MintErrorOutput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BN, InvalidAsset: [], OutsideMintingPeriod: StdString, InvalidProof: [], ExceededMaxMintLimit: [] }>;
 export enum PauseErrorInput { Paused = 'Paused', NotPaused = 'NotPaused' };
 export enum PauseErrorOutput { Paused = 'Paused', NotPaused = 'NotPaused' };
+export enum ProofErrorInput { InvalidKey = 'InvalidKey', InvalidProofLength = 'InvalidProofLength' };
+export enum ProofErrorOutput { InvalidKey = 'InvalidKey', InvalidProofLength = 'InvalidProofLength' };
 export enum ReentrancyErrorInput { NonReentrant = 'NonReentrant' };
 export enum ReentrancyErrorOutput { NonReentrant = 'NonReentrant' };
 export type StateInput = Enum<{ Uninitialized: [], Initialized: IdentityInput, Revoked: [] }>;
@@ -79,8 +81,12 @@ export interface Props721CollectionContractAbiInterface extends Interface {
     owner: FunctionFragment;
     end_date: FunctionFragment;
     fees: FunctionFragment;
+    merkle_root: FunctionFragment;
+    merkle_uri: FunctionFragment;
     price: FunctionFragment;
     set_dates: FunctionFragment;
+    set_merkle: FunctionFragment;
+    set_merkle_root: FunctionFragment;
     set_price: FunctionFragment;
     start_date: FunctionFragment;
     total_price: FunctionFragment;
@@ -101,15 +107,19 @@ export class Props721CollectionContractAbi extends Contract {
     total_supply: InvokeFunction<[asset: AssetIdInput], Option<BN>>;
     airdrop: InvokeFunction<[recipient: IdentityInput, amount: BigNumberish], void>;
     burn: InvokeFunction<[sub_id: string, amount: BigNumberish], void>;
-    mint: InvokeFunction<[recipient: IdentityInput, _sub_id: string, amount: BigNumberish, affiliate: Option<IdentityInput>], void>;
+    mint: InvokeFunction<[recipient: IdentityInput, _sub_id: string, amount: BigNumberish, affiliate: Option<IdentityInput>, proof: Option<Vec<string>>, key: Option<BigNumberish>, num_leaves: Option<BigNumberish>, max_amount: Option<BigNumberish>], void>;
     metadata: InvokeFunction<[asset: AssetIdInput, key: StdString], Option<MetadataOutput>>;
     base_uri: InvokeFunction<[], Option<StdString>>;
     set_base_uri: InvokeFunction<[uri: StdString], void>;
     owner: InvokeFunction<[], StateOutput>;
     end_date: InvokeFunction<[], Option<BN>>;
     fees: InvokeFunction<[], Option<[BN, BN]>>;
+    merkle_root: InvokeFunction<[], Option<string>>;
+    merkle_uri: InvokeFunction<[], Option<StdString>>;
     price: InvokeFunction<[], Option<BN>>;
     set_dates: InvokeFunction<[start: BigNumberish, end: BigNumberish], void>;
+    set_merkle: InvokeFunction<[root: string, uri: StdString], void>;
+    set_merkle_root: InvokeFunction<[root: string], void>;
     set_price: InvokeFunction<[price: BigNumberish], void>;
     start_date: InvokeFunction<[], Option<BN>>;
     total_price: InvokeFunction<[], Option<BN>>;

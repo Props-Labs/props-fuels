@@ -2,7 +2,7 @@
 
 ***
 
-[@props/fuels](../README.md) / Props721CollectionContractAbi\_\_factory
+[@props/fuels](../globals.md) / Props721CollectionContractAbi\_\_factory
 
 # Variable: Props721CollectionContractAbi\_\_factory
 
@@ -76,4 +76,4 @@
 
 ## Defined in
 
-[packages/props-fuels/src/sway-api/contracts/factories/Props721CollectionContractAbi\_\_factory.ts:4082](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/sway-api/contracts/factories/Props721CollectionContractAbi__factory.ts#L4082)
+[packages/props-fuels/src/sway-api/contracts/factories/Props721CollectionContractAbi\_\_factory.ts:5315](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/sway-api/contracts/factories/Props721CollectionContractAbi__factory.ts#L5315)

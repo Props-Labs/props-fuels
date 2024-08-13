@@ -2,11 +2,15 @@
 
 ***
 
-[@props/fuels](../README.md) / Collection
+[@props/fuels](../globals.md) / Collection
 
 # Class: Collection
 
 Represents an edition within the Props SDK.
+
+## Extends
+
+- `PropsContract`
 
 ## Constructors
 
@@ -38,9 +42,13 @@ Base URI for the collection's metadata.
 
 [`Collection`](Collection.md)
 
+#### Overrides
+
+`PropsContract.constructor`
+
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:47](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L47)
+[packages/props-fuels/src/collection/collection.ts:30](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection.ts#L30)
 
 ## Properties
 
@@ -48,11 +56,15 @@ Base URI for the collection's metadata.
 
 > `optional` **account**: `Account`
 
-Optional account associated with the edition.
+Optional account associated with the contract.
+
+#### Inherited from
+
+`PropsContract.account`
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:26](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L26)
+packages/props-fuels/src/contract/contract.ts:23
 
 ***
 
@@ -64,19 +76,23 @@ The base URI for the collection's metadata.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:32](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L32)
+[packages/props-fuels/src/collection/collection.ts:15](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection.ts#L15)
 
 ***
 
 ### contract?
 
-> `optional` **contract**: [`Props721CollectionContractAbi`](Props721CollectionContractAbi.md)
+> `optional` **contract**: [`Props721EditionContractAbi`](Props721EditionContractAbi.md) \| [`Props721CollectionContractAbi`](Props721CollectionContractAbi.md)
 
-Optional contract associated with the edition.
+Optional contract associated with the contract.
+
+#### Inherited from
+
+`PropsContract.contract`
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:20](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L20)
+packages/props-fuels/src/contract/contract.ts:18
 
 ***
 
@@ -84,11 +100,15 @@ Optional contract associated with the edition.
 
 > **id**: `string`
 
-The ID of the edition.
+The ID of the contract.
+
+#### Inherited from
+
+`PropsContract.id`
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:14](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L14)
+packages/props-fuels/src/contract/contract.ts:13
 
 ***
 
@@ -100,7 +120,7 @@ Sample tokens of the collection.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:38](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L38)
+[packages/props-fuels/src/collection/collection.ts:21](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection.ts#L21)
 
 ## Methods
 
@@ -122,7 +142,7 @@ The account to connect.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:86](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L86)
+[packages/props-fuels/src/collection/collection.ts:70](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection.ts#L70)
 
 ***
 
@@ -138,7 +158,39 @@ Fetches sample tokens from the baseUri.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:63](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L63)
+[packages/props-fuels/src/collection/collection.ts:47](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection.ts#L47)
+
+***
+
+### getAllowlistAllocationByAddress()
+
+> **getAllowlistAllocationByAddress**(`address`): `Promise`\<`number`\>
+
+Represents the allowlist allocation for an address.
+
+#### Parameters
+
+• **address**: `string`
+
+The address to get the allocation for.
+
+#### Returns
+
+`Promise`\<`number`\>
+
+A promise that resolves to the allocation amount for the address.
+
+#### Throws
+
+If the contract or account is not connected, or if the fetch or JSON parsing fails.
+
+#### Inherited from
+
+`PropsContract.getAllowlistAllocationByAddress`
+
+#### Defined in
+
+packages/props-fuels/src/contract/contract.ts:124
 
 ***
 
@@ -172,7 +224,79 @@ If the minting process fails.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:97](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L97)
+[packages/props-fuels/src/collection/collection.ts:81](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection.ts#L81)
+
+***
+
+### setAllowlist()
+
+> **setAllowlist**(`root`, `uri`): `Promise`\<`void`\>
+
+Sets the allowlist for the contract by setting the Merkle root and URI.
+
+#### Parameters
+
+• **root**: `string`
+
+The Merkle root to set.
+
+• **uri**: `string`
+
+The Merkle URI to set.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+A promise that resolves when the allowlist has been set.
+
+#### Throws
+
+If the contract or account is not connected, or if the set_merkle function fails.
+
+#### Inherited from
+
+`PropsContract.setAllowlist`
+
+#### Defined in
+
+packages/props-fuels/src/contract/contract.ts:60
+
+***
+
+### createAllowlist()
+
+> `static` **createAllowlist**(`entries`): `object`
+
+Creates an allowlist for a given set of addresses and amounts.
+
+#### Parameters
+
+• **entries**: [`AllowListInput`](../type-aliases/AllowListInput.md)
+
+The entries to include in the allowlist.
+
+#### Returns
+
+`object`
+
+An object containing the Merkle root and the allowlist with proofs.
+
+##### allowlist
+
+> **allowlist**: [`Allowlist`](../type-aliases/Allowlist.md)
+
+##### root
+
+> **root**: `string`
+
+#### Inherited from
+
+`PropsContract.createAllowlist`
+
+#### Defined in
+
+packages/props-fuels/src/contract/contract.ts:46
 
 ***
 
@@ -200,4 +324,4 @@ A promise that resolves to an Collection instance.
 
 #### Defined in
 
-[packages/props-fuels/src/collection/collection.ts:156](https://github.com/Props-Labs/octane/blob/2f5b62c99caca23a485b671ce2fbd114bfd5aae1/packages/props-fuels/src/collection/collection.ts#L156)
+[packages/props-fuels/src/collection/collection.ts:165](https://github.com/Props-Labs/octane/blob/09e744f342f4ccab903046cdb8054688422ab64d/packages/props-fuels/src/collection/collection.ts#L165)

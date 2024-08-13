@@ -36,13 +36,13 @@ use sway_libs::{
         require_not_paused,
     },
     reentrancy::reentrancy_guard,
+    merkle::binary_proof::*,
 };
-use std::{hash::Hash, storage::storage_string::*, storage::storage_vec::*, string::String};
+use std::{hash::*, storage::storage_string::*, storage::storage_vec::*, string::String, bytes::Bytes, bytes_conversions::{b256::*, u16::*, u256::*, u32::*, u64::*,}};
 use std::logging::log;
 use std::context::msg_amount;
 use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
-use std::bytes::Bytes;
 use std::block::timestamp;
 
 use libraries::{PropsFeeSplitter, SRC3PayableExtension, SetMintMetadata};
@@ -107,6 +107,27 @@ storage {
 
     /// The base URI for the NFT collection.
     base_uri: StorageString = StorageString {},
+
+    /// The Merkle root for the allowlist.
+    ///
+    /// # Type
+    ///
+    /// `b256`
+    merkle_root: b256 = 0x0000000000000000000000000000000000000000000000000000000000000000,
+
+    /// A mapping to track the number of NFTs minted by each address.
+    ///
+    /// # Type
+    ///
+    /// `StorageMap<Identity, u64>`
+    minted_by_address: StorageMap<Identity, u64> = StorageMap {},
+
+    /// The Merkle URI for the allowlist.
+    ///
+    /// # Type
+    ///
+    /// `StorageString`
+    merkle_uri: StorageString = StorageString {},
 }
 
 configurable {
@@ -386,7 +407,7 @@ impl SRC3PayableExtension for Contract {
     /// }
     /// ```
     #[storage(read, write), payable]
-    fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>) {
+    fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>, proof: Option<Vec<b256>>, key: Option<u64>, num_leaves: Option<u64>, max_amount: Option<u64>) {
         reentrancy_guard();
         require_not_paused();
 
@@ -403,6 +424,36 @@ impl SRC3PayableExtension for Contract {
             current_time <= end_date,
             MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has ended."))
         );
+
+        // Checking merkle proof
+        let root = storage.merkle_root.try_read().unwrap_or(b256::zero());
+        if root != b256::zero() {
+            let recipient_bits:b256 = recipient.bits();
+            let mut recipient_bytes:Bytes = recipient_bits.to_le_bytes();
+            let amount_bytes = max_amount.unwrap_or(amount).to_le_bytes();
+            recipient_bytes.append(amount_bytes);
+
+            let hashed_leaf = leaf_digest(sha256(recipient_bytes));
+
+            // Verify the Merkle proof
+            require(
+                verify_proof(
+                    key.unwrap_or(0),
+                    hashed_leaf,
+                    root,
+                    num_leaves.unwrap_or(0),
+                    proof.unwrap()
+                ),
+                MintError::InvalidProof
+            );
+
+            // Check if the recipient has not exceeded their maximum minting limit
+            let minted_count: u64 = storage.minted_by_address.get(recipient).try_read().unwrap_or(0);
+            require(
+                minted_count + amount <= max_amount.unwrap_or(0),
+                MintError::ExceededMaxMintLimit
+            );
+        }
 
         let mut total_price: u64 = 0;
         let mut total_fee: u64 = 0;
@@ -422,33 +473,6 @@ impl SRC3PayableExtension for Contract {
             total_assets + amount <= MAX_SUPPLY,
             MintError::MaxNFTsMinted,
         );
-
-        let mut minted_count = 0;
-
-        while minted_count < amount {
-            let new_minted_id = last_minted_id + 1;
-            let new_sub_id = new_minted_id.as_u256().as_b256();
-            let asset = AssetId::new(ContractId::this(), new_sub_id);
-
-            storage.assets_to_sub_id.insert(asset, new_sub_id);
-
-            // Mint the NFT
-            let _ = _mint(
-                storage
-                    .total_assets,
-                storage
-                    .total_supply,
-                recipient,
-                new_sub_id,
-                1,
-            );
-
-            last_minted_id = new_minted_id;
-            minted_count += 1;
-        }
-
-        // Update last minted id in storage
-        storage.last_minted_id.write(last_minted_id);
 
         // Check and transfer builder fee
         if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
@@ -506,6 +530,33 @@ impl SRC3PayableExtension for Contract {
                 }
             }
         }
+
+        let mut minted_count = 0;
+
+        while minted_count < amount {
+            let new_minted_id = last_minted_id + 1;
+            let new_sub_id = new_minted_id.as_u256().as_b256();
+            let asset = AssetId::new(ContractId::this(), new_sub_id);
+
+            storage.assets_to_sub_id.insert(asset, new_sub_id);
+
+            // Mint the NFT
+            let _ = _mint(
+                storage
+                    .total_assets,
+                storage
+                    .total_supply,
+                recipient,
+                new_sub_id,
+                1,
+            );
+
+            last_minted_id = new_minted_id;
+            minted_count += 1;
+        }
+
+        // Update last minted id in storage
+        storage.last_minted_id.write(last_minted_id);
 
     }
 
@@ -962,6 +1013,115 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.start_date.write(start);
         storage.end_date.write(end);
+    }
+
+    /// Sets the Merkle root for the contract.
+    ///
+    /// # Arguments
+    ///
+    /// * `root`: [b256] - The Merkle root to set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Writes: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let root = 0x1234567890123456789012345678901234567890123456789012345678901234;
+    ///     mint_abi.set_merkle_root(root);
+    /// }
+    /// ```
+    #[storage(write)]
+    fn set_merkle_root(root: b256) {
+        only_owner();
+        storage.merkle_root.write(root);
+    }
+
+    /// Returns the Merkle root for the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<b256>] - The Merkle root if set, or None if not set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let root = mint_abi.merkle_root();
+    ///     assert(root.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn merkle_root() -> Option<b256> {
+        Some(storage.merkle_root.read())
+    }
+
+    /// Returns the Merkle URI for the contract.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<String>] - The Merkle URI if set, or None if not set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let uri = mint_abi.merkle_uri();
+    ///     assert(uri.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn merkle_uri() -> Option<String> {
+        Some(storage.merkle_uri.read_slice().unwrap())
+    }
+
+    /// Sets the Merkle root and URI for the contract.
+    ///
+    /// # Arguments
+    ///
+    /// * `root`: [b256] - The Merkle root to set.
+    /// * `uri`: [String] - The Merkle URI to set.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Writes: `2`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let root = 0x1234567890123456789012345678901234567890123456789012345678901234;
+    ///     let uri = "https://example.com/merkle";
+    ///     mint_abi.set_merkle(root, uri);
+    /// }
+    /// ```
+    #[storage(write)]
+    fn set_merkle(root: b256, uri: String) {
+        only_owner();
+        storage.merkle_root.write(root);
+        storage.merkle_uri.write_slice(uri);
     }
 
 }

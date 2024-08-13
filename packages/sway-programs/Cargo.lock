@@ -16,8 +16,10 @@ dependencies = [
 name = "Props721Collection-contract"
 version = "0.0.0"
 dependencies = [
+ "fuel-merkle 0.50.0",
  "fuels",
  "sha2 0.10.8",
+ "tai64",
  "tokio",
 ]
 
@@ -25,6 +27,7 @@ dependencies = [
 name = "Props721Edition-contract"
 version = "0.0.0"
 dependencies = [
+ "fuel-merkle 0.50.0",
  "fuels",
  "sha2 0.10.8",
  "tai64",
@@ -1949,10 +1952,24 @@ checksum = "5198b4eab5a19b0034971da88199dae7dd61806ebd8df366d6af1f17cda2e151"
 dependencies = [
  "derive_more",
  "digest 0.10.7",
- "fuel-storage",
+ "fuel-storage 0.49.0",
  "hashbrown 0.13.2",
  "hex",
  "serde",
+ "sha2 0.10.8",
+]
+
+[[package]]
+name = "fuel-merkle"
+version = "0.50.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "faa4b60ddfa51b64d02a1d71b0cf51488171d313b32ae3fb9f39f64ddd21791b"
+dependencies = [
+ "derive_more",
+ "digest 0.10.7",
+ "fuel-storage 0.50.0",
+ "hashbrown 0.13.2",
+ "hex",
  "sha2 0.10.8",
 ]
 
@@ -1961,6 +1978,12 @@ name = "fuel-storage"
 version = "0.49.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fa738e9c244f3f312af09faef108ec9a285f02afcefbc579c19c242cea742dd0"
+
+[[package]]
+name = "fuel-storage"
+version = "0.50.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "beef5f12c40118e87ef6abf611c6bba5c88754e727fb825120ae7d0872123055"
 
 [[package]]
 name = "fuel-tx"
@@ -1973,7 +1996,7 @@ dependencies = [
  "derive_more",
  "fuel-asm",
  "fuel-crypto",
- "fuel-merkle",
+ "fuel-merkle 0.49.0",
  "fuel-types",
  "hashbrown 0.14.3",
  "itertools 0.10.5",
@@ -2012,8 +2035,8 @@ dependencies = [
  "ethnum",
  "fuel-asm",
  "fuel-crypto",
- "fuel-merkle",
- "fuel-storage",
+ "fuel-merkle 0.49.0",
+ "fuel-storage 0.49.0",
  "fuel-tx",
  "fuel-types",
  "hashbrown 0.14.3",

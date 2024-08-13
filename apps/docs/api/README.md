@@ -1,35 +1,71 @@
-**@props/fuels** • **Docs**
+**@props/fuels** • [**Docs**](globals.md)
 
 ***
 
-# @props/fuels
+# Props SDK
 
-## Classes
+The Props SDK allows anyone to integrate minting NFTs on Fuel with just a few lines of code with a powerful built-in incentive protocol that rewards builders, creators and collectors.
 
-- [Collection](classes/Collection.md)
-- [CollectionManager](classes/CollectionManager.md)
-- [Edition](classes/Edition.md)
-- [EditionManager](classes/EditionManager.md)
-- [Props721CollectionContractAbi](classes/Props721CollectionContractAbi.md)
-- [Props721EditionContractAbi](classes/Props721EditionContractAbi.md)
-- [PropsEventEmitter](classes/PropsEventEmitter.md)
-- [PropsEvents](classes/PropsEvents.md)
-- [PropsFeeSplitterContractAbi](classes/PropsFeeSplitterContractAbi.md)
-- [PropsSDK](classes/PropsSDK.md)
+## Documentation
 
-## Type Aliases
+For detailed documentation and API reference, please visit our comprehensive documentation site:
 
-- [CollectionCreateConfigurationOptions](type-aliases/CollectionCreateConfigurationOptions.md)
-- [CollectionCreateOptions](type-aliases/CollectionCreateOptions.md)
-- [EditionCreateConfigurationOptions](type-aliases/EditionCreateConfigurationOptions.md)
-- [EditionCreateOptions](type-aliases/EditionCreateOptions.md)
-- [MintResult](type-aliases/MintResult.md)
-- [NFTMetadata](type-aliases/NFTMetadata.md)
-- [Network](type-aliases/Network.md)
-- [PropsConfigurationOptions](type-aliases/PropsConfigurationOptions.md)
+[Props SDK Documentation](https://props-fuels.vercel.app)
 
-## Variables
+## Getting Started
 
-- [Props721CollectionContractAbi\_\_factory](variables/Props721CollectionContractAbi__factory.md)
-- [Props721EditionContractAbi\_\_factory](variables/Props721EditionContractAbi__factory.md)
-- [PropsFeeSplitterContractAbi\_\_factory](variables/PropsFeeSplitterContractAbi__factory.md)
+### Installation
+
+To install the SDK, run:
+
+```bash
+npm install @props/fuels
+```
+
+```bash
+pnpm install @props/fuels
+```
+
+```bash
+yarn add @props/fuels
+```
+
+## Usage
+
+To use the SDK, you must first create an instance of the `PropsSDK` class:
+
+```javascript
+import { PropsSDK } from '@props/fuels';
+import { Provider, Wallet } from 'fuels';
+
+const provider = new Provider('https://testnet.fuel.network');
+const wallet = Wallet.fromPrivateKey('your-private-key');
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
+async function createEdition() {
+  const edition: Edition = await propsClient.create({
+    name:"Edition 1",
+    symbol: "ED1",
+    metadata: {
+      name: "Edition 1",
+      description: "First edition",
+      image: "image_url",
+    },
+    options: {
+      maxSupply: 100,
+      owner: wallets[0],
+    }
+  });
+  console.log(`Created edition with ID: ${editionId}`);
+}
+
+createEdition();
+```
+
+## TODO
+
+- [ ] Merkle-Based Allowlists
+- [ ] Flexible Mint Dates

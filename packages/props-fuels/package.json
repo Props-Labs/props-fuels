@@ -18,6 +18,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@fuel-ts/merkle": "^0.93.0",
     "fuels": "^0.92.0"
   },
   "devDependencies": {

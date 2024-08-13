@@ -3,6 +3,7 @@ import { supportedNetworks } from "../common/constants";
 import { Network, PropsConfigurationOptions } from "../common/types";
 import { PropsEvents } from "./events";
 import { CollectionManager } from "../collection";
+import { PropsUtilities } from "../utils";
 
 /**
  * @class Props
@@ -12,6 +13,7 @@ export class PropsSDK {
   public editions: EditionManager;
   public collections: CollectionManager;
   public events: PropsEvents;
+  public utils: PropsUtilities;
   private network: Network;
   private apiKey: string;
 
@@ -25,7 +27,7 @@ export class PropsSDK {
      * @property {string} apiKey - The API key to authenticate requests. If no apiKey is supplied, a default rate-limited key will be used.
      * @private
      */
-    this.apiKey = options.apiKey || 'default-rate-limited-key'; //TODO validate api key
+    this.apiKey = options.apiKey || "default-rate-limited-key"; //TODO validate api key
 
     /**
      * @property {string} network - The network to connect to.
@@ -35,8 +37,12 @@ export class PropsSDK {
       (net) => net.id === options.network
     );
     if (!supportedNetwork) {
-      const supportedNetworkIds = supportedNetworks.map(net => net.id).join(', ');
-      throw new Error(`Network ${options.network} is not supported. It must be one of: ${supportedNetworkIds}.`);
+      const supportedNetworkIds = supportedNetworks
+        .map((net) => net.id)
+        .join(", ");
+      throw new Error(
+        `Network ${options.network} is not supported. It must be one of: ${supportedNetworkIds}.`
+      );
     }
     this.network = supportedNetwork;
 
@@ -57,7 +63,13 @@ export class PropsSDK {
      * @public
      * @description The event manager instance.
      */
-     this.events = PropsEvents.getInstance();
+    this.events = PropsEvents.getInstance();
+
+    /**
+     * @property {PropsUtilities} utils - The utilities instance.
+     * @public
+     */
+    this.utils = new PropsUtilities();
   }
 
   /**
@@ -75,15 +87,15 @@ export class PropsSDK {
    */
   async getHealth(): Promise<any> {
     if (!this.network.graphqlUrl) {
-      throw new Error('GraphQL URL is not available for this network');
+      throw new Error("GraphQL URL is not available for this network");
     }
     const response = await fetch(this.network.graphqlUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-      body: JSON.stringify({ query: '{ health }' }),
+      body: JSON.stringify({ query: "{ health }" }),
     });
     const data = await response.json();
     return data;
