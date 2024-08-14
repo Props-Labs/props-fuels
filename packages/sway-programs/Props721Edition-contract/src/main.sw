@@ -517,7 +517,6 @@ impl SRC3PayableExtension for Contract {
                 contract_id: ContractId::this(),
                 amount,
                 affiliate,
-                proof,
                 key,
                 num_leaves,
                 max_amount,

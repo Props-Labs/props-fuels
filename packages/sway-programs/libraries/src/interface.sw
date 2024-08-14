@@ -127,7 +127,6 @@ pub struct MintEvent {
     pub contract_id: ContractId,
     pub amount: u64,
     pub affiliate: Option<Identity>,
-    pub proof: Option<Vec<b256>>,
     pub key: Option<u64>,
     pub num_leaves: Option<u64>,
     pub max_amount: Option<u64>,
