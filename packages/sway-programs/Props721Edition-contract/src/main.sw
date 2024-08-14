@@ -1337,7 +1337,7 @@ impl Props721Edition for Contract {
         storage.start_date.write(start_date);
         storage.end_date.write(end_date);
 
-        let testEvent = ContractCreatedEvent{
+        log(ContractCreatedEvent{
             current_time: timestamp(),
             contract_id: ContractId::this().into(),
             owner: owner.bits(),
@@ -1346,8 +1346,6 @@ impl Props721Edition for Contract {
             price,
             start: start_date,
             end: end_date
-        };
-
-        log(testEvent);
+        });
     }
 }
