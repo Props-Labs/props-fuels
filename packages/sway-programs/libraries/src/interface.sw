@@ -108,7 +108,6 @@ pub fn convert_num_to_ascii_bytes(num: u64) -> Bytes {
 
 pub struct ContractCreatedEvent {
     pub current_time: u64,
-    pub block_height: u32,
     pub contract_id: b256,
     pub owner: b256,
     pub name: String,
