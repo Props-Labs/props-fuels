@@ -554,47 +554,23 @@ const _abi = {
         },
         {
           "name": "affiliate",
-          "type": 11,
-          "typeArguments": [
-            {
-              "name": "",
-              "type": 7,
-              "typeArguments": null
-            }
-          ]
+          "type": 7,
+          "typeArguments": null
         },
         {
           "name": "key",
-          "type": 11,
-          "typeArguments": [
-            {
-              "name": "",
-              "type": 38,
-              "typeArguments": null
-            }
-          ]
+          "type": 38,
+          "typeArguments": null
         },
         {
           "name": "num_leaves",
-          "type": 11,
-          "typeArguments": [
-            {
-              "name": "",
-              "type": 38,
-              "typeArguments": null
-            }
-          ]
+          "type": 38,
+          "typeArguments": null
         },
         {
           "name": "max_amount",
-          "type": 11,
-          "typeArguments": [
-            {
-              "name": "",
-              "type": 38,
-              "typeArguments": null
-            }
-          ]
+          "type": 38,
+          "typeArguments": null
         },
         {
           "name": "total_price",
@@ -5996,7 +5972,7 @@ const _abi = {
         "type": 38,
         "typeArguments": null
       },
-      "offset": 88792
+      "offset": 88800
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
@@ -6005,7 +5981,7 @@ const _abi = {
         "type": 20,
         "typeArguments": []
       },
-      "offset": 88712
+      "offset": 88720
     },
     {
       "name": "BUILDER_FEE",
@@ -6014,7 +5990,7 @@ const _abi = {
         "type": 38,
         "typeArguments": null
       },
-      "offset": 88704
+      "offset": 88712
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
@@ -6023,7 +5999,7 @@ const _abi = {
         "type": 20,
         "typeArguments": []
       },
-      "offset": 88744
+      "offset": 88752
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
@@ -6032,7 +6008,7 @@ const _abi = {
         "type": 38,
         "typeArguments": null
       },
-      "offset": 88776
+      "offset": 88784
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
@@ -6041,7 +6017,7 @@ const _abi = {
         "type": 38,
         "typeArguments": null
       },
-      "offset": 88696
+      "offset": 88704
     },
     {
       "name": "DISABLE_AIRDROP",
@@ -6050,7 +6026,7 @@ const _abi = {
         "type": 4,
         "typeArguments": null
       },
-      "offset": 88784
+      "offset": 88792
     }
   ]
 };
