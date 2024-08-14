@@ -28,7 +28,7 @@ const _abi = {
       "components": [
         {
           "name": "__tuple_element",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         },
         {
@@ -45,12 +45,12 @@ const _abi = {
       "components": [
         {
           "name": "__tuple_element",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         },
         {
           "name": "__tuple_element",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -103,7 +103,7 @@ const _abi = {
         },
         {
           "name": "ContractId",
-          "type": 23,
+          "type": 26,
           "typeArguments": null
         }
       ],
@@ -132,17 +132,17 @@ const _abi = {
         },
         {
           "name": "Bytes",
-          "type": 22,
+          "type": 24,
           "typeArguments": null
         },
         {
           "name": "Int",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         },
         {
           "name": "String",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         }
       ],
@@ -169,7 +169,7 @@ const _abi = {
         },
         {
           "name": "NotEnoughTokens",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         },
         {
@@ -179,7 +179,7 @@ const _abi = {
         },
         {
           "name": "OutsideMintingPeriod",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         },
         {
@@ -326,6 +326,53 @@ const _abi = {
     },
     {
       "typeId": 21,
+      "type": "struct AirdropEvent",
+      "components": [
+        {
+          "name": "current_time",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "recipient",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "amount",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "stored_owner",
+          "type": 16,
+          "typeArguments": null
+        },
+        {
+          "name": "new_sub_id",
+          "type": 3,
+          "typeArguments": null
+        },
+        {
+          "name": "is_airdrop",
+          "type": 4,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 22,
       "type": "struct AssetId",
       "components": [
         {
@@ -337,24 +384,135 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 22,
-      "type": "struct Bytes",
+      "typeId": 23,
+      "type": "struct BurnEvent",
       "components": [
         {
-          "name": "buf",
-          "type": 25,
+          "name": "current_time",
+          "type": 38,
           "typeArguments": null
         },
         {
-          "name": "len",
-          "type": 29,
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "recipient",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "amount",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "sub_id",
+          "type": 3,
           "typeArguments": null
         }
       ],
       "typeParameters": null
     },
     {
-      "typeId": 23,
+      "typeId": 24,
+      "type": "struct Bytes",
+      "components": [
+        {
+          "name": "buf",
+          "type": 29,
+          "typeArguments": null
+        },
+        {
+          "name": "len",
+          "type": 38,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 25,
+      "type": "struct ContractCreatedEvent",
+      "components": [
+        {
+          "name": "current_time",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "owner",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "name",
+          "type": 35,
+          "typeArguments": null
+        },
+        {
+          "name": "symbol",
+          "type": 35,
+          "typeArguments": null
+        },
+        {
+          "name": "metadata_keys",
+          "type": 36,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 35,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "metadata_values",
+          "type": 36,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 9,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "price",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "start",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "end",
+          "type": 38,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 26,
       "type": "struct ContractId",
       "components": [
         {
@@ -366,7 +524,150 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 24,
+      "typeId": 27,
+      "type": "struct MintEvent",
+      "components": [
+        {
+          "name": "current_time",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "recipient",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "amount",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "affiliate",
+          "type": 11,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 7,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "proof",
+          "type": 11,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 36,
+              "typeArguments": [
+                {
+                  "name": "",
+                  "type": 3,
+                  "typeArguments": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "key",
+          "type": 11,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 38,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "num_leaves",
+          "type": 11,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 38,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "max_amount",
+          "type": 11,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 38,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "total_price",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "total_fee",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "stored_owner",
+          "type": 16,
+          "typeArguments": null
+        },
+        {
+          "name": "price_amount",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "builder_fee",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "affiliate_fee",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "fee",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "creator_price",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "asset_id",
+          "type": 22,
+          "typeArguments": null
+        },
+        {
+          "name": "new_sub_id",
+          "type": 3,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 28,
       "type": "struct OwnershipSet",
       "components": [
         {
@@ -378,7 +679,7 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 25,
+      "typeId": 29,
       "type": "struct RawBytes",
       "components": [
         {
@@ -388,14 +689,14 @@ const _abi = {
         },
         {
           "name": "cap",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
       "typeParameters": null
     },
     {
-      "typeId": 26,
+      "typeId": 30,
       "type": "struct RawVec",
       "components": [
         {
@@ -405,7 +706,7 @@ const _abi = {
         },
         {
           "name": "cap",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -414,24 +715,172 @@ const _abi = {
       ]
     },
     {
-      "typeId": 27,
-      "type": "struct String",
+      "typeId": 31,
+      "type": "struct SetMerkleRootEvent",
       "components": [
         {
-          "name": "bytes",
-          "type": 22,
+          "name": "current_time",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "sender",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "root",
+          "type": 3,
+          "typeArguments": null
+        },
+        {
+          "name": "uri",
+          "type": 35,
           "typeArguments": null
         }
       ],
       "typeParameters": null
     },
     {
-      "typeId": 28,
+      "typeId": 32,
+      "type": "struct SetMetadataEvent",
+      "components": [
+        {
+          "name": "current_time",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "sender",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "asset",
+          "type": 22,
+          "typeArguments": null
+        },
+        {
+          "name": "key",
+          "type": 35,
+          "typeArguments": null
+        },
+        {
+          "name": "metadata",
+          "type": 9,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 33,
+      "type": "struct SetMintDatesEvent",
+      "components": [
+        {
+          "name": "current_time",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "sender",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "start",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "end",
+          "type": 38,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 34,
+      "type": "struct SetMintPriceEvent",
+      "components": [
+        {
+          "name": "current_time",
+          "type": 38,
+          "typeArguments": null
+        },
+        {
+          "name": "block_height",
+          "type": 37,
+          "typeArguments": null
+        },
+        {
+          "name": "sender",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
+          "name": "contract_id",
+          "type": 26,
+          "typeArguments": null
+        },
+        {
+          "name": "price",
+          "type": 38,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 35,
+      "type": "struct String",
+      "components": [
+        {
+          "name": "bytes",
+          "type": 24,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 36,
       "type": "struct Vec",
       "components": [
         {
           "name": "buf",
-          "type": 26,
+          "type": 30,
           "typeArguments": [
             {
               "name": "",
@@ -442,7 +891,7 @@ const _abi = {
         },
         {
           "name": "len",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -451,13 +900,19 @@ const _abi = {
       ]
     },
     {
-      "typeId": 29,
+      "typeId": 37,
+      "type": "u32",
+      "components": null,
+      "typeParameters": null
+    },
+    {
+      "typeId": 38,
       "type": "u64",
       "components": null,
       "typeParameters": null
     },
     {
-      "typeId": 30,
+      "typeId": 39,
       "type": "u8",
       "components": null,
       "typeParameters": null
@@ -468,7 +923,7 @@ const _abi = {
       "inputs": [
         {
           "name": "_asset",
-          "type": 21,
+          "type": 22,
           "typeArguments": null
         }
       ],
@@ -479,7 +934,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 30,
+            "type": 39,
             "typeArguments": null
           }
         ]
@@ -647,7 +1102,7 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 21,
+          "type": 22,
           "typeArguments": null
         }
       ],
@@ -658,7 +1113,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 27,
+            "type": 35,
             "typeArguments": null
           }
         ]
@@ -832,7 +1287,7 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 21,
+          "type": 22,
           "typeArguments": null
         }
       ],
@@ -843,7 +1298,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 27,
+            "type": 35,
             "typeArguments": null
           }
         ]
@@ -1018,7 +1473,7 @@ const _abi = {
       "name": "total_assets",
       "output": {
         "name": "",
-        "type": 29,
+        "type": 38,
         "typeArguments": null
       },
       "attributes": [
@@ -1160,7 +1615,7 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 21,
+          "type": 22,
           "typeArguments": null
         }
       ],
@@ -1171,7 +1626,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 29,
+            "type": 38,
             "typeArguments": null
           }
         ]
@@ -1368,7 +1823,7 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -1559,7 +2014,7 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -1807,7 +2262,7 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         },
         {
@@ -1827,7 +2282,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 28,
+              "type": 36,
               "typeArguments": [
                 {
                   "name": "",
@@ -1844,7 +2299,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 29,
+              "type": 38,
               "typeArguments": null
             }
           ]
@@ -1855,7 +2310,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 29,
+              "type": 38,
               "typeArguments": null
             }
           ]
@@ -1866,7 +2321,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 29,
+              "type": 38,
               "typeArguments": null
             }
           ]
@@ -2112,12 +2567,12 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 21,
+          "type": 22,
           "typeArguments": null
         },
         {
           "name": "key",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         }
       ],
@@ -2315,11 +2770,11 @@ const _abi = {
       "name": "metadata_keys",
       "output": {
         "name": "",
-        "type": 28,
+        "type": 36,
         "typeArguments": [
           {
             "name": "",
-            "type": 27,
+            "type": 35,
             "typeArguments": null
           }
         ]
@@ -2475,7 +2930,7 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 21,
+          "type": 22,
           "typeArguments": null
         }
       ],
@@ -2486,7 +2941,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 28,
+            "type": 36,
             "typeArguments": [
               {
                 "name": "",
@@ -2839,12 +3294,12 @@ const _abi = {
       "inputs": [
         {
           "name": "asset",
-          "type": 21,
+          "type": 22,
           "typeArguments": null
         },
         {
           "name": "key",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         },
         {
@@ -3058,7 +3513,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 29,
+            "type": 38,
             "typeArguments": null
           }
         ]
@@ -3493,7 +3948,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 27,
+            "type": 35,
             "typeArguments": null
           }
         ]
@@ -3642,7 +4097,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 29,
+            "type": 38,
             "typeArguments": null
           }
         ]
@@ -3786,12 +4241,12 @@ const _abi = {
       "inputs": [
         {
           "name": "start",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         },
         {
           "name": "end",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -3957,7 +4412,7 @@ const _abi = {
         },
         {
           "name": "uri",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         }
       ],
@@ -4267,7 +4722,7 @@ const _abi = {
       "inputs": [
         {
           "name": "price",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -4445,7 +4900,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 29,
+            "type": 38,
             "typeArguments": null
           }
         ]
@@ -4594,7 +5049,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 29,
+            "type": 38,
             "typeArguments": null
           }
         ]
@@ -5166,28 +5621,28 @@ const _abi = {
         },
         {
           "name": "name",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         },
         {
           "name": "symbol",
-          "type": 27,
+          "type": 35,
           "typeArguments": null
         },
         {
           "name": "metadata_keys",
-          "type": 28,
+          "type": 36,
           "typeArguments": [
             {
               "name": "",
-              "type": 27,
+              "type": 35,
               "typeArguments": null
             }
           ]
         },
         {
           "name": "metadata_values",
-          "type": 28,
+          "type": 36,
           "typeArguments": [
             {
               "name": "",
@@ -5198,17 +5653,17 @@ const _abi = {
         },
         {
           "name": "price",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         },
         {
           "name": "start_date",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         },
         {
           "name": "end_date",
-          "type": 29,
+          "type": 38,
           "typeArguments": null
         }
       ],
@@ -5437,10 +5892,26 @@ const _abi = {
       }
     },
     {
+      "logId": "10361028542193287904",
+      "loggedType": {
+        "name": "",
+        "type": 21,
+        "typeArguments": []
+      }
+    },
+    {
       "logId": "4237256875605624201",
       "loggedType": {
         "name": "",
         "type": 6,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "5542832804562408962",
+      "loggedType": {
+        "name": "",
+        "type": 23,
         "typeArguments": []
       }
     },
@@ -5461,10 +5932,50 @@ const _abi = {
       }
     },
     {
+      "logId": "6558373291336461048",
+      "loggedType": {
+        "name": "",
+        "type": 27,
+        "typeArguments": []
+      }
+    },
+    {
       "logId": "13791596350235125220",
       "loggedType": {
         "name": "",
         "type": 15,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "10304856891897023545",
+      "loggedType": {
+        "name": "",
+        "type": 32,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "145906184384143869",
+      "loggedType": {
+        "name": "",
+        "type": 33,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "10832130021619404473",
+      "loggedType": {
+        "name": "",
+        "type": 31,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "17136559572377760745",
+      "loggedType": {
+        "name": "",
+        "type": 34,
         "typeArguments": []
       }
     },
@@ -5480,7 +5991,15 @@ const _abi = {
       "logId": "16280289466020123285",
       "loggedType": {
         "name": "",
-        "type": 24,
+        "type": 28,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "11057078378673499868",
+      "loggedType": {
+        "name": "",
+        "type": 25,
         "typeArguments": []
       }
     }
@@ -5491,10 +6010,10 @@ const _abi = {
       "name": "MAX_SUPPLY",
       "configurableType": {
         "name": "",
-        "type": 29,
+        "type": 38,
         "typeArguments": null
       },
-      "offset": 78352
+      "offset": 89280
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
@@ -5503,16 +6022,16 @@ const _abi = {
         "type": 20,
         "typeArguments": []
       },
-      "offset": 78272
+      "offset": 89200
     },
     {
       "name": "BUILDER_FEE",
       "configurableType": {
         "name": "",
-        "type": 29,
+        "type": 38,
         "typeArguments": null
       },
-      "offset": 78264
+      "offset": 89192
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
@@ -5521,25 +6040,25 @@ const _abi = {
         "type": 20,
         "typeArguments": []
       },
-      "offset": 78304
+      "offset": 89232
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "configurableType": {
         "name": "",
-        "type": 29,
+        "type": 38,
         "typeArguments": null
       },
-      "offset": 78336
+      "offset": 89264
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "configurableType": {
         "name": "",
-        "type": 29,
+        "type": 38,
         "typeArguments": null
       },
-      "offset": 78256
+      "offset": 89184
     },
     {
       "name": "DISABLE_AIRDROP",
@@ -5548,7 +6067,7 @@ const _abi = {
         "type": 4,
         "typeArguments": null
       },
-      "offset": 78344
+      "offset": 89272
     }
   ]
 };

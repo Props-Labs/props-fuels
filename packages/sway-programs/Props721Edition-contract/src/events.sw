@@ -35,6 +35,7 @@ pub struct MintEvent {
     pub affiliate_fee: u64,
     pub fee: u64,
     pub creator_price: u64,
+    pub asset_id: AssetId,
     pub new_sub_id: b256,
     pub is_airdrop: bool
 }

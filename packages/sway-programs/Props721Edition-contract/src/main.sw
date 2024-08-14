@@ -2,10 +2,8 @@ contract;
 
 mod errors;
 mod interface;
-mod events;
 
 use errors::{MintError, SetError};
-use events::*;
 use interface::{Props721Edition, SRC7MetadataExtension};
 use standards::{src20::SRC20, src3::SRC3, src5::{SRC5, State}, src7::{Metadata, SRC7},};
 use sway_libs::{
@@ -47,7 +45,7 @@ use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
 use std::block::timestamp;
 
-use libraries::{PropsFeeSplitter,SetMintMetadata, SRC3PayableExtension, concat, concat_with_bytes, convert_num_to_ascii_bytes};
+use libraries::*;
 
 const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
 
@@ -531,8 +529,8 @@ impl SRC3PayableExtension for Contract {
                 affiliate_fee,
                 fee,
                 creator_price,
-                new_sub_id,
-                is_airdrop: false
+                asset_id: asset,
+                new_sub_id
             });
 
             last_minted_id = new_minted_id;
