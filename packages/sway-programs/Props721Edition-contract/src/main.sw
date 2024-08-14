@@ -510,27 +510,27 @@ impl SRC3PayableExtension for Contract {
                 1,
             );
 
-            log(MintEvent{
-                current_time,
-                block_height: height(),
-                recipient,
-                contract_id: ContractId::this(),
-                amount,
-                affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
-                key: key.unwrap_or(0),
-                num_leaves: num_leaves.unwrap_or(0),
-                max_amount: max_amount.unwrap_or(0),
-                total_price,
-                total_fee,
-                stored_owner,
-                price_amount,
-                builder_fee: BUILDER_FEE,
-                affiliate_fee,
-                fee,
-                creator_price,
-                asset_id: asset,
-                new_sub_id
-            });
+            // log(MintEvent{
+            //     current_time,
+            //     block_height: height(),
+            //     recipient,
+            //     contract_id: ContractId::this(),
+            //     amount,
+            //     affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
+            //     key: key.unwrap_or(0),
+            //     num_leaves: num_leaves.unwrap_or(0),
+            //     max_amount: max_amount.unwrap_or(0),
+            //     total_price,
+            //     total_fee,
+            //     stored_owner,
+            //     price_amount,
+            //     builder_fee: BUILDER_FEE,
+            //     affiliate_fee,
+            //     fee,
+            //     creator_price,
+            //     asset_id: asset,
+            //     new_sub_id
+            // });
 
             last_minted_id = new_minted_id;
             minted_count += 1;
@@ -602,16 +602,16 @@ impl SRC3PayableExtension for Contract {
                 1,
             );
 
-            log(AirdropEvent{
-                current_time:timestamp(),
-                block_height: height(),
-                recipient,
-                contract_id: ContractId::this(),
-                amount,
-                stored_owner: _owner(),
-                new_sub_id,
-                is_airdrop: true
-            });
+            // log(AirdropEvent{
+            //     current_time:timestamp(),
+            //     block_height: height(),
+            //     recipient,
+            //     contract_id: ContractId::this(),
+            //     amount,
+            //     stored_owner: _owner(),
+            //     new_sub_id,
+            //     is_airdrop: true
+            // });
 
             last_minted_id = new_minted_id;
             minted_count += 1;
@@ -661,14 +661,14 @@ impl SRC3PayableExtension for Contract {
     fn burn(sub_id: SubId, amount: u64) {
         require_not_paused();
         _burn(storage.total_supply, sub_id, amount);
-        log(BurnEvent{
-            current_time:timestamp(),
-            block_height: height(),
-            recipient: msg_sender().unwrap(),
-            contract_id: ContractId::this(),
-            amount,
-            sub_id
-        });
+        // log(BurnEvent{
+        //     current_time:timestamp(),
+        //     block_height: height(),
+        //     recipient: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     amount,
+        //     sub_id
+        // });
     }
 }
 
@@ -864,15 +864,15 @@ impl SetAssetMetadata for Contract {
         only_owner();
         require(storage.metadata.get(AssetId::from(SubId::zero()), key).is_none(), SetError::ValueAlreadySet);
         _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, metadata);
-        log(SetMetadataEvent{
-            current_time: timestamp(),
-            block_height: height(),
-            sender: msg_sender().unwrap(),
-            contract_id: ContractId::this(),
-            asset,
-            key,
-            metadata
-        });
+        // log(SetMetadataEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     asset,
+        //     key,
+        //     metadata
+        // });
     }
 }
 
@@ -906,13 +906,13 @@ impl SetMintMetadata for Contract {
     fn set_price(price: u64) {
         only_owner();
         storage.price.write(price);
-        log(SetMintPriceEvent{
-            current_time: timestamp(),
-            block_height: height(),
-            sender: msg_sender().unwrap(),
-            contract_id: ContractId::this(),
-            price
-        });
+        // log(SetMintPriceEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     price
+        // });
     }
 
     /// Returns the price for minting an NFT.
@@ -1076,14 +1076,14 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.start_date.write(start);
         storage.end_date.write(end);
-        log(SetMintDatesEvent{
-            current_time: timestamp(),
-            block_height: height(),
-            sender: msg_sender().unwrap(),
-            contract_id: ContractId::this(),
-            start,
-            end
-        });
+        // log(SetMintDatesEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     start,
+        //     end
+        // });
     }
 
     /// Sets the Merkle root for the contract.
@@ -1193,14 +1193,14 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.merkle_root.write(root);
         storage.merkle_uri.write_slice(uri);
-        log(SetMerkleRootEvent{
-            current_time: timestamp(),
-            block_height: height(),
-            sender: msg_sender().unwrap(),
-            contract_id: ContractId::this(),
-            root,
-            uri
-        });
+        // log(SetMerkleRootEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     root,
+        //     uri
+        // });
     }
 
 }
@@ -1340,12 +1340,10 @@ impl Props721Edition for Contract {
         log(ContractCreatedEvent{
             current_time: timestamp(),
             block_height: height(),
-            contract_id: ContractId::this(),
-            owner,
-            name,
+            contract_id: ContractId::this().into(),
+            owner: owner.bits(),
+            name: name,
             symbol,
-            metadata_keys,
-            metadata_values,
             price,
             start: start_date,
             end: end_date
