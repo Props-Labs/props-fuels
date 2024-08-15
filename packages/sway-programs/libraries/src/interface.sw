@@ -128,19 +128,15 @@ pub struct MintEvent {
     pub fee: u64,
     pub creator_price: u64,
     pub asset_id: AssetId,
-    pub new_sub_id: u64
+    pub new_minted_id: u64
 }
 
-// pub struct AirdropEvent {
-//     pub current_time: u64,
-//     pub block_height: u32,
-//     pub recipient: Identity,
-//     pub contract_id: ContractId,
-//     pub amount: u64,
-//     pub stored_owner: State,
-//     pub new_sub_id: b256,
-//     pub is_airdrop: bool
-// }
+pub struct AirdropEvent {
+    pub sender: Identity,
+    pub recipient: Identity,
+    pub amount: u64,
+    pub new_minted_id: u64
+}
 
 // pub struct BurnEvent {
 //     pub current_time: u64,

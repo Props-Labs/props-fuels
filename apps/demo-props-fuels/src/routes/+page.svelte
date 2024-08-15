@@ -67,6 +67,16 @@
         });
     }
 
+    const airdrop = (edition: Edition) => {
+        console.log("Airdropping: ", edition);
+        if(!$wallet || !$wallet.address) return;
+        edition.airdrop($wallet?.address.toString(), 1).then((result) => {
+            console.log("Airdropped: ", result);
+        }).catch(error => {
+            console.error("Error airdropping: ", error);
+        });
+    }
+
     $: if($connected && propsClient) {
         listEditions();
         listCollections();
@@ -118,7 +128,10 @@
     <h2 class="text-3xl text-center">My Editions</h2>
     {#if editionsLoaded}
         {#if editions.length > 0}
-            <Grid items={editions} on:mint={(e) => mint(e.detail)} />
+            <Grid items={editions} 
+            on:mint={(e) => mint(e.detail)} 
+            on:airdrop={(e) => airdrop(e.detail)} 
+            />
         {:else}
             <div class="bg-base-200 p-8 text-center rounded-lg">
                 <p class="text-xl">No editions created yet</p>

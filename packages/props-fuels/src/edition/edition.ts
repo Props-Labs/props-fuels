@@ -124,6 +124,48 @@ export class Edition extends PropsContract {
   }
 
   /**
+   * Airdrops tokens to multiple addresses.
+   * @param {string} to - The address to mint tokens to.
+   * @param {number} amount - The amount of tokens to mint.
+   * @returns {Promise<MintResult|Error>} A promise that resolves with the airdrop result.
+   * @throws {Error} If the airdrop process fails.
+   */
+  async airdrop(
+    to: string,
+    amount: number,
+  ): Promise<MintResult|Error> {
+    if (!this.contract || !this.account) {
+      throw new Error("Contract or account is not connected");
+    }
+
+    try {
+      const baseAssetId = this.account.provider.getBaseAssetId();
+    
+      const address = Address.fromDynamicInput(to);
+      const addressInput = { bits: address.toB256() };
+      const addressIdentityInput = { Address: addressInput };
+      
+
+      const { waitForResult } = await this.contract.functions
+        .airdrop(
+          addressIdentityInput,
+          amount
+        )
+        .callParams({
+          gasLimit: 1_000_000,
+        })
+        .call();
+
+      const { transactionResult } = await waitForResult();
+      if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus")
+        return { id: transactionResult.gqlTransaction.id, transactionResult };
+      else throw new Error("Airdrop transaction failed");
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
    * Static method to create an Edition instance based on a contractId and a wallet.
    * @param {string} contractId - The ID of the contract.
    * @param {Account} wallet - The wallet to connect.
@@ -134,10 +176,13 @@ export class Edition extends PropsContract {
       contractId,
       wallet
     );
-    // TODO consider just removing the need to pass AssetId to edition
-    const { value: metadata } = await contract.functions.total_metadata(
-      { bits: wallet.address.toB256() }
-    ).get();
+
+    // TODO: @dev this is confusing, we should just pass the assetId to the edition
+    // TODO: consider just removing the need to pass AssetId to edition
+    // const { value: metadata } = await contract.functions.total_metadata(
+    //   { bits: wallet.address.toB256() }
+    // ).get();
+    let metadata; //temp for dev until the metadata is passed in correctly
     return new Edition(contractId, contract, wallet, metadata ? decodeContractMetadata(metadata) : undefined);
   }
 }

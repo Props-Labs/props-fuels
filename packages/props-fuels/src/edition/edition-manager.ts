@@ -165,7 +165,7 @@ export class EditionManager extends PropsContractManager {
       variables
     );
 
-    // console.log("transactionData", transactionData);
+     console.log("transactionData", transactionData);
 
     const contractIds = transactionData.data.transactionsByOwner.nodes.flatMap(
       (node: any) =>
@@ -174,7 +174,7 @@ export class EditionManager extends PropsContractManager {
           .map((output: any) => output.contract)
     );
 
-    // console.log("contractIds", contractIds);
+    console.log("contractIds", contractIds);
 
     const matchingContracts: Array<string> = [];
 
@@ -220,6 +220,8 @@ export class EditionManager extends PropsContractManager {
         matchingContracts.push(contractId);
       }
     }
+
+    console.log("matchingContracts", matchingContracts);
 
     const editions = await Promise.all(
       matchingContracts.map(async (contractId) => {

@@ -523,7 +523,7 @@ impl SRC3PayableExtension for Contract {
                 fee,
                 creator_price,
                 asset_id: asset,
-                new_sub_id: new_minted_id
+                new_minted_id
             });
 
             last_minted_id = new_minted_id;
@@ -596,16 +596,12 @@ impl SRC3PayableExtension for Contract {
                 1,
             );
 
-            // log(AirdropEvent{
-            //     current_time:timestamp(),
-            //     block_height: height(),
-            //     recipient,
-            //     contract_id: ContractId::this(),
-            //     amount,
-            //     stored_owner: _owner(),
-            //     new_sub_id,
-            //     is_airdrop: true
-            // });
+            log(AirdropEvent{
+                sender: msg_sender().unwrap(),
+                recipient,
+                amount,
+                new_minted_id
+            });
 
             last_minted_id = new_minted_id;
             minted_count += 1;

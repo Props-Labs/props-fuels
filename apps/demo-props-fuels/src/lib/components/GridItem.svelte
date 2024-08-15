@@ -58,9 +58,10 @@
         </ul>
       {/if}
     {/if}
-    <small class="truncate w-[200px]">ID: {item.id}</small>
+    <small class="w-[200px] text-xs">ID: {item.id}</small>
   </div>
   <div class="card-actions justify-end p-4">
     <button class="btn btn-primary btn-lg" on:click={() => dispatch('mint', item)}>Mint</button>
+    <button class="btn btn-primary btn-lg" on:click={() => dispatch('airdrop', item)}>Airdrop To Self</button>
   </div>
 </div>
