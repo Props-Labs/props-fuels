@@ -1,6 +1,6 @@
-import { Account } from "fuels";
+import { Account, Address } from "fuels";
 import { Props721CollectionContractAbi, Props721EditionContractAbi } from "../sway-api";
-import { Allowlist, AllowlistEntry, AllowListInput } from "../common/types";
+import { Allowlist, AllowlistEntry, AllowListInput, MintResult, NFTMetadata } from "../common/types";
 import { PropsUtilities } from "../utils";
 
 /**
@@ -155,6 +155,48 @@ export class PropsContract {
       console.log(`Dates set successfully: start=${new Date(startDate)}, end=${new Date(endDate)}`);
     } catch (error) {
       console.error("Failed to set dates:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Airdrops tokens to multiple addresses.
+   * @param {string} to - The address to mint tokens to.
+   * @param {number} amount - The amount of tokens to mint.
+   * @returns {Promise<MintResult|Error>} A promise that resolves with the airdrop result.
+   * @throws {Error} If the airdrop process fails.
+   */
+  async airdrop(
+    to: string,
+    amount: number,
+  ): Promise<MintResult|Error> {
+    if (!this.contract || !this.account) {
+      throw new Error("Contract or account is not connected");
+    }
+
+    try {
+      const baseAssetId = this.account.provider.getBaseAssetId();
+    
+      const address = Address.fromDynamicInput(to);
+      const addressInput = { bits: address.toB256() };
+      const addressIdentityInput = { Address: addressInput };
+      
+
+      const { waitForResult } = await this.contract.functions
+        .airdrop(
+          addressIdentityInput,
+          amount
+        )
+        .callParams({
+          gasLimit: 1_000_000,
+        })
+        .call();
+
+      const { transactionResult } = await waitForResult();
+      if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus")
+        return { id: transactionResult.gqlTransaction.id, transactionResult };
+      else throw new Error("Airdrop transaction failed");
+    } catch (error) {
       throw error;
     }
   }
