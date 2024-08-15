@@ -107,9 +107,7 @@ pub fn convert_num_to_ascii_bytes(num: u64) -> Bytes {
 }
 
 pub struct ContractCreatedEvent {
-    pub current_time: u64,
-    pub contract_id: b256,
-    pub owner: b256,
+    pub owner: Identity,
     pub name: String,
     pub symbol: String,
     pub price: u64,
@@ -117,27 +115,21 @@ pub struct ContractCreatedEvent {
     pub end: u64
 }
 
-// pub struct MintEvent {
-//     pub current_time: u64,
-//     pub block_height: u32,
-//     pub recipient: Identity,
-//     pub contract_id: ContractId,
-//     pub amount: u64,
-//     pub affiliate: Identity,
-//     pub key: u64,
-//     pub num_leaves: u64,
-//     pub max_amount: u64,
-//     pub total_price: u64,
-//     pub total_fee: u64,
-//     pub stored_owner: State,
-//     pub price_amount: u64,
-//     pub builder_fee: u64,
-//     pub affiliate_fee: u64,
-//     pub fee: u64,
-//     pub creator_price: u64,
-//     pub asset_id: AssetId,
-//     pub new_sub_id: b256
-// }
+pub struct MintEvent {
+    pub recipient: Identity,
+    pub amount: u64,
+    pub affiliate: Identity,
+    pub max_amount: u64,
+    pub total_price: u64,
+    pub total_fee: u64,
+    pub price_amount: u64,
+    pub builder_fee: u64,
+    pub affiliate_fee: u64,
+    pub fee: u64,
+    pub creator_price: u64,
+    pub asset_id: AssetId,
+    pub new_sub_id: u64
+}
 
 // pub struct AirdropEvent {
 //     pub current_time: u64,

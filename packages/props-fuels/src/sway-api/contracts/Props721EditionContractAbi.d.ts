@@ -50,28 +50,16 @@ export type StateOutput = Enum<{ Uninitialized: [], Initialized: IdentityOutput,
 
 export type AddressInput = { bits: string };
 export type AddressOutput = AddressInput;
-export type AirdropEventInput = { current_time: BigNumberish, block_height: BigNumberish, recipient: IdentityInput, contract_id: ContractIdInput, amount: BigNumberish, stored_owner: StateInput, new_sub_id: string, is_airdrop: boolean };
-export type AirdropEventOutput = { current_time: BN, block_height: number, recipient: IdentityOutput, contract_id: ContractIdOutput, amount: BN, stored_owner: StateOutput, new_sub_id: string, is_airdrop: boolean };
 export type AssetIdInput = { bits: string };
 export type AssetIdOutput = AssetIdInput;
-export type BurnEventInput = { current_time: BigNumberish, block_height: BigNumberish, recipient: IdentityInput, contract_id: ContractIdInput, amount: BigNumberish, sub_id: string };
-export type BurnEventOutput = { current_time: BN, block_height: number, recipient: IdentityOutput, contract_id: ContractIdOutput, amount: BN, sub_id: string };
-export type ContractCreatedEventInput = { current_time: BigNumberish, block_height: BigNumberish, contract_id: ContractIdInput, owner: IdentityInput, name: StdString, symbol: StdString, metadata_keys: Vec<StdString>, metadata_values: Vec<MetadataInput>, price: BigNumberish, start: BigNumberish, end: BigNumberish };
-export type ContractCreatedEventOutput = { current_time: BN, block_height: number, contract_id: ContractIdOutput, owner: IdentityOutput, name: StdString, symbol: StdString, metadata_keys: Vec<StdString>, metadata_values: Vec<MetadataOutput>, price: BN, start: BN, end: BN };
+export type ContractCreatedEventInput = { owner: IdentityInput, name: StdString, symbol: StdString, price: BigNumberish, start: BigNumberish, end: BigNumberish };
+export type ContractCreatedEventOutput = { owner: IdentityOutput, name: StdString, symbol: StdString, price: BN, start: BN, end: BN };
 export type ContractIdInput = { bits: string };
 export type ContractIdOutput = ContractIdInput;
-export type MintEventInput = { current_time: BigNumberish, block_height: BigNumberish, recipient: IdentityInput, contract_id: ContractIdInput, amount: BigNumberish, affiliate: IdentityInput, key: BigNumberish, num_leaves: BigNumberish, max_amount: BigNumberish, total_price: BigNumberish, total_fee: BigNumberish, stored_owner: StateInput, price_amount: BigNumberish, builder_fee: BigNumberish, affiliate_fee: BigNumberish, fee: BigNumberish, creator_price: BigNumberish, asset_id: AssetIdInput, new_sub_id: string };
-export type MintEventOutput = { current_time: BN, block_height: number, recipient: IdentityOutput, contract_id: ContractIdOutput, amount: BN, affiliate: IdentityOutput, key: BN, num_leaves: BN, max_amount: BN, total_price: BN, total_fee: BN, stored_owner: StateOutput, price_amount: BN, builder_fee: BN, affiliate_fee: BN, fee: BN, creator_price: BN, asset_id: AssetIdOutput, new_sub_id: string };
+export type MintEventInput = { recipient: IdentityInput, amount: BigNumberish, affiliate: IdentityInput, max_amount: BigNumberish, total_price: BigNumberish, total_fee: BigNumberish, price_amount: BigNumberish, builder_fee: BigNumberish, affiliate_fee: BigNumberish, fee: BigNumberish, creator_price: BigNumberish, asset_id: AssetIdInput, new_sub_id: BigNumberish };
+export type MintEventOutput = { recipient: IdentityOutput, amount: BN, affiliate: IdentityOutput, max_amount: BN, total_price: BN, total_fee: BN, price_amount: BN, builder_fee: BN, affiliate_fee: BN, fee: BN, creator_price: BN, asset_id: AssetIdOutput, new_sub_id: BN };
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
-export type SetMerkleRootEventInput = { current_time: BigNumberish, block_height: BigNumberish, sender: IdentityInput, contract_id: ContractIdInput, root: string, uri: StdString };
-export type SetMerkleRootEventOutput = { current_time: BN, block_height: number, sender: IdentityOutput, contract_id: ContractIdOutput, root: string, uri: StdString };
-export type SetMetadataEventInput = { current_time: BigNumberish, block_height: BigNumberish, sender: IdentityInput, contract_id: ContractIdInput, asset: AssetIdInput, key: StdString, metadata: MetadataInput };
-export type SetMetadataEventOutput = { current_time: BN, block_height: number, sender: IdentityOutput, contract_id: ContractIdOutput, asset: AssetIdOutput, key: StdString, metadata: MetadataOutput };
-export type SetMintDatesEventInput = { current_time: BigNumberish, block_height: BigNumberish, sender: IdentityInput, contract_id: ContractIdInput, start: BigNumberish, end: BigNumberish };
-export type SetMintDatesEventOutput = { current_time: BN, block_height: number, sender: IdentityOutput, contract_id: ContractIdOutput, start: BN, end: BN };
-export type SetMintPriceEventInput = { current_time: BigNumberish, block_height: BigNumberish, sender: IdentityInput, contract_id: ContractIdInput, price: BigNumberish };
-export type SetMintPriceEventOutput = { current_time: BN, block_height: number, sender: IdentityOutput, contract_id: ContractIdOutput, price: BN };
 
 export type Props721EditionContractAbiConfigurables = Partial<{
   MAX_SUPPLY: BigNumberish;

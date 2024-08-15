@@ -510,27 +510,21 @@ impl SRC3PayableExtension for Contract {
                 1,
             );
 
-            // log(MintEvent{
-            //     current_time,
-            //     block_height: height(),
-            //     recipient,
-            //     contract_id: ContractId::this(),
-            //     amount,
-            //     affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
-            //     key: key.unwrap_or(0),
-            //     num_leaves: num_leaves.unwrap_or(0),
-            //     max_amount: max_amount.unwrap_or(0),
-            //     total_price,
-            //     total_fee,
-            //     stored_owner,
-            //     price_amount,
-            //     builder_fee: BUILDER_FEE,
-            //     affiliate_fee,
-            //     fee,
-            //     creator_price,
-            //     asset_id: asset,
-            //     new_sub_id
-            // });
+            log(MintEvent{
+                recipient,
+                amount,
+                affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
+                max_amount: max_amount.unwrap_or(0),
+                total_price,
+                total_fee,
+                price_amount,
+                builder_fee: BUILDER_FEE,
+                affiliate_fee,
+                fee,
+                creator_price,
+                asset_id: asset,
+                new_sub_id: new_minted_id
+            });
 
             last_minted_id = new_minted_id;
             minted_count += 1;
@@ -1338,10 +1332,8 @@ impl Props721Edition for Contract {
         storage.end_date.write(end_date);
 
         log(ContractCreatedEvent{
-            current_time: timestamp(),
-            contract_id: ContractId::this().into(),
-            owner: owner.bits(),
-            name: name,
+            owner,
+            name,
             symbol,
             price,
             start: start_date,
