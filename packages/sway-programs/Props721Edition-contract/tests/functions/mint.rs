@@ -117,6 +117,8 @@ mod success {
         let response = mint(&instance_1, other_identity, sub_id_1, 1, 1_000, fee_id, None, None, None, None, None).await;
         let logs = response.decode_logs();
 
+        println!("logs: {:?}", logs);
+
         // Check that mint has transferred the coins
         let contract_balances = instance_1.get_balances().await.unwrap();
         let base_asset_balance = contract_balances.get(&AssetId::zeroed()).copied().unwrap_or(0);

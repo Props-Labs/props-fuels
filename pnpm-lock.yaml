@@ -170,6 +170,66 @@ importers:
         specifier: ^4.19.2
         version: 4.19.2
 
+  apps/test-site:
+    devDependencies:
+      '@fontsource/fira-mono':
+        specifier: ^5.0.0
+        version: 5.0.13
+      '@neoconfetti/svelte':
+        specifier: ^2.0.0
+        version: 2.2.1
+      '@playwright/test':
+        specifier: ^1.28.1
+        version: 1.45.3
+      '@sveltejs/adapter-auto':
+        specifier: ^3.0.0
+        version: 3.2.2(@sveltejs/kit@2.5.20(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.5(@types/node@20.14.11)(terser@5.31.3)))(svelte@4.2.18)(vite@5.3.5(@types/node@20.14.11)(terser@5.31.3)))
+      '@sveltejs/kit':
+        specifier: ^2.0.0
+        version: 2.5.20(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.5(@types/node@20.14.11)(terser@5.31.3)))(svelte@4.2.18)(vite@5.3.5(@types/node@20.14.11)(terser@5.31.3))
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^3.0.0
+        version: 3.1.1(svelte@4.2.18)(vite@5.3.5(@types/node@20.14.11)(terser@5.31.3))
+      '@types/eslint':
+        specifier: ^9.6.0
+        version: 9.6.0
+      eslint:
+        specifier: ^9.0.0
+        version: 9.7.0
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@9.7.0)
+      eslint-plugin-svelte:
+        specifier: ^2.36.0
+        version: 2.43.0(eslint@9.7.0)(svelte@4.2.18)
+      globals:
+        specifier: ^15.0.0
+        version: 15.9.0
+      prettier:
+        specifier: ^3.1.1
+        version: 3.3.3
+      prettier-plugin-svelte:
+        specifier: ^3.1.2
+        version: 3.2.6(prettier@3.3.3)(svelte@4.2.18)
+      svelte:
+        specifier: ^4.2.7
+        version: 4.2.18
+      svelte-check:
+        specifier: ^3.6.0
+        version: 3.8.4(@babel/core@7.24.9)(postcss-load-config@4.0.2(postcss@8.4.41))(postcss@8.4.41)(svelte@4.2.18)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.5.4
+      typescript-eslint:
+        specifier: ^8.0.0
+        version: 8.0.1(eslint@9.7.0)(typescript@5.5.4)
+      vite:
+        specifier: ^5.0.3
+        version: 5.3.5(@types/node@20.14.11)(terser@5.31.3)
+      vitest:
+        specifier: ^2.0.0
+        version: 2.0.5(@types/node@20.14.11)(@vitest/browser@2.0.4(bufferutil@4.0.8)(playwright@1.45.3)(typescript@5.5.4)(utf-8-validate@5.0.10)(vitest@2.0.4))(terser@5.31.3)
+
   packages/props-fuels:
     dependencies:
       '@fuel-ts/merkle':
@@ -1794,6 +1854,9 @@ packages:
   '@floating-ui/utils@0.2.7':
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
 
+  '@fontsource/fira-mono@5.0.13':
+    resolution: {integrity: sha512-fZDjR2BdAqmauEbTjcIT62zYzbOgDa5+IQH34D2k8Pxmy1T815mAqQkZciWZVQ9dc/BgdTtTUV9HJ2ulBNwchg==}
+
   '@fuel-ts/abi-coder@0.92.0':
     resolution: {integrity: sha512-aZIxqlBR7xdCkyvm9JFpkE8hruIDd4mIbw5cIPuEKJK6fQ6qf56K6/ozxlxG2DSNvoRDBDF0a64GnMUUUpG+mA==}
     engines: {node: ^18.20.3 || ^20.0.0 || ^22.0.0}
@@ -2132,6 +2195,9 @@ packages:
   '@mswjs/interceptors@0.29.1':
     resolution: {integrity: sha512-3rDakgJZ77+RiQUuSK69t1F0m8BQKA8Vh5DCS5V0DWvNY67zob2JhhQrhCO0AKLGINTRSFd1tBaHcJTkhefoSw==}
     engines: {node: '>=18'}
+
+  '@neoconfetti/svelte@2.2.1':
+    resolution: {integrity: sha512-2Ts0Rxaf6clW2qG+AKhTwpl01AAyZEAe03XeuQ7Vp+qYIaM3ycuI94j546fmEkUxwACwGI3Zl2cZ/pncTuNcJg==}
 
   '@noble/curves@1.2.0':
     resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
@@ -9353,6 +9419,8 @@ snapshots:
 
   '@floating-ui/utils@0.2.7': {}
 
+  '@fontsource/fira-mono@5.0.13': {}
+
   '@fuel-ts/abi-coder@0.92.0':
     dependencies:
       '@fuel-ts/crypto': 0.92.0
@@ -9940,6 +10008,8 @@ snapshots:
       is-node-process: 1.2.0
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
+
+  '@neoconfetti/svelte@2.2.1': {}
 
   '@noble/curves@1.2.0':
     dependencies:
@@ -11205,7 +11275,7 @@ snapshots:
       '@vue/shared': 3.4.33
       estree-walker: 2.0.2
       magic-string: 0.30.10
-      postcss: 8.4.39
+      postcss: 8.4.41
       source-map-js: 1.2.0
 
   '@vue/compiler-ssr@3.4.33':

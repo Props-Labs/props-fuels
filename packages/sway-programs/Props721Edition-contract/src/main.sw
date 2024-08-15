@@ -38,14 +38,14 @@ use sway_libs::{
     reentrancy::reentrancy_guard,
     merkle::binary_proof::*,
 };
-use std::{hash::*, storage::storage_string::*, storage::storage_vec::*, string::String, bytes::Bytes, bytes_conversions::{b256::*, u16::*, u256::*, u32::*, u64::*,}};
+use std::{hash::*, storage::storage_string::*, storage::storage_vec::*, string::String, bytes::Bytes, bytes_conversions::{b256::*, u16::*, u256::*, u32::*, u64::*,}, block::height};
 use std::logging::log;
 use std::context::msg_amount;
 use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
 use std::block::timestamp;
 
-use libraries::{PropsFeeSplitter,SetMintMetadata, SRC3PayableExtension, concat, concat_with_bytes, convert_num_to_ascii_bytes};
+use libraries::*;
 
 const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
 
@@ -419,6 +419,7 @@ impl SRC3PayableExtension for Contract {
 
         let mut total_price: u64 = 0;
         let mut total_fee: u64 = 0;
+        let mut affiliate_fee: u64 = 0;
 
         let price = storage.price.try_read().unwrap_or(0);
         let total_assets = storage.total_assets.try_read().unwrap_or(0);
@@ -457,7 +458,7 @@ impl SRC3PayableExtension for Contract {
         // Check and transfer affiliate fee
         if let Some(Identity::Address(affiliate_address)) = affiliate {
             if AFFILIATE_FEE_PERCENTAGE > 0 {
-                let affiliate_fee = (price * AFFILIATE_FEE_PERCENTAGE) / 100;
+                affiliate_fee = (price * AFFILIATE_FEE_PERCENTAGE) / 100;
                 require(price_amount >= affiliate_fee, MintError::NotEnoughTokens(price_amount));
                 total_fee += affiliate_fee;
                 transfer(Identity::Address(affiliate_address), AssetId::base(), affiliate_fee);
@@ -508,6 +509,22 @@ impl SRC3PayableExtension for Contract {
                 new_sub_id,
                 1,
             );
+
+            log(MintEvent{
+                recipient,
+                amount,
+                affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
+                max_amount: max_amount.unwrap_or(0),
+                total_price,
+                total_fee,
+                price_amount,
+                builder_fee: BUILDER_FEE,
+                affiliate_fee,
+                fee,
+                creator_price,
+                asset_id: asset,
+                new_minted_id
+            });
 
             last_minted_id = new_minted_id;
             minted_count += 1;
@@ -579,6 +596,13 @@ impl SRC3PayableExtension for Contract {
                 1,
             );
 
+            log(AirdropEvent{
+                sender: msg_sender().unwrap(),
+                recipient,
+                amount,
+                new_minted_id
+            });
+
             last_minted_id = new_minted_id;
             minted_count += 1;
         }
@@ -627,6 +651,14 @@ impl SRC3PayableExtension for Contract {
     fn burn(sub_id: SubId, amount: u64) {
         require_not_paused();
         _burn(storage.total_supply, sub_id, amount);
+        // log(BurnEvent{
+        //     current_time:timestamp(),
+        //     block_height: height(),
+        //     recipient: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     amount,
+        //     sub_id
+        // });
     }
 }
 
@@ -822,6 +854,15 @@ impl SetAssetMetadata for Contract {
         only_owner();
         require(storage.metadata.get(AssetId::from(SubId::zero()), key).is_none(), SetError::ValueAlreadySet);
         _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, metadata);
+        // log(SetMetadataEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     asset,
+        //     key,
+        //     metadata
+        // });
     }
 }
 
@@ -855,6 +896,13 @@ impl SetMintMetadata for Contract {
     fn set_price(price: u64) {
         only_owner();
         storage.price.write(price);
+        // log(SetMintPriceEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     price
+        // });
     }
 
     /// Returns the price for minting an NFT.
@@ -1018,6 +1066,14 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.start_date.write(start);
         storage.end_date.write(end);
+        // log(SetMintDatesEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     start,
+        //     end
+        // });
     }
 
     /// Sets the Merkle root for the contract.
@@ -1127,6 +1183,14 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.merkle_root.write(root);
         storage.merkle_uri.write_slice(uri);
+        // log(SetMerkleRootEvent{
+        //     current_time: timestamp(),
+        //     block_height: height(),
+        //     sender: msg_sender().unwrap(),
+        //     contract_id: ContractId::this(),
+        //     root,
+        //     uri
+        // });
     }
 
 }
@@ -1262,5 +1326,14 @@ impl Props721Edition for Contract {
         storage.price.write(price);
         storage.start_date.write(start_date);
         storage.end_date.write(end_date);
+
+        log(ContractCreatedEvent{
+            owner,
+            name,
+            symbol,
+            price,
+            start: start_date,
+            end: end_date
+        });
     }
 }

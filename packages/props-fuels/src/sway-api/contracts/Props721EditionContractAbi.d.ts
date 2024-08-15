@@ -50,10 +50,16 @@ export type StateOutput = Enum<{ Uninitialized: [], Initialized: IdentityOutput,
 
 export type AddressInput = { bits: string };
 export type AddressOutput = AddressInput;
+export type AirdropEventInput = { sender: IdentityInput, recipient: IdentityInput, amount: BigNumberish, new_minted_id: BigNumberish };
+export type AirdropEventOutput = { sender: IdentityOutput, recipient: IdentityOutput, amount: BN, new_minted_id: BN };
 export type AssetIdInput = { bits: string };
 export type AssetIdOutput = AssetIdInput;
+export type ContractCreatedEventInput = { owner: IdentityInput, name: StdString, symbol: StdString, price: BigNumberish, start: BigNumberish, end: BigNumberish };
+export type ContractCreatedEventOutput = { owner: IdentityOutput, name: StdString, symbol: StdString, price: BN, start: BN, end: BN };
 export type ContractIdInput = { bits: string };
 export type ContractIdOutput = ContractIdInput;
+export type MintEventInput = { recipient: IdentityInput, amount: BigNumberish, affiliate: IdentityInput, max_amount: BigNumberish, total_price: BigNumberish, total_fee: BigNumberish, price_amount: BigNumberish, builder_fee: BigNumberish, affiliate_fee: BigNumberish, fee: BigNumberish, creator_price: BigNumberish, asset_id: AssetIdInput, new_minted_id: BigNumberish };
+export type MintEventOutput = { recipient: IdentityOutput, amount: BN, affiliate: IdentityOutput, max_amount: BN, total_price: BN, total_fee: BN, price_amount: BN, builder_fee: BN, affiliate_fee: BN, fee: BN, creator_price: BN, asset_id: AssetIdOutput, new_minted_id: BN };
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
 

@@ -123,6 +123,7 @@ export class Edition extends PropsContract {
     }
   }
 
+
   /**
    * Static method to create an Edition instance based on a contractId and a wallet.
    * @param {string} contractId - The ID of the contract.
@@ -134,10 +135,13 @@ export class Edition extends PropsContract {
       contractId,
       wallet
     );
-    // TODO consider just removing the need to pass AssetId to edition
-    const { value: metadata } = await contract.functions.total_metadata(
-      { bits: wallet.address.toB256() }
-    ).get();
+
+    // TODO: @dev this is confusing, we should just pass the assetId to the edition
+    // TODO: consider just removing the need to pass AssetId to edition
+    // const { value: metadata } = await contract.functions.total_metadata(
+    //   { bits: wallet.address.toB256() }
+    // ).get();
+    let metadata; //temp for dev until the metadata is passed in correctly
     return new Edition(contractId, contract, wallet, metadata ? decodeContractMetadata(metadata) : undefined);
   }
 }
