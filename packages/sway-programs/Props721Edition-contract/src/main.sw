@@ -1336,7 +1336,9 @@ impl Props721Edition for Contract {
         //https://github.com/FuelLabs/sway/blob/3700e3f42324600e8146e165dff447ac0f40475d/sway-lib-std/src/low_level_call.sw#L27
         //https://docs.fuel.network/docs/sway/advanced/assembly/
         //https://github.com/FuelLabs/sway/blob/3700e3f42324600e8146e165dff447ac0f40475d/sway-lib-std/src/low_level_call.sw#L195
-        //sway test: https://github.com/FuelLabs/sway/blob/40bd0af4171851461fedf2365daeb3410dcbe6ff/test/src/sdk-harness/test_projects/low_level_call/mod.rs#L35
+        //sway test: https://github.com/FuelLabs/sway/blob/40bd0af4171851461fedf2365daeb3410dcbe6ff/test/src/sdk-harness/test_projects/low_level_call/mod.rs
+        //sway test: https://github.com/FuelLabs/sway/blob/40bd0af4171851461fedf2365daeb3410dcbe6ff/test/src/sdk-harness/test_projects/low_level_call/src/main.sw
+        
         let registry_id = ContractId::from(REGISTRY_CONTRACT_ID);
 
         //not sure if this is a good way to do it, but the function selector is the first 4 bytes of the SHA hash of the function sig:
