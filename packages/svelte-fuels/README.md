@@ -12,6 +12,18 @@ npm install svelte-fuels fuels
 
 ## Usage
 
+To initialize the package, you can simply wrap you layout slot in the provided WalletProvider component.
+
+```svelte
+<script>
+  import { WalletProvider } from 'svelte-fuels';
+</script>
+
+<WalletProvider>
+  <slot />
+</WalletProvider>
+```
+
 ### Stores
 
 - **connected**: Indicates whether the application is currently connected to a Fuel provider. It is a boolean store.
