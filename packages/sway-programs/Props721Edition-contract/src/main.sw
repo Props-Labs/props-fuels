@@ -1327,7 +1327,7 @@ impl Props721Edition for Contract {
         storage.end_date.write(end_date);
 
         // TODO: @Calvin - Add the contract to the registry by calling the register function via call_with_function_selector
-        // the reason is that if we call the register function directly, this 721 contractId will be the address of the contract, not the registry. So the indexer bombs because it doesn't know what to do with it.
+        // the reason is that if we call the register function directly, this 721 contractId will be shown as the calling address of the RegisterEvent, not the registry. So the indexer bombs because it doesn't know what to do with it.
         //https://docs.fuel.network/docs/migrations-and-disclosures/breaking-changes-archive/#sway
         //https://docs.fuel.network/docs/fuels-rs/calling-contracts/low-level-calls/#low-level-calls
         //https://docs.fuel.network/docs/sway/advanced/assembly/
