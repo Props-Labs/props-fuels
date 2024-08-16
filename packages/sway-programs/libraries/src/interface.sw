@@ -151,11 +151,32 @@ pub struct AirdropEvent {
     pub new_minted_id: u64
 }
 
-pub struct RegisterEvent {
-    pub contract_id: ContractId,
-    pub owner: Identity
+pub struct BurnEvent {
+    pub sender: Identity,
+    pub amount: u64,
+    pub sub_id: SubId
 }
 
-pub struct DeregisterEvent {
-    pub contract_id: ContractId,
+pub struct SetMetadataEvent {
+    pub sender: Identity,
+    pub asset_id: AssetId,
+    pub key: String,
+    pub metadata: Metadata
+}
+
+pub struct SetMintPriceEvent {
+    pub sender: Identity,
+    pub price: u64
+}
+
+pub struct SetMintDatesEvent {
+    pub sender: Identity,
+    pub start: u64,
+    pub end: u64
+}
+
+pub struct SetMerkleRootEvent {
+    pub sender: Identity,
+    pub root: b256,
+    pub uri: String
 }

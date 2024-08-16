@@ -54,6 +54,8 @@ export type AirdropEventInput = { sender: IdentityInput, recipient: IdentityInpu
 export type AirdropEventOutput = { sender: IdentityOutput, recipient: IdentityOutput, amount: BN, new_minted_id: BN };
 export type AssetIdInput = { bits: string };
 export type AssetIdOutput = AssetIdInput;
+export type BurnEventInput = { sender: IdentityInput, amount: BigNumberish, sub_id: string };
+export type BurnEventOutput = { sender: IdentityOutput, amount: BN, sub_id: string };
 export type ContractCreatedEventInput = { owner: IdentityInput, name: StdString, symbol: StdString, price: BigNumberish, start: BigNumberish, end: BigNumberish };
 export type ContractCreatedEventOutput = { owner: IdentityOutput, name: StdString, symbol: StdString, price: BN, start: BN, end: BN };
 export type ContractIdInput = { bits: string };
@@ -62,6 +64,14 @@ export type MintEventInput = { recipient: IdentityInput, amount: BigNumberish, a
 export type MintEventOutput = { recipient: IdentityOutput, amount: BN, affiliate: IdentityOutput, max_amount: BN, total_price: BN, total_fee: BN, price_amount: BN, builder_fee: BN, affiliate_fee: BN, fee: BN, creator_price: BN, asset_id: AssetIdOutput, new_minted_id: BN };
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
+export type SetMerkleRootEventInput = { sender: IdentityInput, root: string, uri: StdString };
+export type SetMerkleRootEventOutput = { sender: IdentityOutput, root: string, uri: StdString };
+export type SetMetadataEventInput = { sender: IdentityInput, asset_id: AssetIdInput, key: StdString, metadata: MetadataInput };
+export type SetMetadataEventOutput = { sender: IdentityOutput, asset_id: AssetIdOutput, key: StdString, metadata: MetadataOutput };
+export type SetMintDatesEventInput = { sender: IdentityInput, start: BigNumberish, end: BigNumberish };
+export type SetMintDatesEventOutput = { sender: IdentityOutput, start: BN, end: BN };
+export type SetMintPriceEventInput = { sender: IdentityInput, price: BigNumberish };
+export type SetMintPriceEventOutput = { sender: IdentityOutput, price: BN };
 
 export type Props721EditionContractAbiConfigurables = Partial<{
   MAX_SUPPLY: BigNumberish;

@@ -38,12 +38,25 @@ use sway_libs::{
     reentrancy::reentrancy_guard,
     merkle::binary_proof::*,
 };
-use std::{hash::*, storage::storage_string::*, storage::storage_vec::*, string::String, bytes::Bytes, bytes_conversions::{b256::*, u16::*, u256::*, u32::*, u64::*,}, block::height};
-use std::logging::log;
-use std::context::msg_amount;
-use std::call_frames::msg_asset_id;
-use std::asset::{transfer};
-use std::block::timestamp;
+use std::{
+    hash::*, 
+    storage::storage_string::*, 
+    storage::storage_vec::*, 
+    string::String, 
+    bytes::Bytes, 
+    bytes_conversions::{b256::*, u16::*, u256::*, u32::*, u64::*,}, 
+    block::height,
+    logging::log,
+    context::msg_amount,
+    call_frames::msg_asset_id,
+    asset::{transfer},
+    block::timestamp,
+    constants::ZERO_B256,
+    low_level_call::{
+        call_with_function_selector,
+        CallParams,
+    },
+};
 
 use libraries::*;
 
@@ -240,7 +253,7 @@ impl SRC20 for Contract {
         _total_supply(storage.total_supply, asset)
     }
 
-    /// Returns the name of the asset, such as “Ether”.
+    /// Returns the name of the asset, such as "Ether".
     ///
     /// # Arguments
     ///
@@ -270,7 +283,7 @@ impl SRC20 for Contract {
     fn name(asset: AssetId) -> Option<String> {
         Some(storage.name.read_slice().unwrap())
     }
-    /// Returns the symbol of the asset, such as “ETH”.
+    /// Returns the symbol of the asset, such as "ETH".
     ///
     /// # Arguments
     ///
@@ -535,7 +548,7 @@ impl SRC3PayableExtension for Contract {
         storage.last_minted_id.write(last_minted_id);
         let existing_count: u64 = storage.minted_by_address.get(recipient).try_read().unwrap_or(0);
         storage.minted_by_address.insert(recipient, existing_count + minted_count);
-
+        
     }
 
     /// Mints new assets to a recipient in a sequential manner. Only callable by the owner.
@@ -652,14 +665,11 @@ impl SRC3PayableExtension for Contract {
     fn burn(sub_id: SubId, amount: u64) {
         require_not_paused();
         _burn(storage.total_supply, sub_id, amount);
-        // log(BurnEvent{
-        //     current_time:timestamp(),
-        //     block_height: height(),
-        //     recipient: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     amount,
-        //     sub_id
-        // });
+        log(BurnEvent{
+            sender: msg_sender().unwrap(),
+            amount,
+            sub_id
+        });
     }
 }
 
@@ -855,15 +865,12 @@ impl SetAssetMetadata for Contract {
         only_owner();
         require(storage.metadata.get(AssetId::from(SubId::zero()), key).is_none(), SetError::ValueAlreadySet);
         _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, metadata);
-        // log(SetMetadataEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     asset,
-        //     key,
-        //     metadata
-        // });
+        log(SetMetadataEvent{
+            sender: msg_sender().unwrap(),
+            asset_id:asset,
+            key,
+            metadata
+        });
     }
 }
 
@@ -897,13 +904,10 @@ impl SetMintMetadata for Contract {
     fn set_price(price: u64) {
         only_owner();
         storage.price.write(price);
-        // log(SetMintPriceEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     price
-        // });
+        log(SetMintPriceEvent{
+            sender: msg_sender().unwrap(),
+            price
+        });
     }
 
     /// Returns the price for minting an NFT.
@@ -1067,14 +1071,11 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.start_date.write(start);
         storage.end_date.write(end);
-        // log(SetMintDatesEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     start,
-        //     end
-        // });
+        log(SetMintDatesEvent{
+            sender: msg_sender().unwrap(),
+            start,
+            end
+        });
     }
 
     /// Sets the Merkle root for the contract.
@@ -1184,14 +1185,11 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.merkle_root.write(root);
         storage.merkle_uri.write_slice(uri);
-        // log(SetMerkleRootEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     root,
-        //     uri
-        // });
+        log(SetMerkleRootEvent{
+            sender: msg_sender().unwrap(),
+            root,
+            uri
+        });
     }
 
 }
@@ -1328,8 +1326,30 @@ impl Props721Edition for Contract {
         storage.start_date.write(start_date);
         storage.end_date.write(end_date);
 
-        let registry = abi(PropsRegistry, REGISTRY_CONTRACT_ID);
-        registry.register(ContractId::this(), owner);
+        // TODO: @Calvin - Add the contract to the registry by calling the register function via call_with_function_selector
+        // the reason is that if we call the register function directly, this 721 contractId will be the address of the contract, not the registry. So the indexer bombs because it doesn't know what to do with it.
+        //https://docs.fuel.network/docs/migrations-and-disclosures/breaking-changes-archive/#sway
+        //https://docs.fuel.network/docs/fuels-rs/calling-contracts/low-level-calls/#low-level-calls
+        //https://docs.fuel.network/docs/sway/advanced/assembly/
+
+        let registry_id = ContractId::from(REGISTRY_CONTRACT_ID);
+        let function_selector = 0x000000009b443fe7 // fn register(ContractId, Identity)
+        let this_contract = ContractId::this();
+
+        let call_data = Bytes::from(encode((this_contract, owner)));
+
+        let call_params = CallParams {
+            coins: 0,
+            asset_id: AssetId::from(ZERO_B256),
+            gas: 1_000_000,
+        };
+
+        call_with_function_selector(
+            registry_id,
+            function_selector,
+            call_data,
+            call_params,
+        );
 
         log(ContractCreatedEvent{
             owner,
