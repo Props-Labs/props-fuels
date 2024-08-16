@@ -1330,20 +1330,17 @@ impl Props721Edition for Contract {
         // the reason is that if we call the register function directly, this 721 contractId will be shown as the calling address of the RegisterEvent, not the registry. So the indexer bombs because it doesn't know what to do with it.
         //https://docs.fuel.network/docs/migrations-and-disclosures/breaking-changes-archive/#sway
         //https://docs.fuel.network/docs/fuels-rs/calling-contracts/low-level-calls/#low-level-calls
+        //https://github.com/FuelLabs/sway/blob/3700e3f42324600e8146e165dff447ac0f40475d/sway-lib-std/src/low_level_call.sw#L27
         //https://docs.fuel.network/docs/sway/advanced/assembly/
+        
 
         let registry_id = ContractId::from(REGISTRY_CONTRACT_ID);
 
         //not sure if this is a good way to do it, but the function selector is the first 4 bytes of the SHA hash of the function sig:
-        //fn register(ContractId, Identity)
-        //so I used this: https://emn178.github.io/online-tools/sha256.html
-        // and tried both "fn register(ContractId,Identity)" and "register(ContractId,Identity)"
-
-        //but maybe we can just use sha256("register(ContractId,Identity)") directly? This would be nicer / easier.
-        //or should it be "register(ContractId, Identity)" with a space? With or without the fn keyword? that is the question.
+        //register(ContractId,Identity)
 
         //get the first 4 bytes
-        let function_selector = sha256("register(ContractId, Identity)").slice(0, 4);
+        let function_selector = sha256("register(ContractId,Identity)").slice(0, 4);
         let this_contract = ContractId::this();
 
         let call_data = Bytes::from(encode((this_contract, owner)));
