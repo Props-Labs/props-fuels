@@ -45,7 +45,7 @@ use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
 use std::block::timestamp;
 
-use libraries::{PropsFeeSplitter, SRC3PayableExtension, SetMintMetadata, PropsRegistry};
+use libraries::*;
 
 const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
 const REGISTRY_CONTRACT_ID = 0x9b48042cdc01cf86a7d9d5f47b3ea43898c7d7a8282eede5f2f0c219d2e7c93f;

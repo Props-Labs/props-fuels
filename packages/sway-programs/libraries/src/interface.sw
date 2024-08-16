@@ -117,6 +117,8 @@ pub fn convert_num_to_ascii_bytes(num: u64) -> Bytes {
     return reversed_bytes;
 }
 
+
+
 pub struct ContractCreatedEvent {
     pub owner: Identity,
     pub name: String,
@@ -147,4 +149,13 @@ pub struct AirdropEvent {
     pub recipient: Identity,
     pub amount: u64,
     pub new_minted_id: u64
+}
+
+pub struct RegisterEvent {
+    pub contract_id: ContractId,
+    pub owner: Identity
+}
+
+pub struct DeregisterEvent {
+    pub contract_id: ContractId,
 }

@@ -5,7 +5,7 @@ import { Props721EditionContractAbi } from "../sway-api/contracts/Props721Editio
 import octaneFeeSplitterBytecode from "../sway-api/contracts/PropsFeeSplitterContractAbi.hex";
 import propsRegistryBytecode from "../sway-api/contracts/PropsRegistryContractAbi.hex";
 import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
-import { defaultEndDate, defaultStartDate } from "../common/defaults";
+import { defaultEndDate, defaultStartDate, registryContractAddress } from "../common/defaults";
 
 export async function setup(): Promise<
     {
@@ -86,12 +86,12 @@ export async function setup(): Promise<
     await waitForPropsRegistryResult();
 
   // Initialize the Props Registry Contract
-  // const { waitForResult: waitForPropsRegistryConstructorResult } =
-  //   await propsRegistryContract.functions
-  //     .constructor(addressIdentityInput)
-  //     .call();
+  const { waitForResult: waitForPropsRegistryConstructorResult } =
+    await propsRegistryContract.functions
+      .constructor(addressIdentityInput)
+      .call();
 
-  // await waitForPropsRegistryConstructorResult();
+  await waitForPropsRegistryConstructorResult();
 
   // Log hash of deployed registry contract
   const registryContractId = propsRegistryContract.id;
@@ -122,6 +122,11 @@ export async function deployProps721EditionContract(wallet1:Account): Promise<Pr
     const addressInput = { bits: address.toB256() };
     const addressIdentityInput = { Address: addressInput };
 
+    const registryContract = PropsRegistryContractAbi__factory.connect(
+      registryContractAddress,
+      wallet1
+    );
+
     const { waitForResult: waitForConstructorResult } = await contract.functions
       .constructor(
         addressIdentityInput,
@@ -137,6 +142,7 @@ export async function deployProps721EditionContract(wallet1:Account): Promise<Pr
         defaultStartDate,
         defaultEndDate
       )
+      .addContracts([registryContract])
       .call();
 
     await waitForConstructorResult();
@@ -165,6 +171,11 @@ export async function deployProps721CollectionContract(wallet1: Account): Promis
   const addressInput = { bits: address.toB256() };
   const addressIdentityInput = { Address: addressInput };
 
+  const registryContract = PropsRegistryContractAbi__factory.connect(
+    registryContractAddress,
+    wallet1
+  );
+
   const { waitForResult: waitForConstructorResult } = await contract.functions
     .constructor(
       addressIdentityInput,
@@ -175,11 +186,12 @@ export async function deployProps721CollectionContract(wallet1: Account): Promis
       defaultStartDate,
       defaultEndDate
     )
+    .addContracts([registryContract])
     .call();
 
   await waitForConstructorResult();
 
-  console.log("Collection Contract: ", contract.id.toHexString());
+  // console.log("Collection Contract: ", contract.id.toHexString());
 
   return contract;
 }

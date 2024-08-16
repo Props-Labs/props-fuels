@@ -1,6 +1,6 @@
 import { Account, Address, DateTime, BytesLike } from "fuels";
 import { NFTMetadata, CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
-import { defaultEndDate, defaultNetwork, defaultStartDate } from "../common/defaults";
+import { defaultEndDate, defaultNetwork, defaultStartDate, registryContractAddress } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721CollectionContractConfigurableOptions, supportedProps721CollectionContractConfigurableOptionsMapping } from "../common/constants";
 import { Props721CollectionContractAbi__factory } from "../sway-api/contracts";
 import bytecode from "../sway-api/contracts/Props721CollectionContractAbi.hex";
@@ -10,6 +10,7 @@ import { Collection } from "../collection/collection";
 import { randomBytes } from "fuels";
 import { encodeMetadataValues } from "../utils/metadata";
 import { PropsContractManager } from "../contract/contract-manager";
+import { PropsRegistryContractAbi__factory } from "../sway-api/contracts";
 
 /**
  * @class CollectionManager
@@ -97,6 +98,11 @@ export class CollectionManager extends PropsContractManager {
       ? DateTime.fromUnixMilliseconds(endDate).toTai64()
       : defaultEndDate;
 
+    const registryContract = PropsRegistryContractAbi__factory.connect(
+      registryContractAddress,
+      owner
+    );
+
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
         addressIdentityInput,
@@ -107,6 +113,7 @@ export class CollectionManager extends PropsContractManager {
         startDateTai,
         endDateTai
       )
+      .addContracts([registryContract])
       .call();
 
     this.emit(this.events.pending, {
