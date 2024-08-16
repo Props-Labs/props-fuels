@@ -53,7 +53,10 @@ use std::{
     block::timestamp,
     constants::ZERO_B256,
     low_level_call::{
+        create_payload,
+        contract_id_to_bytes,
         call_with_function_selector,
+        call_with_raw_payload,
         CallParams,
     },
 };
@@ -1332,7 +1335,7 @@ impl Props721Edition for Contract {
         //https://docs.fuel.network/docs/fuels-rs/calling-contracts/low-level-calls/#low-level-calls
         //https://github.com/FuelLabs/sway/blob/3700e3f42324600e8146e165dff447ac0f40475d/sway-lib-std/src/low_level_call.sw#L27
         //https://docs.fuel.network/docs/sway/advanced/assembly/
-        
+        //https://github.com/FuelLabs/sway/blob/3700e3f42324600e8146e165dff447ac0f40475d/sway-lib-std/src/low_level_call.sw#L195
 
         let registry_id = ContractId::from(REGISTRY_CONTRACT_ID);
 
@@ -1351,12 +1354,17 @@ impl Props721Edition for Contract {
             gas: 1_000_000, //placeholder
         };
 
-        call_with_function_selector(
-            registry_id,
-            function_selector,
-            call_data,
-            call_params,
-        );
+        // call_with_function_selector(
+        //     registry_id,
+        //     function_selector,
+        //     call_data,
+        //     call_params,
+        // );
+
+        let payload: Bytes = create_payload(contract_id_to_bytes(registry_id), function_selector, calldata);
+    
+
+        call_with_raw_payload(payload, call_params);
 
         log(ContractCreatedEvent{
             owner,
