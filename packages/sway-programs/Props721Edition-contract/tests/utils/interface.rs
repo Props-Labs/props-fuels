@@ -124,7 +124,7 @@ pub(crate) async fn constructor(
     end_date: u64,
 ) -> FuelCallResponse<()> {
     let id = Bech32ContractId::from(
-        ContractId::from_str("0x551d2804bd325923b5e781d75163a40369a7da35acc7e64e8931b40b4839da32")
+        ContractId::from_str("0x9b48042cdc01cf86a7d9d5f47b3ea43898c7d7a8282eede5f2f0c219d2e7c93f")
         .unwrap(),
     );
     contract.methods().constructor(owner, name, symbol, metadata_keys, metadata_values, price, start_date, end_date).with_contract_ids(&[id.clone()]).call().await.unwrap()

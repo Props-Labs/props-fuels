@@ -48,7 +48,7 @@ use std::block::timestamp;
 use libraries::{PropsFeeSplitter, SRC3PayableExtension, SetMintMetadata, PropsRegistry};
 
 const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
-const REGISTRY_CONTRACT_ID = 0x551d2804bd325923b5e781d75163a40369a7da35acc7e64e8931b40b4839da32;
+const REGISTRY_CONTRACT_ID = 0x9b48042cdc01cf86a7d9d5f47b3ea43898c7d7a8282eede5f2f0c219d2e7c93f;
 
 storage {
     /// The total number of unique assets minted by this contract.

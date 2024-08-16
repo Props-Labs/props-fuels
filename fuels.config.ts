@@ -13,6 +13,7 @@ export default createConfig({
     "packages/sway-programs/PropsFeeSplitter-contract",
     "packages/sway-programs/Props721Edition-contract",
     "packages/sway-programs/Props721Collection-contract",
+    "packages/sway-programs/PropsRegistry-contract",
   ],
   output: "./packages/props-fuels/src/sway-api",
   fuelCorePort,

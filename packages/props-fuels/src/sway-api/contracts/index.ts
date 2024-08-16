@@ -12,7 +12,9 @@
 export type { PropsFeeSplitterContractAbi } from './PropsFeeSplitterContractAbi';
 export type { Props721EditionContractAbi } from './Props721EditionContractAbi';
 export type { Props721CollectionContractAbi } from './Props721CollectionContractAbi';
+export type { PropsRegistryContractAbi } from './PropsRegistryContractAbi';
 
 export { PropsFeeSplitterContractAbi__factory } from './factories/PropsFeeSplitterContractAbi__factory';
 export { Props721EditionContractAbi__factory } from './factories/Props721EditionContractAbi__factory';
 export { Props721CollectionContractAbi__factory } from './factories/Props721CollectionContractAbi__factory';
+export { PropsRegistryContractAbi__factory } from './factories/PropsRegistryContractAbi__factory';

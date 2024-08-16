@@ -191,6 +191,8 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
         .await
         .unwrap();
 
+    println!("Registry Contract deployed at: {}", _registry_id.hash().to_string());
+
     (wallet1, wallet2, wallet3, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
