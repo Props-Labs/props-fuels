@@ -43,7 +43,7 @@ const propsClient = new PropsSDK({
 });
 
 async function createEdition() {
-  const edition: Edition = await propsClient.create({
+  const edition: Edition = await propsClient.editions.create({
     name:"Edition 1",
     symbol: "ED1",
     metadata: {
@@ -53,7 +53,7 @@ async function createEdition() {
     },
     options: {
       maxSupply: 100,
-      owner: wallets[0],
+      owner: wallet,
     }
   });
   console.log(`Created edition with ID: ${editionId}`);
