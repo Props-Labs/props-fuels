@@ -1340,7 +1340,10 @@ impl Props721Edition for Contract {
         // and tried both "fn register(ContractId,Identity)" and "register(ContractId,Identity)"
 
         //but maybe we can just use sha256("register(ContractId,Identity)") directly? This would be nicer / easier.
-        let function_selector = sha256("fn register(ContractId,Identity)"); // 
+        //or should it be "register(ContractId, Identity)" with a space? With or without the fn keyword? that is the question.
+
+        //get the first 4 bytes
+        let function_selector = sha256("register(ContractId, Identity)").slice(0, 4);
         let this_contract = ContractId::this();
 
         let call_data = Bytes::from(encode((this_contract, owner)));
