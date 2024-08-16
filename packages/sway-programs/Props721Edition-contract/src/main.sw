@@ -1333,7 +1333,14 @@ impl Props721Edition for Contract {
         //https://docs.fuel.network/docs/sway/advanced/assembly/
 
         let registry_id = ContractId::from(REGISTRY_CONTRACT_ID);
-        let function_selector = 0x000000009b443fe7 // fn register(ContractId, Identity)
+
+        //not sure if this is a good way to do it, but the function selector is the first 4 bytes of the SHA hash of the function sig:
+        //fn register(ContractId, Identity)
+        //so I used this: https://emn178.github.io/online-tools/sha256.html
+        // and tried both "fn register(ContractId,Identity)" and "register(ContractId,Identity)"
+
+        //but maybe we can just use sha256("register(ContractId,Identity)") directly? This would be nicer / easier.
+        let function_selector = sha256("fn register(ContractId,Identity)"); // 
         let this_contract = ContractId::this();
 
         let call_data = Bytes::from(encode((this_contract, owner)));
@@ -1341,7 +1348,7 @@ impl Props721Edition for Contract {
         let call_params = CallParams {
             coins: 0,
             asset_id: AssetId::from(ZERO_B256),
-            gas: 1_000_000,
+            gas: 1_000_000, //placeholder
         };
 
         call_with_function_selector(
