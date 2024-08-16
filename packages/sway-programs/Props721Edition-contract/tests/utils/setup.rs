@@ -11,11 +11,16 @@ abigen!(Contract(
 ),Contract(
     name = "PropsFeeSplitter",
     abi = "./PropsFeeSplitter-contract/out/debug/PropsFeeSplitter-contract-abi.json"
-),);
+),Contract(
+    name = "PropsRegistry",
+    abi = "./PropsRegistry-contract/out/debug/PropsRegistry-contract-abi.json"
+));
 
 const FEE_SPLITTER_CONTRACT_BINARY_PATH: &str = "../PropsFeeSplitter-contract/out/debug/PropsFeeSplitter-contract.bin";
 
 const NFT_CONTRACT_BINARY_PATH: &str = "./out/debug/Props721Edition-contract.bin";
+
+const REGISTRY_CONTRACT_BINARY_PATH: &str = "../PropsRegistry-contract/out/debug/PropsRegistry-contract.bin";
 
 pub(crate) fn defaults(
     contract_id: ContractId,
@@ -105,6 +110,14 @@ pub(crate) async fn setup() -> (
 
     let fee_instance_1 = PropsFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
+    let registry_id = Contract::load_from(REGISTRY_CONTRACT_BINARY_PATH, LoadConfiguration::default())
+        .unwrap()
+        .deploy(&wallet1, TxPolicies::default())
+        .await
+        .unwrap();
+
+    println!("registry_id hash: {:?}", registry_id.hash());
+
     (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
@@ -172,6 +185,14 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
 
     let fee_instance_1 = PropsFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
+    let _registry_id = Contract::load_from(REGISTRY_CONTRACT_BINARY_PATH, LoadConfiguration::default())
+        .unwrap()
+        .deploy(&wallet1, TxPolicies::default())
+        .await
+        .unwrap();
+
+    println!("Registry Contract deployed at: {}", _registry_id.hash().to_string());
+
     (wallet1, wallet2, wallet3, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
@@ -237,64 +258,4 @@ pub fn default_end_date() -> u64 {
     // This is approximately 80 years after the Unix epoch
     // 4643769087344304128 (decimal) = 0x4061A1CAC0000000 (hex)
     4643769087344304128
-}
-
-use fuel_merkle::binary::in_memory::MerkleTree;
-
-pub fn leaf_digest(data: [u8; 32]) -> [u8; 32] {
-    // Allocate 33 bytes: 1 byte for LEAF and 32 bytes for the data
-    let mut buffer = [0u8; 33];
-
-    // Set the LEAF byte (assuming LEAF = 0x00)
-    buffer[0] = 0x00;
-
-    // Copy the 32-byte data into the buffer, starting from index 1
-    buffer[1..].copy_from_slice(&data);
-
-    // Perform SHA-256 hashing on the 33 bytes and return the result
-    let hash = Sha256::digest(&buffer);
-
-    let mut hash_bytes = [0u8; 32];
-    hash_bytes.copy_from_slice(&hash);
-
-    hash_bytes
-}
-
-pub fn generate_merkle_tree(wallets: Vec<WalletUnlocked>) -> (MerkleTree, Vec<[u8; 32]>) {
-    let mut tree = MerkleTree::new();
-
-    let mut leaves: Vec<[u8; 32]> = wallets.iter().map(|wallet| {
-        // Convert the wallet's address into bytes directly
-        let address_bytes: &Bech32Address = wallet.address();
-        let mut recipient_bytes = address_bytes.hash().to_vec();
-        recipient_bytes.reverse(); // To match the reverse in Sway
-        println!("Recipient bytes after reverse: {:?}", recipient_bytes);
-
-        // Add the amount bytes to the recipient bytes
-        let amount_bytes = 10u64.to_le_bytes();
-        recipient_bytes.extend_from_slice(&amount_bytes);
-        println!("Recipient bytes after adding amount: {:?}", recipient_bytes);
-
-        // Step 1: Perform SHA-256 hash on the combined bytes
-        let sha256_result = Sha256::digest(&recipient_bytes);
-        println!("SHA-256 result: {:?}", sha256_result);
-
-        // Step 2: Apply leaf_digest to the SHA-256 result
-        let mut sha256_array = [0u8; 32];
-        sha256_array.copy_from_slice(&sha256_result);
-        println!("SHA-256 array: {:?}", sha256_array);
-
-        let hashed_leaf = leaf_digest(sha256_array);
-        println!("Hashed leaf: {:?}", hashed_leaf);
-
-        hashed_leaf
-    }).collect();
-    println!("All leaves: {:?}", leaves);
-
-    // Push the leaves into the Merkle tree
-    for leaf in &leaves {
-        tree.push(leaf);
-    }
-
-    (tree, leaves)
 }

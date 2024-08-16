@@ -1,5 +1,5 @@
 use crate::utils::{
-    interface::{burn, constructor, mint, pause, total_assets, total_supply, set_fee, fee, fee_constructor, set_price, merkle_root, set_merkle_root},
+    interface::{burn, constructor, mint, pause, total_assets, total_supply, set_fee, fee, fee_constructor, set_price, set_merkle_root},
     setup::{defaults, default_start_date, default_end_date,get_wallet_balance, setup, deploy_edition_with_builder_fee, default_name, default_symbol, default_price, default_base_uri},
 };
 use fuels::{
@@ -9,7 +9,6 @@ use fuels::{
 
 use fuel_merkle::binary::in_memory::MerkleTree;
 use sha2::{Digest, Sha256};
-use tai64::Tai64;
 
 mod success {
 
@@ -406,7 +405,7 @@ mod success {
             _sub_id_2,
             _sub_id_3,
             owner_identity,
-            other_identity,
+            _other_identity,
         ) = defaults(id, owner_wallet.clone(), other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
@@ -454,8 +453,7 @@ mod success {
         set_merkle_root(&instance_1, Bits256(merkle_root.clone())).await;
 
         // Call mint function with the proof
-        let response = mint(&instance_2, owner_identity, sub_id_1, 1, 0, fee_id, None, Some(bits256_proof), Some(key), Some(num_leaves), Some(3)).await;
-        let logs = response.decode_logs();
+        mint(&instance_2, owner_identity, sub_id_1, 1, 0, fee_id, None, Some(bits256_proof), Some(key), Some(num_leaves), Some(3)).await;
 
         // Assert that the mint was successful
         assert_eq!(get_wallet_balance(&owner_wallet, &asset_id_1).await, 1);
@@ -474,7 +472,7 @@ mod success {
             _sub_id_2,
             _sub_id_3,
             owner_identity,
-            other_identity,
+            _other_identity,
         ) = defaults(id, owner_wallet.clone(), other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
@@ -522,8 +520,7 @@ mod success {
         set_merkle_root(&instance_1, Bits256(merkle_root.clone())).await;
 
         // Call mint function with the proof
-        let response = mint(&instance_2, owner_identity, sub_id_1, 3, 0, fee_id, None, Some(bits256_proof), Some(key), Some(num_leaves), Some(3)).await;
-        let logs = response.decode_logs();
+        mint(&instance_2, owner_identity, sub_id_1, 3, 0, fee_id, None, Some(bits256_proof), Some(key), Some(num_leaves), Some(3)).await;
 
         // Assert that the mint was successful
         assert_eq!(get_wallet_balance(&owner_wallet, &asset_id_1).await, 1);
@@ -661,14 +658,14 @@ mod revert {
     async fn when_exceed_max_amount_with_merkle_tree() {
         let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
-            asset_id_1,
+            _asset_id_1,
             _asset_id_2,
             _asset_id_3,
             sub_id_1,
             _sub_id_2,
             _sub_id_3,
             owner_identity,
-            other_identity,
+            _other_identity,
         ) = defaults(id, owner_wallet.clone(), other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;
@@ -714,14 +711,14 @@ mod revert {
     async fn reverts_when_minting_more_than_proof_allows() {
         let (owner_wallet, other_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = setup().await;
         let (
-            asset_id_1,
+            _asset_id_1,
             _asset_id_2,
             _asset_id_3,
             sub_id_1,
             _sub_id_2,
             _sub_id_3,
             owner_identity,
-            other_identity,
+            _other_identity,
         ) = defaults(id, owner_wallet.clone(), other_wallet.clone());
 
         constructor(&instance_1, owner_identity, default_name(), default_symbol(), default_base_uri(), default_price(), default_start_date(), default_end_date()).await;

@@ -3,5 +3,6 @@ resolver = "2"
 members = [
     "./Props721Edition-contract",
     "./Props721Collection-contract",
-    "./PropsFeeSplitter-contract"
+    "./PropsFeeSplitter-contract",
+    "./PropsRegistry-contract"
 ]

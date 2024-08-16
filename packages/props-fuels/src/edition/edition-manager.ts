@@ -10,6 +10,8 @@ import { Edition } from "./edition";
 import { randomBytes } from "fuels";
 import { encodeMetadataValues } from "../utils/metadata";
 import { PropsContractManager } from "../contract/contract-manager";
+import { PropsRegistryContractAbi__factory } from "../sway-api/contracts";
+import { registryContractAddress } from "../common/defaults";
 
 /**
  * @class EditionManager
@@ -100,6 +102,11 @@ export class EditionManager extends PropsContractManager {
       ? DateTime.fromUnixMilliseconds(endDate).toTai64()
       : defaultEndDate;
 
+    const registryContract = PropsRegistryContractAbi__factory.connect(
+      registryContractAddress,
+      owner
+    );
+
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
         addressIdentityInput,
@@ -111,6 +118,7 @@ export class EditionManager extends PropsContractManager {
         startDateTai,
         endDateTai,
       )
+      .addContracts([registryContract])
       .call();
 
     this.emit(this.events.pending, {
@@ -165,16 +173,12 @@ export class EditionManager extends PropsContractManager {
       variables
     );
 
-     console.log("transactionData", transactionData);
-
     const contractIds = transactionData.data.transactionsByOwner.nodes.flatMap(
       (node: any) =>
         node.outputs
           .filter((output: any) => output.__typename === "ContractCreated")
           .map((output: any) => output.contract)
     );
-
-    console.log("contractIds", contractIds);
 
     const matchingContracts: Array<string> = [];
 
@@ -220,8 +224,6 @@ export class EditionManager extends PropsContractManager {
         matchingContracts.push(contractId);
       }
     }
-
-    console.log("matchingContracts", matchingContracts);
 
     const editions = await Promise.all(
       matchingContracts.map(async (contractId) => {

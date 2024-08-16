@@ -50,7 +50,7 @@ pub(crate) async fn mint(
     sub_id: Bits256,
     amount: u64,
     price: u64,
-    fee_contract_id: ContractId,
+    _fee_contract_id: ContractId,
     affilate: Option<Identity>,
     proof: Option<Vec<Bits256>>,
     key: Option<u64>,
@@ -123,8 +123,11 @@ pub(crate) async fn constructor(
     start_date: u64,
     end_date: u64,
 ) -> FuelCallResponse<()> {
-    let resp = contract.methods().constructor(owner, name, symbol, metadata_keys, metadata_values, price, start_date, end_date).call().await.unwrap();
-    resp
+    let id = Bech32ContractId::from(
+        ContractId::from_str("0x9b48042cdc01cf86a7d9d5f47b3ea43898c7d7a8282eede5f2f0c219d2e7c93f")
+        .unwrap(),
+    );
+    contract.methods().constructor(owner, name, symbol, metadata_keys, metadata_values, price, start_date, end_date).with_contract_ids(&[id.clone()]).call().await.unwrap()
 }
 
 pub(crate) async fn metadata(
@@ -269,13 +272,13 @@ pub(crate) async fn set_merkle_root(
         .unwrap()
 }
 
-pub(crate) async fn merkle_root(contract: &Props721Edition<WalletUnlocked>) -> Option<Bits256> {
-    contract
-        .methods()
-        .merkle_root()
-        .call()
-        .await
-        .unwrap()
-        .value
-}
+// pub(crate) async fn merkle_root(contract: &Props721Edition<WalletUnlocked>) -> Option<Bits256> {
+//     contract
+//         .methods()
+//         .merkle_root()
+//         .call()
+//         .await
+//         .unwrap()
+//         .value
+// }
 
