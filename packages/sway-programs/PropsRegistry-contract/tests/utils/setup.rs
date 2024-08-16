@@ -1,9 +1,7 @@
 use fuels::{
-    accounts::ViewOnlyAccount,
     prelude::*,
-    types::{Address, AssetId, Bits256, Bytes32, Identity},
+    types::{Address, AssetId, Identity},
 };
-use sha2::{Digest, Sha256};
 
 abigen!(Contract(
     name = "PropsRegistry",

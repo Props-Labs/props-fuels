@@ -50,7 +50,7 @@ pub(crate) async fn mint(
     sub_id: Bits256,
     amount: u64,
     price: u64,
-    fee_contract_id: ContractId,
+    _fee_contract_id: ContractId,
     affilate: Option<Identity>,
     proof: Option<Vec<Bits256>>,
     key: Option<u64>,
@@ -272,13 +272,13 @@ pub(crate) async fn set_merkle_root(
         .unwrap()
 }
 
-pub(crate) async fn merkle_root(contract: &Props721Edition<WalletUnlocked>) -> Option<Bits256> {
-    contract
-        .methods()
-        .merkle_root()
-        .call()
-        .await
-        .unwrap()
-        .value
-}
+// pub(crate) async fn merkle_root(contract: &Props721Edition<WalletUnlocked>) -> Option<Bits256> {
+//     contract
+//         .methods()
+//         .merkle_root()
+//         .call()
+//         .await
+//         .unwrap()
+//         .value
+// }
 

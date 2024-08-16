@@ -4,7 +4,6 @@ use crate::utils::{
 };
 
 use fuels::{
-    prelude::*,
     types::{Address, ContractId, Identity},
 };
 
@@ -50,7 +49,7 @@ mod revert {
     #[should_panic(expected = "NotOwner")]
     async fn fails_when_not_owner() {
         let (owner_wallet, other_wallet, id, instance_1, instance_2) = setup().await;
-        let (owner_identity, other_identity) = defaults(id, owner_wallet.clone(), other_wallet.clone());
+        let (owner_identity, _other_identity) = defaults(id, owner_wallet.clone(), other_wallet.clone());
 
         constructor(&instance_1, owner_identity).await;
 

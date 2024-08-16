@@ -1,10 +1,9 @@
 use crate::utils::{
     interface::{constructor, register},
-    setup::{defaults, setup, State},
+    setup::{defaults, setup},
 };
 
 use fuels::{
-    prelude::*,
     types::{Address, ContractId,Identity},
 };
 

@@ -1,8 +1,8 @@
 use crate::utils::setup::{PropsRegistry, State};
 use fuels::{
-    prelude::{AssetId, CallParameters, TxPolicies, WalletUnlocked, ContractId, Bech32ContractId},
-    programs::{call_response::FuelCallResponse, call_utils::TxDependencyExtension},
-    types::{Bits256, Identity},
+    prelude::{WalletUnlocked, ContractId},
+    programs::{call_response::FuelCallResponse},
+    types::{Identity},
 };
 
 pub(crate) async fn register(

@@ -11,7 +11,7 @@ mod success {
     async fn initializes() {
         let (owner_wallet, other_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = setup().await;
         let (
-            asset_id_1,
+            _asset_id_1,
             _asset_id_2,
             _asset_id_3,
             _sub_id_1,
