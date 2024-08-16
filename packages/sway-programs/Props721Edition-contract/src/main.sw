@@ -1344,8 +1344,13 @@ impl Props721Edition for Contract {
         //register(ContractId,Identity)
 
         //get the first 4 bytes
-        let hash = sha256("register(ContractId,Identity)");
-        let function_selector = hash.to_bytes().slice(0, 4);
+        let hash: b256 = sha256("register(ContractId,Identity)");
+        let bytes = Bytes::from(hash);
+        let mut function_selector = Bytes::new();
+        function_selector.push(bytes.get(0).unwrap());
+        function_selector.push(bytes.get(1).unwrap());
+        function_selector.push(bytes.get(2).unwrap());
+        function_selector.push(bytes.get(3).unwrap());
         let this_contract = ContractId::this();
 
         let call_data = Bytes::from(encode((this_contract, owner)));
@@ -1363,7 +1368,9 @@ impl Props721Edition for Contract {
             call_params,
         );
 
-      
+        //alternative try to call the function
+        // let payload: Bytes = create_payload(contract_id_to_bytes(registry_id), function_selector, calldata);
+        // call_with_raw_payload(payload, call_params);
 
         log(ContractCreatedEvent{
             owner,
