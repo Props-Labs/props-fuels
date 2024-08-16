@@ -11,11 +11,16 @@ abigen!(Contract(
 ),Contract(
     name = "PropsFeeSplitter",
     abi = "./PropsFeeSplitter-contract/out/debug/PropsFeeSplitter-contract-abi.json"
-),);
+),Contract(
+    name = "PropsRegistry",
+    abi = "./PropsRegistry-contract/out/debug/PropsRegistry-contract-abi.json"
+));
 
 const FEE_SPLITTER_CONTRACT_BINARY_PATH: &str = "../PropsFeeSplitter-contract/out/debug/PropsFeeSplitter-contract.bin";
 
 const NFT_CONTRACT_BINARY_PATH: &str = "./out/debug/Props721Edition-contract.bin";
+
+const REGISTRY_CONTRACT_BINARY_PATH: &str = "../PropsRegistry-contract/out/debug/PropsRegistry-contract.bin";
 
 pub(crate) fn defaults(
     contract_id: ContractId,
@@ -105,6 +110,14 @@ pub(crate) async fn setup() -> (
 
     let fee_instance_1 = PropsFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
+    let registry_id = Contract::load_from(REGISTRY_CONTRACT_BINARY_PATH, LoadConfiguration::default())
+        .unwrap()
+        .deploy(&wallet1, TxPolicies::default())
+        .await
+        .unwrap();
+
+    println!("registry_id hash: {:?}", registry_id.hash());
+
     (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
@@ -171,6 +184,12 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
         .unwrap();
 
     let fee_instance_1 = PropsFeeSplitter::new(fee_id.clone(), wallet1.clone());
+
+    let registry_id = Contract::load_from(REGISTRY_CONTRACT_BINARY_PATH, LoadConfiguration::default())
+        .unwrap()
+        .deploy(&wallet1, TxPolicies::default())
+        .await
+        .unwrap();
 
     (wallet1, wallet2, wallet3, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }

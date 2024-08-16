@@ -4,6 +4,17 @@ use std::string::String;
 use std::bytes::Bytes;
 use standards::{src5::{State}, src7::{Metadata}};
 
+abi PropsRegistry {
+    #[storage(read, write)]
+    fn register(contractId: ContractId, owner: Identity);
+
+    #[storage(read, write)]
+    fn deregister(contractId: ContractId);
+
+    #[storage(read, write)]
+    fn constructor(owner: Identity);
+}
+
 abi PropsFeeSplitter {
     #[storage(read, write)]
     fn set_fee(amount: u64);
@@ -137,48 +148,3 @@ pub struct AirdropEvent {
     pub amount: u64,
     pub new_minted_id: u64
 }
-
-// pub struct BurnEvent {
-//     pub current_time: u64,
-//     pub block_height: u32,
-//     pub recipient: Identity,
-//     pub contract_id: ContractId,
-//     pub amount: u64,
-//     pub sub_id: SubId
-// }
-
-// pub struct SetMetadataEvent {
-//     pub current_time: u64,
-//     pub block_height: u32,
-//     pub sender: Identity,
-//     pub contract_id: ContractId,
-//     pub asset: AssetId,
-//     pub key: String,
-//     pub metadata: Metadata
-// }
-
-// pub struct SetMintPriceEvent {
-//     pub current_time: u64,
-//     pub block_height: u32,
-//     pub sender: Identity,
-//     pub contract_id: ContractId,
-//     pub price: u64
-// }
-
-// pub struct SetMintDatesEvent {
-//     pub current_time: u64,
-//     pub block_height: u32,
-//     pub sender: Identity,
-//     pub contract_id: ContractId,
-//     pub start: u64,
-//     pub end: u64
-// }
-
-// pub struct SetMerkleRootEvent {
-//     pub current_time: u64,
-//     pub block_height: u32,
-//     pub sender: Identity,
-//     pub contract_id: ContractId,
-//     pub root: b256,
-//     pub uri: String
-// }
