@@ -141,7 +141,7 @@ const _abi = {
     },
     {
       "typeId": 10,
-      "type": "struct RegisterEvent",
+      "type": "struct RegisterContractEvent",
       "components": [
         {
           "name": "contract_id",
@@ -723,7 +723,7 @@ const _abi = {
       }
     },
     {
-      "logId": "13294799498124198676",
+      "logId": "3568010352367994881",
       "loggedType": {
         "name": "",
         "type": 8,
@@ -731,7 +731,7 @@ const _abi = {
       }
     },
     {
-      "logId": "8719680026594948895",
+      "logId": "14066464430763367582",
       "loggedType": {
         "name": "",
         "type": 10,

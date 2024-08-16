@@ -4,8 +4,7 @@ mod errors;
 mod interface;
 mod events;
 
-use libraries::{PropsRegistry};
-use events::{RegisterEvent, DeregisterEvent};
+use libraries::{PropsRegistry,RegisterContractEvent,DeregisterEvent};
 use std::hash::Hash;
 
 use standards::{src5::{SRC5, State}};
@@ -71,8 +70,8 @@ impl PropsRegistry for Contract {
     fn register(contractId: ContractId, owner: Identity) {
         storage.registry.insert(contractId, owner);
 
-        // Log the RegisterEvent
-        log(RegisterEvent {
+        // Log the RegisterContractEvent
+        log(RegisterContractEvent {
             contract_id: contractId,
             owner: owner,
         });

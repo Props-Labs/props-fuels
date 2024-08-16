@@ -37,8 +37,8 @@ export type DeregisterEventInput = { contract_id: ContractIdInput };
 export type DeregisterEventOutput = { contract_id: ContractIdOutput };
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
-export type RegisterEventInput = { contract_id: ContractIdInput, owner: IdentityInput };
-export type RegisterEventOutput = { contract_id: ContractIdOutput, owner: IdentityOutput };
+export type RegisterContractEventInput = { contract_id: ContractIdInput, owner: IdentityInput };
+export type RegisterContractEventOutput = { contract_id: ContractIdOutput, owner: IdentityOutput };
 
 export interface PropsRegistryContractAbiInterface extends Interface {
   functions: {

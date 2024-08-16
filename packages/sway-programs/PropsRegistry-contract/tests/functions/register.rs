@@ -26,8 +26,8 @@ mod success {
 
         let response = register(&instance_1, contract_id, owner_address).await;
         let logs = response.decode_logs();
-        // Check if a RegisterEvent is present in the logs
-        assert!(logs.results.iter().any(|log| log.as_ref().unwrap().contains("RegisterEvent")));
+        // Check if a RegisterContractEvent is present in the logs
+        assert!(logs.results.iter().any(|log| log.as_ref().unwrap().contains("RegisterContractEvent")));
 
         // Extract the contract_id and owner from the log
         let log_content = logs.results[0].as_ref().unwrap();

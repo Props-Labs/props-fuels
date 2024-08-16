@@ -151,7 +151,7 @@ pub struct AirdropEvent {
     pub new_minted_id: u64
 }
 
-pub struct RegisterEvent {
+pub struct RegisterContractEvent {
     pub contract_id: ContractId,
     pub owner: Identity
 }
