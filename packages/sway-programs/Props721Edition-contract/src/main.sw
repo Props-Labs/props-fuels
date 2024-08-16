@@ -53,10 +53,7 @@ use std::{
     block::timestamp,
     constants::ZERO_B256,
     low_level_call::{
-        create_payload,
-        contract_id_to_bytes,
         call_with_function_selector,
-        call_with_raw_payload,
         CallParams,
     },
 };
@@ -1347,7 +1344,8 @@ impl Props721Edition for Contract {
         //register(ContractId,Identity)
 
         //get the first 4 bytes
-        let function_selector = sha256("register(ContractId,Identity)").slice(0, 4);
+        let hash = sha256("register(ContractId,Identity)");
+        let function_selector = hash.to_bytes().slice(0, 4);
         let this_contract = ContractId::this();
 
         let call_data = Bytes::from(encode((this_contract, owner)));
@@ -1365,9 +1363,7 @@ impl Props721Edition for Contract {
             call_params,
         );
 
-        //alternative try to call the function
-        // let payload: Bytes = create_payload(contract_id_to_bytes(registry_id), function_selector, calldata);
-        // call_with_raw_payload(payload, call_params);
+      
 
         log(ContractCreatedEvent{
             owner,
