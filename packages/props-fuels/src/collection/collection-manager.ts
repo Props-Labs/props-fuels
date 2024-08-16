@@ -1,10 +1,9 @@
 import { Account, Address, DateTime, BytesLike } from "fuels";
-import { NFTMetadata, CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
+import { CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
 import { defaultEndDate, defaultNetwork, defaultStartDate, registryContractAddress } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721CollectionContractConfigurableOptions, supportedProps721CollectionContractConfigurableOptionsMapping } from "../common/constants";
 import { Props721CollectionContractAbi__factory } from "../sway-api/contracts";
 import bytecode from "../sway-api/contracts/Props721CollectionContractAbi.hex";
-import type { MetadataInput } from "../sway-api/contracts/Props721CollectionContractAbi";
 import { executeGraphQLQuery } from "../core/fuels-api";
 import { Collection } from "../collection/collection";
 import { randomBytes } from "fuels";
