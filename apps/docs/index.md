@@ -46,7 +46,7 @@ async function createEdition() {
     },
     options: {
       maxSupply: 100,
-      owner: wallets[0],
+      owner: wallet,
     }
   });
   console.log(`Created edition with ID: ${editionId}`);
