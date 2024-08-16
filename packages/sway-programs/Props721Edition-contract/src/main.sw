@@ -1362,8 +1362,6 @@ impl Props721Edition for Contract {
         // );
 
         let payload: Bytes = create_payload(contract_id_to_bytes(registry_id), function_selector, calldata);
-    
-
         call_with_raw_payload(payload, call_params);
 
         log(ContractCreatedEvent{
