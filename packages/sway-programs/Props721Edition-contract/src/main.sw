@@ -1338,7 +1338,9 @@ impl Props721Edition for Contract {
         //https://github.com/FuelLabs/sway/blob/3700e3f42324600e8146e165dff447ac0f40475d/sway-lib-std/src/low_level_call.sw#L195
         //sway test: https://github.com/FuelLabs/sway/blob/40bd0af4171851461fedf2365daeb3410dcbe6ff/test/src/sdk-harness/test_projects/low_level_call/mod.rs
         //sway test: https://github.com/FuelLabs/sway/blob/40bd0af4171851461fedf2365daeb3410dcbe6ff/test/src/sdk-harness/test_projects/low_level_call/src/main.sw
-        
+        //https://github.com/FuelLabs/sway/blob/40bd0af4171851461fedf2365daeb3410dcbe6ff/test/src/sdk-harness/test_artifacts/low_level_callee_contract/src/main.sw#L4
+
+
         let registry_id = ContractId::from(REGISTRY_CONTRACT_ID);
 
         //not sure if this is a good way to do it, but the function selector is the first 4 bytes of the SHA hash of the function sig:
@@ -1352,19 +1354,20 @@ impl Props721Edition for Contract {
 
         let call_params = CallParams {
             coins: 0,
-            asset_id: AssetId::from(ZERO_B256),
-            gas: 1_000_000, //placeholder
+            asset_id: AssetId::base(),
+            gas: 10_000_000, //placeholder
         };
 
-        // call_with_function_selector(
-        //     registry_id,
-        //     function_selector,
-        //     call_data,
-        //     call_params,
-        // );
+        call_with_function_selector(
+            registry_id,
+            function_selector,
+            call_data,
+            call_params,
+        );
 
-        let payload: Bytes = create_payload(contract_id_to_bytes(registry_id), function_selector, calldata);
-        call_with_raw_payload(payload, call_params);
+        //alternative try to call the function
+        // let payload: Bytes = create_payload(contract_id_to_bytes(registry_id), function_selector, calldata);
+        // call_with_raw_payload(payload, call_params);
 
         log(ContractCreatedEvent{
             owner,
