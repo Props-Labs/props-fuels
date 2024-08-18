@@ -42,7 +42,7 @@
 		"dayjs": "^1.11.12",
 		"lodash": "^4.17.21",
 		"lucide-svelte": "^0.424.0",
-		"svelte-fuels": "workspace:*",
+		"svelte-fuels": "^0.0.1",
 		"svelte-select": "^5.8.3",
 		"svelty-picker": "^5.2.9"
 	},
