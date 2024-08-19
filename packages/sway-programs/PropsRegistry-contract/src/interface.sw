@@ -1,11 +1,10 @@
 library;
+use std::string::String;
+use standards::{src7::{Metadata}};
 
 abi PropsRegistry {
     #[storage(read, write)]
-    fn register(contractId: ContractId, owner: Identity);
-
-    #[storage(read, write)]
-    fn deregister(contractId: ContractId);
+    fn init_contract(contract_id: ContractId, owner: Identity, name: String);
 
     #[storage(read, write)]
     fn constructor(owner: Identity);

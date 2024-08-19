@@ -5,14 +5,15 @@ use std::bytes::Bytes;
 use standards::{src5::{State}, src7::{Metadata}};
 
 abi PropsRegistry {
-    #[storage(read, write)]
-    fn register(contractId: ContractId, owner: Identity);
 
     #[storage(read, write)]
-    fn deregister(contractId: ContractId);
+    fn init_contract(contract_id: ContractId, owner: Identity, name: String);
 
+}
+
+abi PropsContract {
     #[storage(read, write)]
-    fn constructor(owner: Identity);
+    fn constructor(owner: Identity, name: String);
 }
 
 abi PropsFeeSplitter {
@@ -122,10 +123,6 @@ pub fn convert_num_to_ascii_bytes(num: u64) -> Bytes {
 pub struct ContractCreatedEvent {
     pub owner: Identity,
     pub name: String,
-    pub symbol: String,
-    pub price: u64,
-    pub start: u64,
-    pub end: u64
 }
 
 pub struct MintEvent {
@@ -149,13 +146,4 @@ pub struct AirdropEvent {
     pub recipient: Identity,
     pub amount: u64,
     pub new_minted_id: u64
-}
-
-pub struct RegisterEvent {
-    pub contract_id: ContractId,
-    pub owner: Identity
-}
-
-pub struct DeregisterEvent {
-    pub contract_id: ContractId,
 }

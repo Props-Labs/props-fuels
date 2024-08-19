@@ -130,17 +130,8 @@ export async function deployProps721EditionContract(wallet1:Account): Promise<Pr
     const { waitForResult: waitForConstructorResult } = await contract.functions
       .constructor(
         addressIdentityInput,
-        "Test Edition",
-        "TEST",
-        ["name", "description", "image"],
-        [
-          { String: "Test Edition" },
-          { String: "A test edition" },
-          { String: "test_image_url" },
-        ],
-        0,
-        defaultStartDate,
-        defaultEndDate
+        "Test Edition"
+       
       )
       .addContracts([registryContract])
       .call();

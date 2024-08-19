@@ -110,13 +110,7 @@ export class EditionManager extends PropsContractManager {
     const { waitForResult: waitForResultConstructor } = await contract.functions
       .constructor(
         addressIdentityInput,
-        name,
-        symbol,
-        Object.keys(metadata),
-        encodeMetadataValues(metadata),
-        price ?? 0,
-        startDateTai,
-        endDateTai,
+        name
       )
       .addContracts([registryContract])
       .call();

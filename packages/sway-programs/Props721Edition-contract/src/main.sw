@@ -1308,36 +1308,29 @@ impl Props721Edition for Contract {
     ///     assert(src_5_abi.owner() == State::Initialized(owner));
     /// }
     #[storage(read, write)]
-    fn constructor(owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64, start_date: u64, end_date: u64) {
-        initialize_ownership(owner);
+    fn constructor(owner: Identity, name: String) {
+        // initialize_ownership(owner);
 
-        storage.name.write_slice(name);
-        storage.symbol.write_slice(symbol);
+        // storage.name.write_slice(name);
+        // storage.symbol.write_slice(symbol);
 
-        let mut i = 0;
-        while i < metadata_keys.len() {
-            let key = metadata_keys.get(i).unwrap();
-            let value = metadata_values.get(i).unwrap();
-            _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, value);
-            storage.metadata_keys.push(StorageString{});
-            storage.metadata_keys.get(i).unwrap().write_slice(key);
-            i += 1;
-        }
+        // let mut i = 0;
+        // while i < metadata_keys.len() {
+        //     let key = metadata_keys.get(i).unwrap();
+        //     let value = metadata_values.get(i).unwrap();
+        //     _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, value);
+        //     storage.metadata_keys.push(StorageString{});
+        //     storage.metadata_keys.get(i).unwrap().write_slice(key);
+        //     i += 1;
+        // }
 
-        storage.price.write(price);
-        storage.start_date.write(start_date);
-        storage.end_date.write(end_date);
-
-        let registry = abi(PropsRegistry, REGISTRY_CONTRACT_ID);
-        registry.register(ContractId::this(), owner);
+        // storage.price.write(price);
+        // storage.start_date.write(start_date);
+        // storage.end_date.write(end_date);
 
         log(ContractCreatedEvent{
             owner,
-            name,
-            symbol,
-            price,
-            start: start_date,
-            end: end_date
+            name
         });
     }
 }

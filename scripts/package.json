@@ -1,0 +1,17 @@
+{
+    "name": "fuel-script-test",
+    "version": "1.0.0",
+    "description": "A sample Fuel project",
+    "main": "launch.ts",
+    "keywords": ["fuel", "blockchain"],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "fuels": "^0.93.0"
+    },
+    "devDependencies": {
+      "typescript": "^4.9.5"
+    },
+    "type": "module"
+  }
+  

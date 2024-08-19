@@ -31,8 +31,6 @@ export enum BurnErrorInput { NotEnoughCoins = 'NotEnoughCoins' };
 export enum BurnErrorOutput { NotEnoughCoins = 'NotEnoughCoins' };
 export type IdentityInput = Enum<{ Address: AddressInput, ContractId: ContractIdInput }>;
 export type IdentityOutput = Enum<{ Address: AddressOutput, ContractId: ContractIdOutput }>;
-export enum InitializationErrorInput { CannotReinitialized = 'CannotReinitialized' };
-export enum InitializationErrorOutput { CannotReinitialized = 'CannotReinitialized' };
 export type MetadataInput = Enum<{ B256: string, Bytes: Bytes, Int: BigNumberish, String: StdString }>;
 export type MetadataOutput = Enum<{ B256: string, Bytes: Bytes, Int: BN, String: StdString }>;
 export type MintErrorInput = Enum<{ CannotMintMoreThanOneNFTWithSubId: [], MaxNFTsMinted: [], NFTAlreadyMinted: [], NotEnoughTokens: BigNumberish, InvalidAsset: [], OutsideMintingPeriod: StdString, InvalidProof: [], ExceededMaxMintLimit: [] }>;
@@ -54,14 +52,12 @@ export type AirdropEventInput = { sender: IdentityInput, recipient: IdentityInpu
 export type AirdropEventOutput = { sender: IdentityOutput, recipient: IdentityOutput, amount: BN, new_minted_id: BN };
 export type AssetIdInput = { bits: string };
 export type AssetIdOutput = AssetIdInput;
-export type ContractCreatedEventInput = { owner: IdentityInput, name: StdString, symbol: StdString, price: BigNumberish, start: BigNumberish, end: BigNumberish };
-export type ContractCreatedEventOutput = { owner: IdentityOutput, name: StdString, symbol: StdString, price: BN, start: BN, end: BN };
+export type ContractCreatedEventInput = { owner: IdentityInput, name: StdString };
+export type ContractCreatedEventOutput = { owner: IdentityOutput, name: StdString };
 export type ContractIdInput = { bits: string };
 export type ContractIdOutput = ContractIdInput;
 export type MintEventInput = { recipient: IdentityInput, amount: BigNumberish, affiliate: IdentityInput, max_amount: BigNumberish, total_price: BigNumberish, total_fee: BigNumberish, price_amount: BigNumberish, builder_fee: BigNumberish, affiliate_fee: BigNumberish, fee: BigNumberish, creator_price: BigNumberish, asset_id: AssetIdInput, new_minted_id: BigNumberish };
 export type MintEventOutput = { recipient: IdentityOutput, amount: BN, affiliate: IdentityOutput, max_amount: BN, total_price: BN, total_fee: BN, price_amount: BN, builder_fee: BN, affiliate_fee: BN, fee: BN, creator_price: BN, asset_id: AssetIdOutput, new_minted_id: BN };
-export type OwnershipSetInput = { new_owner: IdentityInput };
-export type OwnershipSetOutput = { new_owner: IdentityOutput };
 
 export type Props721EditionContractAbiConfigurables = Partial<{
   MAX_SUPPLY: BigNumberish;
@@ -136,6 +132,6 @@ export class Props721EditionContractAbi extends Contract {
     is_paused: InvokeFunction<[], boolean>;
     pause: InvokeFunction<[], void>;
     unpause: InvokeFunction<[], void>;
-    constructor: InvokeFunction<[owner: IdentityInput, name: StdString, symbol: StdString, metadata_keys: Vec<StdString>, metadata_values: Vec<MetadataInput>, price: BigNumberish, start_date: BigNumberish, end_date: BigNumberish], void>;
+    constructor: InvokeFunction<[owner: IdentityInput, name: StdString], void>;
   };
 }

@@ -1,0 +1,20 @@
+{
+  "name": "deploy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "launch": "ts-node launch.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@props/fuels": "workspace:*",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.2"
+  }
+}

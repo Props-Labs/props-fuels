@@ -3,17 +3,9 @@ use std::{string::String};
 use standards::{src5::{State}, src7::{Metadata}};
 
 pub struct ContractCreatedEvent {
-    pub current_time: u64,
-    pub block_height: u32,
-    pub contract_id: ContractId,
     pub owner: Identity,
     pub name: String,
-    pub symbol: String,
-    pub metadata_keys: Vec<String>,
-    pub metadata_values: Vec<Metadata>,
-    pub price: u64,
-    pub start: u64,
-    pub end: u64
+   
 }
 
 pub struct MintEvent {

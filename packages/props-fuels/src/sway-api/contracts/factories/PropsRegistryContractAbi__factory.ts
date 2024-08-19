@@ -30,23 +30,11 @@ const _abi = {
     },
     {
       "typeId": 2,
-      "type": "enum AccessError",
-      "components": [
-        {
-          "name": "NotOwner",
-          "type": 0,
-          "typeArguments": null
-        }
-      ],
-      "typeParameters": null
-    },
-    {
-      "typeId": 3,
       "type": "enum Identity",
       "components": [
         {
           "name": "Address",
-          "type": 6,
+          "type": 5,
           "typeArguments": null
         },
         {
@@ -58,19 +46,7 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 4,
-      "type": "enum InitializationError",
-      "components": [
-        {
-          "name": "CannotReinitialized",
-          "type": 0,
-          "typeArguments": null
-        }
-      ],
-      "typeParameters": null
-    },
-    {
-      "typeId": 5,
+      "typeId": 3,
       "type": "enum State",
       "components": [
         {
@@ -80,7 +56,7 @@ const _abi = {
         },
         {
           "name": "Initialized",
-          "type": 3,
+          "type": 2,
           "typeArguments": null
         },
         {
@@ -92,12 +68,35 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 6,
+      "typeId": 4,
+      "type": "raw untyped ptr",
+      "components": null,
+      "typeParameters": null
+    },
+    {
+      "typeId": 5,
       "type": "struct Address",
       "components": [
         {
           "name": "bits",
           "type": 1,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 6,
+      "type": "struct Bytes",
+      "components": [
+        {
+          "name": "buf",
+          "type": 8,
+          "typeArguments": null
+        },
+        {
+          "name": "len",
+          "type": 10,
           "typeArguments": null
         }
       ],
@@ -117,11 +116,16 @@ const _abi = {
     },
     {
       "typeId": 8,
-      "type": "struct DeregisterEvent",
+      "type": "struct RawBytes",
       "components": [
         {
-          "name": "contract_id",
-          "type": 7,
+          "name": "ptr",
+          "type": 4,
+          "typeArguments": null
+        },
+        {
+          "name": "cap",
+          "type": 10,
           "typeArguments": null
         }
       ],
@@ -129,11 +133,11 @@ const _abi = {
     },
     {
       "typeId": 9,
-      "type": "struct OwnershipSet",
+      "type": "struct String",
       "components": [
         {
-          "name": "new_owner",
-          "type": 3,
+          "name": "bytes",
+          "type": 6,
           "typeArguments": null
         }
       ],
@@ -141,19 +145,8 @@ const _abi = {
     },
     {
       "typeId": 10,
-      "type": "struct RegisterEvent",
-      "components": [
-        {
-          "name": "contract_id",
-          "type": 7,
-          "typeArguments": null
-        },
-        {
-          "name": "owner",
-          "type": 3,
-          "typeArguments": null
-        }
-      ],
+      "type": "u64",
+      "components": null,
       "typeParameters": null
     }
   ],
@@ -163,7 +156,7 @@ const _abi = {
       "name": "owner",
       "output": {
         "name": "",
-        "type": 5,
+        "type": 3,
         "typeArguments": null
       },
       "attributes": [
@@ -328,12 +321,22 @@ const _abi = {
     {
       "inputs": [
         {
+          "name": "contract_id",
+          "type": 7,
+          "typeArguments": null
+        },
+        {
           "name": "owner",
-          "type": 3,
+          "type": 2,
+          "typeArguments": null
+        },
+        {
+          "name": "name",
+          "type": 9,
           "typeArguments": null
         }
       ],
-      "name": "constructor",
+      "name": "init_contract",
       "output": {
         "name": "",
         "type": 0,
@@ -343,7 +346,7 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            " Sets the defaults for the contract."
+            " Initializes a contract with its owner and name"
           ]
         },
         {
@@ -367,7 +370,49 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            " * `owner`: [Identity] - The `Identity` that will be the first owner."
+            " * `contract_id`: The ID of the contract to be initialized"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `owner`: The Identity of the contract owner"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `name`: The name of the contract"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Effects"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Initializes the contract with the given owner and name"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Logs an `InitContractEvent` with the contract details"
           ]
         },
         {
@@ -391,7 +436,7 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            " * When ownership has been set before."
+            " * When the contract has already been initialized"
           ]
         },
         {
@@ -403,7 +448,7 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            " # Storage Accesses"
+            " # Number of Storage Accesses"
           ]
         },
         {
@@ -451,13 +496,7 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            " use standards::src5::SRC5;"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " use nft::Constructor;"
+            " use sway_libs::PropsRegistry;"
           ]
         },
         {
@@ -469,43 +508,19 @@ const _abi = {
         {
           "name": "doc-comment",
           "arguments": [
-            " fn foo(contract: ContractId, owner: Identity) {"
+            " fn foo(registry: ContractId, contract_id: ContractId, owner: Identity, name: String) {"
           ]
         },
         {
           "name": "doc-comment",
           "arguments": [
-            "     let src_5_abi = abi(SRC5, contract.bits());"
+            "     let registry_abi = abi(PropsRegistry, registry);"
           ]
         },
         {
           "name": "doc-comment",
           "arguments": [
-            "     assert(src_5_abi.owner() == State::Uninitialized);"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     let constructor_abi = abi(Constructor, contract.bits());"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     constructor_abi.constructor(owner);"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     assert(src_5_abi.owner() == State::Initialized(owner));"
+            "     registry_abi.init_contract(contract_id, owner, name);"
           ]
         },
         {
@@ -528,217 +543,9 @@ const _abi = {
           ]
         }
       ]
-    },
-    {
-      "inputs": [
-        {
-          "name": "contractId",
-          "type": 7,
-          "typeArguments": null
-        }
-      ],
-      "name": "deregister",
-      "output": {
-        "name": "",
-        "type": 0,
-        "typeArguments": null
-      },
-      "attributes": [
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " Deregisters a contract"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `contractId`: The ID of the contract to be deregistered"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Effects"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " Removes the contract ID from the registry"
-          ]
-        },
-        {
-          "name": "storage",
-          "arguments": [
-            "read",
-            "write"
-          ]
-        }
-      ]
-    },
-    {
-      "inputs": [
-        {
-          "name": "contractId",
-          "type": 7,
-          "typeArguments": null
-        },
-        {
-          "name": "owner",
-          "type": 3,
-          "typeArguments": null
-        }
-      ],
-      "name": "register",
-      "output": {
-        "name": "",
-        "type": 0,
-        "typeArguments": null
-      },
-      "attributes": [
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " Registers a contract with its owner"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `contractId`: The ID of the contract to be registered"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `owner`: The Identity of the contract owner"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Effects"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " Inserts the contract ID and owner pair into the registry"
-          ]
-        },
-        {
-          "name": "storage",
-          "arguments": [
-            "read",
-            "write"
-          ]
-        }
-      ]
     }
   ],
-  "loggedTypes": [
-    {
-      "logId": "2161305517876418151",
-      "loggedType": {
-        "name": "",
-        "type": 4,
-        "typeArguments": []
-      }
-    },
-    {
-      "logId": "16280289466020123285",
-      "loggedType": {
-        "name": "",
-        "type": 9,
-        "typeArguments": []
-      }
-    },
-    {
-      "logId": "4571204900286667806",
-      "loggedType": {
-        "name": "",
-        "type": 2,
-        "typeArguments": []
-      }
-    },
-    {
-      "logId": "13294799498124198676",
-      "loggedType": {
-        "name": "",
-        "type": 8,
-        "typeArguments": []
-      }
-    },
-    {
-      "logId": "8719680026594948895",
-      "loggedType": {
-        "name": "",
-        "type": 10,
-        "typeArguments": []
-      }
-    }
-  ],
+  "loggedTypes": [],
   "messagesTypes": [],
   "configurables": []
 };

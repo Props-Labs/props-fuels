@@ -1249,7 +1249,5 @@ impl Props721Collection for Contract {
         storage.start_date.write(start_date);
         storage.end_date.write(end_date);
 
-        let registry = abi(PropsRegistry, REGISTRY_CONTRACT_ID);
-        registry.register(ContractId::this(), owner);
     }
 }

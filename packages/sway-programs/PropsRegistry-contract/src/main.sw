@@ -4,11 +4,10 @@ mod errors;
 mod interface;
 mod events;
 
-use libraries::{PropsRegistry};
-use events::{RegisterEvent, DeregisterEvent};
-use std::hash::Hash;
+use libraries::{PropsRegistry, PropsContract};
+use std::{hash::Hash, string::String};
 
-use standards::{src5::{SRC5, State}};
+use standards::{src5::{SRC5, State}, src7::{Metadata}};
 
 use sway_libs::{
     ownership::{
@@ -57,58 +56,24 @@ impl SRC5 for Contract {
 }
 
 impl PropsRegistry for Contract {
-    /// Registers a contract with its owner
+    /// Initializes a contract with its owner and name
     ///
     /// # Arguments
     ///
-    /// * `contractId`: The ID of the contract to be registered
+    /// * `contract_id`: The ID of the contract to be initialized
     /// * `owner`: The Identity of the contract owner
+    /// * `name`: The name of the contract
     ///
     /// # Effects
     ///
-    /// Inserts the contract ID and owner pair into the registry
-    #[storage(read, write)]
-    fn register(contractId: ContractId, owner: Identity) {
-        storage.registry.insert(contractId, owner);
-
-        // Log the RegisterEvent
-        log(RegisterEvent {
-            contract_id: contractId,
-            owner: owner,
-        });
-    }
-
-    /// Deregisters a contract
-    ///
-    /// # Arguments
-    ///
-    /// * `contractId`: The ID of the contract to be deregistered
-    ///
-    /// # Effects
-    ///
-    /// Removes the contract ID from the registry
-    #[storage(read, write)]
-    fn deregister(contractId: ContractId) {
-        only_owner();
-        storage.registry.remove(contractId);
-
-        // Log the DeregisterEvent
-        log(DeregisterEvent {
-            contract_id: contractId,
-        });
-    }
-
-    /// Sets the defaults for the contract.
-    ///
-    /// # Arguments
-    ///
-    /// * `owner`: [Identity] - The `Identity` that will be the first owner.
+    /// * Initializes the contract with the given owner and name
+    /// * Logs an `InitContractEvent` with the contract details
     ///
     /// # Reverts
     ///
-    /// * When ownership has been set before.
+    /// * When the contract has already been initialized
     ///
-    /// # Storage Accesses
+    /// # Number of Storage Accesses
     ///
     /// * Reads: `1`
     /// * Writes: `1`
@@ -116,20 +81,29 @@ impl PropsRegistry for Contract {
     /// # Examples
     ///
     /// ```sway
-    /// use standards::src5::SRC5;
-    /// use nft::Constructor;
+    /// use sway_libs::PropsRegistry;
     ///
-    /// fn foo(contract: ContractId, owner: Identity) {
-    ///     let src_5_abi = abi(SRC5, contract.bits());
-    ///     assert(src_5_abi.owner() == State::Uninitialized);
-    ///
-    ///     let constructor_abi = abi(Constructor, contract.bits());
-    ///     constructor_abi.constructor(owner);
-    ///     assert(src_5_abi.owner() == State::Initialized(owner));
+    /// fn foo(registry: ContractId, contract_id: ContractId, owner: Identity, name: String) {
+    ///     let registry_abi = abi(PropsRegistry, registry);
+    ///     registry_abi.init_contract(contract_id, owner, name);
     /// }
     /// ```
+
+
     #[storage(read, write)]
-    fn constructor(owner: Identity) {
-        initialize_ownership(owner);
+    fn init_contract(contract_id: ContractId, owner: Identity, name: String) {
+
+        // storage.registry.insert(contract_id, owner);
+
+        // let contr = abi(PropsContract, contract_id.into());
+        // contr.constructor(owner, name);
+
+        // Log the InitCollectionEvent
+        log(InitContractEvent {
+            contract_id: contract_id,
+            owner: owner,
+            name: name
+        });
     }
+
 }

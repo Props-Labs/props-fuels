@@ -10,22 +10,22 @@
 */
 
 import type {
+  BigNumberish,
+  BN,
+  Bytes,
   BytesLike,
   Contract,
   DecodedValue,
   FunctionFragment,
   Interface,
   InvokeFunction,
+  StdString,
 } from 'fuels';
 
 import type { Enum } from "./common";
 
-export enum AccessErrorInput { NotOwner = 'NotOwner' };
-export enum AccessErrorOutput { NotOwner = 'NotOwner' };
 export type IdentityInput = Enum<{ Address: AddressInput, ContractId: ContractIdInput }>;
 export type IdentityOutput = Enum<{ Address: AddressOutput, ContractId: ContractIdOutput }>;
-export enum InitializationErrorInput { CannotReinitialized = 'CannotReinitialized' };
-export enum InitializationErrorOutput { CannotReinitialized = 'CannotReinitialized' };
 export type StateInput = Enum<{ Uninitialized: [], Initialized: IdentityInput, Revoked: [] }>;
 export type StateOutput = Enum<{ Uninitialized: [], Initialized: IdentityOutput, Revoked: [] }>;
 
@@ -33,19 +33,11 @@ export type AddressInput = { bits: string };
 export type AddressOutput = AddressInput;
 export type ContractIdInput = { bits: string };
 export type ContractIdOutput = ContractIdInput;
-export type DeregisterEventInput = { contract_id: ContractIdInput };
-export type DeregisterEventOutput = { contract_id: ContractIdOutput };
-export type OwnershipSetInput = { new_owner: IdentityInput };
-export type OwnershipSetOutput = { new_owner: IdentityOutput };
-export type RegisterEventInput = { contract_id: ContractIdInput, owner: IdentityInput };
-export type RegisterEventOutput = { contract_id: ContractIdOutput, owner: IdentityOutput };
 
 export interface PropsRegistryContractAbiInterface extends Interface {
   functions: {
     owner: FunctionFragment;
-    constructor: FunctionFragment;
-    deregister: FunctionFragment;
-    register: FunctionFragment;
+    init_contract: FunctionFragment;
   };
 }
 
@@ -53,8 +45,6 @@ export class PropsRegistryContractAbi extends Contract {
   interface: PropsRegistryContractAbiInterface;
   functions: {
     owner: InvokeFunction<[], StateOutput>;
-    constructor: InvokeFunction<[owner: IdentityInput], void>;
-    deregister: InvokeFunction<[contractId: ContractIdInput], void>;
-    register: InvokeFunction<[contractId: ContractIdInput, owner: IdentityInput], void>;
+    init_contract: InvokeFunction<[contract_id: ContractIdInput, owner: IdentityInput, name: StdString], void>;
   };
 }

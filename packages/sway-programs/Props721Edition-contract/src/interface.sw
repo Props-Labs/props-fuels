@@ -14,5 +14,5 @@ abi SRC7MetadataExtension {
 
 abi Props721Edition {
     #[storage(read, write)]
-    fn constructor(owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64, start_date: u64, end_date: u64);
+    fn constructor(owner: Identity, name: String);
 }
