@@ -107,8 +107,9 @@ export class EditionManager extends PropsContractManager {
       owner
     );
 
-    const { waitForResult: waitForResultConstructor } = await contract.functions
-      .constructor(
+    const { waitForResult: waitForResultConstructor } = await registryContract.functions
+      .init_edition(
+        { bits: contract.id.toB256() },
         addressIdentityInput,
         name,
         symbol,
@@ -118,7 +119,7 @@ export class EditionManager extends PropsContractManager {
         startDateTai,
         endDateTai,
       )
-      .addContracts([registryContract])
+      .addContracts([contract])
       .call();
 
     this.emit(this.events.pending, {

@@ -4,6 +4,16 @@ use std::string::String;
 use std::bytes::Bytes;
 use standards::{src5::{State}, src7::{Metadata}};
 
+abi Props721Collection {
+    #[storage(read, write)]
+    fn constructor(owner: Identity, name: String, symbol: String, baseUri: String, price: u64, startDate: u64, endDate: u64);
+}
+
+abi Props721Edition {
+    #[storage(read, write)]
+    fn constructor(owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64, start_date: u64, end_date: u64);
+}
+
 abi PropsRegistry {
     #[storage(read, write)]
     fn register(contractId: ContractId, owner: Identity);
@@ -13,6 +23,12 @@ abi PropsRegistry {
 
     #[storage(read, write)]
     fn constructor(owner: Identity);
+
+    #[storage(read, write)]
+    fn init_edition(contract_id: ContractId, owner: Identity, name: String, symbol: String, metadata_keys: Vec<String>, metadata_values: Vec<Metadata>, price: u64, start_date: u64, end_date: u64);
+
+    #[storage(read, write)]
+    fn init_collection(contract_id: ContractId, owner: Identity, name: String, symbol: String, baseUri: String, price: u64, startDate: u64, endDate: u64);
 }
 
 abi PropsFeeSplitter {

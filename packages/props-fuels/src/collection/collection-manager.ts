@@ -43,6 +43,8 @@ export class CollectionManager extends PropsContractManager {
 
     const { owner } = options;
 
+    console.log("OWNER: ", owner);
+
     const configurableConstants = Object.keys(options)
       .filter((key) =>
         supportedProps721CollectionContractConfigurableOptions.includes(key)
@@ -102,18 +104,20 @@ export class CollectionManager extends PropsContractManager {
       owner
     );
 
-    const { waitForResult: waitForResultConstructor } = await contract.functions
-      .constructor(
-        addressIdentityInput,
-        name,
-        symbol,
-        baseUri,
-        price ?? 0,
-        startDateTai,
-        endDateTai
-      )
-      .addContracts([registryContract])
-      .call();
+    const { waitForResult: waitForResultConstructor } =
+      await registryContract.functions
+        .init_collection(
+          { bits: contract.id.toB256() },
+          addressIdentityInput,
+          name,
+          symbol,
+          baseUri,
+          price ?? 0,
+          startDateTai,
+          endDateTai
+        )
+        .addContracts([contract])
+        .call();
 
     this.emit(this.events.pending, {
       params: { name, symbol, baseUri, options },

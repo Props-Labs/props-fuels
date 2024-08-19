@@ -46,12 +46,12 @@ const _abi = {
       "components": [
         {
           "name": "Address",
-          "type": 6,
+          "type": 9,
           "typeArguments": null
         },
         {
           "name": "ContractId",
-          "type": 7,
+          "type": 11,
           "typeArguments": null
         }
       ],
@@ -71,6 +71,33 @@ const _abi = {
     },
     {
       "typeId": 5,
+      "type": "enum Metadata",
+      "components": [
+        {
+          "name": "B256",
+          "type": 1,
+          "typeArguments": null
+        },
+        {
+          "name": "Bytes",
+          "type": 10,
+          "typeArguments": null
+        },
+        {
+          "name": "Int",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "String",
+          "type": 19,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 6,
       "type": "enum State",
       "components": [
         {
@@ -92,7 +119,19 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 6,
+      "typeId": 7,
+      "type": "generic T",
+      "components": null,
+      "typeParameters": null
+    },
+    {
+      "typeId": 8,
+      "type": "raw untyped ptr",
+      "components": null,
+      "typeParameters": null
+    },
+    {
+      "typeId": 9,
       "type": "struct Address",
       "components": [
         {
@@ -104,7 +143,24 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 7,
+      "typeId": 10,
+      "type": "struct Bytes",
+      "components": [
+        {
+          "name": "buf",
+          "type": 16,
+          "typeArguments": null
+        },
+        {
+          "name": "len",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 11,
       "type": "struct ContractId",
       "components": [
         {
@@ -116,19 +172,130 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 8,
+      "typeId": 12,
       "type": "struct DeregisterEvent",
       "components": [
         {
           "name": "contract_id",
-          "type": 7,
+          "type": 11,
           "typeArguments": null
         }
       ],
       "typeParameters": null
     },
     {
-      "typeId": 9,
+      "typeId": 13,
+      "type": "struct InitCollectionEvent",
+      "components": [
+        {
+          "name": "contract_id",
+          "type": 11,
+          "typeArguments": null
+        },
+        {
+          "name": "owner",
+          "type": 3,
+          "typeArguments": null
+        },
+        {
+          "name": "name",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "symbol",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "base_uri",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "price",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "start_date",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "end_date",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 14,
+      "type": "struct InitEditionEvent",
+      "components": [
+        {
+          "name": "contract_id",
+          "type": 11,
+          "typeArguments": null
+        },
+        {
+          "name": "owner",
+          "type": 3,
+          "typeArguments": null
+        },
+        {
+          "name": "name",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "symbol",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "metadata_keys",
+          "type": 20,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 19,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "metadata_values",
+          "type": 20,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 5,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "price",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "start_date",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "end_date",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 15,
       "type": "struct OwnershipSet",
       "components": [
         {
@@ -140,12 +307,48 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 10,
+      "typeId": 16,
+      "type": "struct RawBytes",
+      "components": [
+        {
+          "name": "ptr",
+          "type": 8,
+          "typeArguments": null
+        },
+        {
+          "name": "cap",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 17,
+      "type": "struct RawVec",
+      "components": [
+        {
+          "name": "ptr",
+          "type": 8,
+          "typeArguments": null
+        },
+        {
+          "name": "cap",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": [
+        7
+      ]
+    },
+    {
+      "typeId": 18,
       "type": "struct RegisterEvent",
       "components": [
         {
           "name": "contract_id",
-          "type": 7,
+          "type": 11,
           "typeArguments": null
         },
         {
@@ -155,6 +358,49 @@ const _abi = {
         }
       ],
       "typeParameters": null
+    },
+    {
+      "typeId": 19,
+      "type": "struct String",
+      "components": [
+        {
+          "name": "bytes",
+          "type": 10,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": null
+    },
+    {
+      "typeId": 20,
+      "type": "struct Vec",
+      "components": [
+        {
+          "name": "buf",
+          "type": 17,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 7,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "len",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "typeParameters": [
+        7
+      ]
+    },
+    {
+      "typeId": 21,
+      "type": "u64",
+      "components": null,
+      "typeParameters": null
     }
   ],
   "functions": [
@@ -163,7 +409,7 @@ const _abi = {
       "name": "owner",
       "output": {
         "name": "",
-        "type": 5,
+        "type": 6,
         "typeArguments": null
       },
       "attributes": [
@@ -533,7 +779,7 @@ const _abi = {
       "inputs": [
         {
           "name": "contractId",
-          "type": 7,
+          "type": 11,
           "typeArguments": null
         }
       ],
@@ -610,8 +856,329 @@ const _abi = {
     {
       "inputs": [
         {
+          "name": "contract_id",
+          "type": 11,
+          "typeArguments": null
+        },
+        {
+          "name": "owner",
+          "type": 3,
+          "typeArguments": null
+        },
+        {
+          "name": "name",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "symbol",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "baseUri",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "price",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "startDate",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "endDate",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "name": "init_collection",
+      "output": {
+        "name": "",
+        "type": 0,
+        "typeArguments": null
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Initializes a new collection in the registry."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `owner`: [Identity] - The owner of the collection."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `name`: [String] - The name of the collection."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `symbol`: [String] - The symbol of the collection."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `baseUri`: [String] - The base URI for the collection."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `price`: [u64] - The price of the collection."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `startDate`: [u64] - The start date of the collection."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `endDate`: [u64] - The end date of the collection."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Effects"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Initializes a new collection with the given parameters."
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
+          "name": "contract_id",
+          "type": 11,
+          "typeArguments": null
+        },
+        {
+          "name": "owner",
+          "type": 3,
+          "typeArguments": null
+        },
+        {
+          "name": "name",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "symbol",
+          "type": 19,
+          "typeArguments": null
+        },
+        {
+          "name": "metadata_keys",
+          "type": 20,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 19,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "metadata_values",
+          "type": 20,
+          "typeArguments": [
+            {
+              "name": "",
+              "type": 5,
+              "typeArguments": null
+            }
+          ]
+        },
+        {
+          "name": "price",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "start_date",
+          "type": 21,
+          "typeArguments": null
+        },
+        {
+          "name": "end_date",
+          "type": 21,
+          "typeArguments": null
+        }
+      ],
+      "name": "init_edition",
+      "output": {
+        "name": "",
+        "type": 0,
+        "typeArguments": null
+      },
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Initializes a new edition in the registry."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Arguments"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `owner`: [Identity] - The owner of the edition."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `name`: [String] - The name of the edition."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `symbol`: [String] - The symbol of the edition."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `metadata_keys`: [Vec<String>] - The keys for the metadata."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `metadata_values`: [Vec<Metadata>] - The values for the metadata."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `price`: [u64] - The price of the edition."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `start_date`: [u64] - The start date of the edition."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * `end_date`: [u64] - The end date of the edition."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Effects"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Initializes a new edition with the given parameters."
+          ]
+        },
+        {
+          "name": "storage",
+          "arguments": [
+            "read",
+            "write"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [
+        {
           "name": "contractId",
-          "type": 7,
+          "type": 11,
           "typeArguments": null
         },
         {
@@ -710,7 +1277,7 @@ const _abi = {
       "logId": "16280289466020123285",
       "loggedType": {
         "name": "",
-        "type": 9,
+        "type": 15,
         "typeArguments": []
       }
     },
@@ -726,7 +1293,23 @@ const _abi = {
       "logId": "13294799498124198676",
       "loggedType": {
         "name": "",
-        "type": 8,
+        "type": 12,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "7810376381474243610",
+      "loggedType": {
+        "name": "",
+        "type": 13,
+        "typeArguments": []
+      }
+    },
+    {
+      "logId": "9225626720074686082",
+      "loggedType": {
+        "name": "",
+        "type": 14,
         "typeArguments": []
       }
     },
@@ -734,7 +1317,7 @@ const _abi = {
       "logId": "8719680026594948895",
       "loggedType": {
         "name": "",
-        "type": 10,
+        "type": 18,
         "typeArguments": []
       }
     }
