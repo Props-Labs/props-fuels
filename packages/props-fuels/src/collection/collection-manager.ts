@@ -43,8 +43,6 @@ export class CollectionManager extends PropsContractManager {
 
     const { owner } = options;
 
-    console.log("OWNER: ", owner);
-
     const configurableConstants = Object.keys(options)
       .filter((key) =>
         supportedProps721CollectionContractConfigurableOptions.includes(key)
@@ -199,39 +197,27 @@ export class CollectionManager extends PropsContractManager {
       );
 
       const contractBytecode = bytecodeData.data.contract.bytecode;
-      let similarCount = 0;
-      let dissimilarCount = 0;
 
-      for (
-        let i = 0;
-        i <
-        Math.min(
-          contractBytecode.length,
-          Props721CollectionContractFactory.bytecode.length
-        );
-        i++
-      ) {
+      // Convert contractBytecode hex string to Uint8Array
+      const contractBytecodeArray = new Uint8Array(
+        contractBytecode.slice(2).match(/.{1,2}/g).map((byte: string) => parseInt(byte, 16))
+      );
+
+      let similarCount = 0;
+      let totalBytes = Math.max(
+        contractBytecodeArray.length,
+        Props721CollectionContractFactory.bytecode.length
+      );
+
+      for (let i = 0; i < totalBytes; i++) {
         if (
-          contractBytecode[i] === Props721CollectionContractFactory.bytecode[i]
+          contractBytecodeArray[i] === Props721CollectionContractFactory.bytecode[i]
         ) {
           similarCount++;
-        } else {
-          dissimilarCount++;
         }
       }
 
-      dissimilarCount += Math.abs(
-        contractBytecode.length -
-          Props721CollectionContractFactory.bytecode.length
-      );
-
-      const similarityPercentage =
-        (similarCount /
-          Math.max(
-            contractBytecode.length,
-            Props721CollectionContractFactory.bytecode.length
-          )) *
-        100;
+      const similarityPercentage = (similarCount / totalBytes) * 100;
 
       if (similarityPercentage >= 99.98) {
         matchingContracts.push(contractId);

@@ -82,6 +82,9 @@ export class EditionManager extends PropsContractManager {
 
     const { contract } = await waitForResult();
 
+    // console.log("contract: ", contract);
+    // console.log("contract id: ", contract.id.toB256());
+
     const address = Address.fromDynamicInput(owner.address);
     const addressInput = { bits: address.toB256() };
     const addressIdentityInput = { Address: addressInput };
@@ -201,34 +204,27 @@ export class EditionManager extends PropsContractManager {
       );
 
       const contractBytecode = bytecodeData.data.contract.bytecode;
-      let similarCount = 0;
-      let dissimilarCount = 0;
 
-      for (
-        let i = 0;
-        i <
-        Math.min(
-          contractBytecode.length,
-          Props721EditionContractFactory.bytecode.length
-        );
-        i++
-      ) {
+      // Convert contractBytecode hex string to Uint8Array
+      const contractBytecodeArray = new Uint8Array(
+        contractBytecode.slice(2).match(/.{1,2}/g).map((byte: string) => parseInt(byte, 16))
+      );
+
+      let similarCount = 0;
+      let totalBytes = Math.max(
+        contractBytecodeArray.length,
+        Props721EditionContractFactory.bytecode.length
+      );
+
+      for (let i = 0; i < totalBytes; i++) {
         if (
-          contractBytecode[i] === Props721EditionContractFactory.bytecode[i]
+          contractBytecodeArray[i] === Props721EditionContractFactory.bytecode[i]
         ) {
           similarCount++;
-        } else {
-          dissimilarCount++;
         }
       }
 
-      dissimilarCount += Math.abs(
-        contractBytecode.length - Props721EditionContractFactory.bytecode.length
-      );
-
-      const similarityPercentage =
-        (similarCount / Math.max(contractBytecode.length, Props721EditionContractFactory.bytecode.length)) *
-        100;
+      const similarityPercentage = (similarCount / totalBytes) * 100;
 
       if (similarityPercentage >= 99.98) {
         matchingContracts.push(contractId);

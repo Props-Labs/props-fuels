@@ -26,7 +26,7 @@ describe("Edition", () => {
       description: "A test edition",
       image: "test_image_url",
     });
-    vi.resetAllMocks();
+    // vi.resetAllMocks();
   });
 
   it("should create an edition instance", () => {
@@ -41,6 +41,7 @@ describe("Edition", () => {
   });
 
   it("should mint tokens", async () => {
+    console.log(edition.contract);
     expect(edition.contract).toBeDefined();
     await edition.mint(wallets[2].address.toB256(), 1);
 

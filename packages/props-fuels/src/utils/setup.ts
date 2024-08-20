@@ -25,10 +25,9 @@ export async function setup(): Promise<
       amountPerCoin: 1_000_000, // Amount per coin
       messages: [message], // Initial messages
     },
-    nodeOptions: {
-      port: "4000",
+    providerOptions: {
+      resourceCacheTTL: 50000,
     },
-    launchNodeServerPort: "4000",
   });
 
   // Destructure the launched object to get wallets and contracts
@@ -37,8 +36,6 @@ export async function setup(): Promise<
     wallets: [wallet1, wallet2, wallet3, wallet4],
     provider,
   } = launched;
-
-  console.log("PROVIDER: ", provider);
 
   const address = Address.fromDynamicInput(wallet1.address);
   const addressInput = { bits: address.toB256() };
@@ -56,12 +53,12 @@ export async function setup(): Promise<
     await waitForResult();
 
   // Initialize the Fee Splitter Contract
-  // const { waitForResult: waitForFeeSplitterConstructorResult } =
-  //   await feeSplitterContract.functions
-  //     .constructor(addressIdentityInput)
-  //     .call();
+  const { waitForResult: waitForFeeSplitterConstructorResult } =
+    await feeSplitterContract.functions
+      .constructor(addressIdentityInput)
+      .call();
 
-  // await waitForFeeSplitterConstructorResult();
+  await waitForFeeSplitterConstructorResult();
 
   // Log hash of deployed fee splitter contract
   const feeSplitterContractId = feeSplitterContract.id;

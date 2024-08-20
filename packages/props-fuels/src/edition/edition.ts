@@ -1,9 +1,10 @@
 import { Account, Address, BN, TransactionStatus } from "fuels";
-import { Props721EditionContract, Props721EditionContractFactory } from "../sway-api/contracts";
+import { Props721EditionContract, Props721EditionContractFactory, PropsFeeSplitterContract } from "../sway-api/contracts";
 import { MintResult, NFTMetadata } from "../common/types";
 import { decode } from "punycode";
 import { decodeContractMetadata } from "../utils/metadata";
 import { PropsContract } from "../contract";
+import { feeSplitterContractAddress } from "../common/defaults";
 
 /**
  * Represents an edition within the Props SDK.
@@ -56,12 +57,20 @@ export class Edition extends PropsContract {
       throw new Error("Contract or account is not connected");
     }
 
+    const feeSplitterContract = new PropsFeeSplitterContract(
+      feeSplitterContractAddress,
+      this.account
+    );
+
     try {
       const baseAssetId = this.account.provider.getBaseAssetId();
       const { value: priceValue } = await this.contract.functions.price().get();
+      console.log("Price: ", priceValue);
       const { value: fees } = await this.contract.functions
         .fees()
+        .addContracts([feeSplitterContract])
         .get();
+      console.log("Fees: ", fees);
       if (!priceValue) {
         throw new Error("Price not found");
       }
@@ -109,6 +118,7 @@ export class Edition extends PropsContract {
           numLeaves,
           maxAmount,
         )
+        .addContracts([feeSplitterContract])
         .callParams({
           forward: [price, baseAssetId],
           gasLimit: 1_000_000,

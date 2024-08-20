@@ -6,6 +6,7 @@ import { Props721CollectionContractFactory, PropsFeeSplitterContract } from "../
 import { MetadataOutput } from "../sway-api/contracts/Props721CollectionContract";
 import { Collection } from "../collection/collection";
 import { MintResult } from "../common/types";
+import { feeSplitterContractAddress } from "../common/defaults";
 
 describe("CollectionManager", () => {
   let manager: CollectionManager;
@@ -84,6 +85,8 @@ describe("CollectionManager", () => {
           owner: wallets[0],
         }
       });
+
+      // console.log("CONTRACT ADDRESS: ", collection.contract?.id.toB256());
       const collections = await manager.list(wallets[0], {
         id: "local",
         name: "Test",
@@ -119,7 +122,12 @@ describe("CollectionManager", () => {
         throw new Error("Collection contract not found");
       }
 
-      const { value: totalPrice } = await collection.contract.functions.total_price().get();
+      const feeSplitterContract = new PropsFeeSplitterContract(
+        feeSplitterContractAddress,
+        wallets[0]
+      );
+
+      const { value: totalPrice } = await collection.contract.functions.total_price().addContracts([feeSplitterContract]).get();
       expect(totalPrice?.toString()).toBe((1000+5).toString());
 
       if (!collection.contract) {
