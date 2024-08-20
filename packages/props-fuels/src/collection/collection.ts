@@ -1,5 +1,5 @@
-import { Account, Address, BN } from "fuels";
-import { Props721CollectionContractAbi, Props721CollectionContractAbi__factory } from "../sway-api/contracts";
+import { Account, Address, BN, TransactionStatus } from "fuels";
+import { Props721CollectionContract, Props721CollectionContractFactory } from "../sway-api/contracts";
 import { MintResult } from "../common/types";
 import { NFTMetadata } from "../common/types";
 import { PropsContract } from "../contract";
@@ -23,13 +23,13 @@ export class Collection extends PropsContract {
   /**
    * Creates a new instance of the Collection class.
    * @param {string} id - The ID of the edition.
-   * @param {Props721CollectionContractAbi} [contract] - Optional contract associated with the edition.
+   * @param {Props721CollectionContract} [contract] - Optional contract associated with the edition.
    * @param {Account} [account] - Optional account associated with the edition.
    * @param {string} [baseUri] - Base URI for the collection's metadata.
    */
   constructor(
     id: string,
-    contract?: Props721CollectionContractAbi,
+    contract?: Props721CollectionContract,
     account?: Account,
     baseUri?: string
   ) {
@@ -148,8 +148,8 @@ export class Collection extends PropsContract {
         })
         .call();
       const { transactionResult } = await waitForResult();
-      if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus")
-        return { id: transactionResult.gqlTransaction.id, transactionResult };
+      if (transactionResult?.status === TransactionStatus.success)
+        return { id: transactionResult.id, transactionResult };
       else throw new Error("Transaction failed");
     } catch (error) {
       throw error;
@@ -163,7 +163,7 @@ export class Collection extends PropsContract {
    * @returns {Promise<Collection>} A promise that resolves to an Collection instance.
    */
   static async fromContractIdAndWallet(contractId: string, wallet: Account): Promise<Collection> {
-    const contract = Props721CollectionContractAbi__factory.connect(
+    const contract = new Props721CollectionContract(
       contractId,
       wallet
     );

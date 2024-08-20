@@ -2,13 +2,13 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Account, BN, Provider, getMintedAssetId } from "fuels";
 import { Collection } from "./collection";
 import { deployProps721CollectionContract, setup } from "../utils/setup";
-import { Props721CollectionContractAbi } from "../sway-api/contracts";
+import { Props721CollectionContract } from "../sway-api/contracts";
 
 describe("Collection", () => {
   let collection: Collection;
   let wallets: Account[];
   let provider: Provider;
-  let contract: Props721CollectionContractAbi;
+  let contract: Props721CollectionContract;
 
   beforeEach(async () => {
     const { wallet1, wallet2, wallet3, wallet4, provider: setupProvider } = await setup();

@@ -2,15 +2,15 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Account, AssetId, BN, getMintedAssetId, Provider } from "fuels";
 import { EditionManager } from "./edition-manager";
 import { setup } from "../utils/setup";
-import { Props721EditionContractAbi__factory, PropsFeeSplitterContractAbi } from "../sway-api/contracts";
-import { MetadataOutput } from "../sway-api/contracts/Props721EditionContractAbi";
+import { Props721EditionContractFactory, PropsFeeSplitterContract } from "../sway-api/contracts";
+import { MetadataOutput } from "../sway-api/contracts/Props721EditionContract";
 import { Edition } from "./edition";
 
 describe("EditionManager", () => {
   let manager: EditionManager;
   let wallets: Account[];
   let provider: Provider;
-  let feeSplitterContract: PropsFeeSplitterContractAbi;
+  let feeSplitterContract: PropsFeeSplitterContract;
 
   beforeEach(async () => {
     manager = new EditionManager();

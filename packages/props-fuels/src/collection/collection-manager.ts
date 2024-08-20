@@ -1,15 +1,15 @@
-import { Account, Address, DateTime, BytesLike } from "fuels";
+import { Account, Address, DateTime, BytesLike, TransactionStatus } from "fuels";
 import { CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
 import { defaultEndDate, defaultNetwork, defaultStartDate, registryContractAddress } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721CollectionContractConfigurableOptions, supportedProps721CollectionContractConfigurableOptionsMapping } from "../common/constants";
-import { Props721CollectionContractAbi__factory } from "../sway-api/contracts";
-import bytecode from "../sway-api/contracts/Props721CollectionContractAbi.hex";
+import {
+  Props721CollectionContractFactory,
+  PropsRegistryContract,
+} from "../sway-api/contracts";
 import { executeGraphQLQuery } from "../core/fuels-api";
 import { Collection } from "../collection/collection";
 import { randomBytes } from "fuels";
-import { encodeMetadataValues } from "../utils/metadata";
 import { PropsContractManager } from "../contract/contract-manager";
-import { PropsRegistryContractAbi__factory } from "../sway-api/contracts";
 
 /**
  * @class CollectionManager
@@ -63,8 +63,7 @@ export class CollectionManager extends PropsContractManager {
 
     const salt: BytesLike = randomBytes(32);
     const { waitForResult } =
-      await Props721CollectionContractAbi__factory.deployContract(
-        bytecode,
+      await Props721CollectionContractFactory.deploy(
         owner,
         {
           configurableConstants,
@@ -99,14 +98,13 @@ export class CollectionManager extends PropsContractManager {
       ? DateTime.fromUnixMilliseconds(endDate).toTai64()
       : defaultEndDate;
 
-    const registryContract = PropsRegistryContractAbi__factory.connect(
+    const registryContract = new PropsRegistryContract(
       registryContractAddress,
       owner
     );
 
     const { waitForResult: waitForResultConstructor } =
-      await registryContract.functions
-        .init_collection(
+      await registryContract.functions.init_collection(
           { bits: contract.id.toB256() },
           addressIdentityInput,
           name,
@@ -128,7 +126,7 @@ export class CollectionManager extends PropsContractManager {
 
     const { transactionResult } = await waitForResultConstructor();
 
-    if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus") {
+    if (transactionResult?.status === TransactionStatus.success) {
       return new Collection(contract.id.toString(), contract, owner, baseUri);
     } else {
       throw new Error(
@@ -206,20 +204,33 @@ export class CollectionManager extends PropsContractManager {
 
       for (
         let i = 0;
-        i < Math.min(contractBytecode.length, bytecode.length);
+        i <
+        Math.min(
+          contractBytecode.length,
+          Props721CollectionContractFactory.bytecode.length
+        );
         i++
       ) {
-        if (contractBytecode[i] === bytecode[i]) {
+        if (
+          contractBytecode[i] === Props721CollectionContractFactory.bytecode[i]
+        ) {
           similarCount++;
         } else {
           dissimilarCount++;
         }
       }
 
-      dissimilarCount += Math.abs(contractBytecode.length - bytecode.length);
+      dissimilarCount += Math.abs(
+        contractBytecode.length -
+          Props721CollectionContractFactory.bytecode.length
+      );
 
       const similarityPercentage =
-        (similarCount / Math.max(contractBytecode.length, bytecode.length)) *
+        (similarCount /
+          Math.max(
+            contractBytecode.length,
+            Props721CollectionContractFactory.bytecode.length
+          )) *
         100;
 
       if (similarityPercentage >= 99.98) {

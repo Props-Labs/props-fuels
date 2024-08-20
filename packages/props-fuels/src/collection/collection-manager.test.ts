@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Account, AssetId, BN, getMintedAssetId, Provider } from "fuels";
 import { CollectionManager } from "../collection/collection-manager";
 import { setup } from "../utils/setup";
-import { Props721CollectionContractAbi__factory, PropsFeeSplitterContractAbi } from "../sway-api/contracts";
-import { MetadataOutput } from "../sway-api/contracts/Props721CollectionContractAbi";
+import { Props721CollectionContractFactory, PropsFeeSplitterContract } from "../sway-api/contracts";
+import { MetadataOutput } from "../sway-api/contracts/Props721CollectionContract";
 import { Collection } from "../collection/collection";
 import { MintResult } from "../common/types";
 
@@ -11,7 +11,7 @@ describe("CollectionManager", () => {
   let manager: CollectionManager;
   let wallets: Account[];
   let provider: Provider;
-  let feeSplitterContract: PropsFeeSplitterContractAbi;
+  let feeSplitterContract: PropsFeeSplitterContract;
 
   beforeEach(async () => {
     manager = new CollectionManager();

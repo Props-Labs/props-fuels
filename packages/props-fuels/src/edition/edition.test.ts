@@ -2,13 +2,13 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { Account, BN, Provider, getMintedAssetId, toHex } from "fuels";
 import { Edition } from "./edition";
 import { deployProps721EditionContract, setup } from "../utils/setup";
-import { Props721EditionContractAbi } from "../sway-api/contracts";
+import { Props721EditionContract } from "../sway-api/contracts";
 
 describe("Edition", () => {
   let edition: Edition;
   let wallets: Account[];
   let provider: Provider;
-  let contract: Props721EditionContractAbi;
+  let contract: Props721EditionContract;
 
   beforeEach(async () => {
     const {

@@ -1,17 +1,18 @@
-import { Account, Address, BN, BytesLike, DateTime } from "fuels";
+import { Account, Address, BN, BytesLike, DateTime, TransactionStatus } from "fuels";
 import { NFTMetadata, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
 import { defaultEndDate, defaultNetwork, defaultStartDate } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/constants";
-import { Props721EditionContractAbi__factory } from "../sway-api/contracts";
-import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
-import type { MetadataInput } from "../sway-api/contracts/Props721EditionContractAbi";
+import { Props721EditionContractFactory } from "../sway-api/contracts";
+import type { MetadataInput } from "../sway-api/contracts/PropsRegistryContract";
 import { executeGraphQLQuery } from "../core/fuels-api";
 import { Edition } from "./edition";
 import { randomBytes } from "fuels";
 import { encodeMetadataValues } from "../utils/metadata";
 import { PropsContractManager } from "../contract/contract-manager";
-import { PropsRegistryContractAbi__factory } from "../sway-api/contracts";
+import { PropsRegistryContractFactory } from "../sway-api/contracts";
 import { registryContractAddress } from "../common/defaults";
+import { PropsRegistryContract } from "../sway-api";
+import { Vec } from "../sway-api/contracts/common";
 
 /**
  * @class EditionManager
@@ -64,8 +65,7 @@ export class EditionManager extends PropsContractManager {
 
     const salt: BytesLike = randomBytes(32);
     const { waitForResult } =
-      await Props721EditionContractAbi__factory.deployContract(
-        bytecode,
+      await Props721EditionContractFactory.deploy(
         owner,
         {
           configurableConstants,
@@ -102,7 +102,7 @@ export class EditionManager extends PropsContractManager {
       ? DateTime.fromUnixMilliseconds(endDate).toTai64()
       : defaultEndDate;
 
-    const registryContract = PropsRegistryContractAbi__factory.connect(
+    const registryContract = new PropsRegistryContract(
       registryContractAddress,
       owner
     );
@@ -115,7 +115,7 @@ export class EditionManager extends PropsContractManager {
           name,
           symbol,
           Object.keys(metadata),
-          encodeMetadataValues(metadata),
+          encodeMetadataValues(metadata) as Vec<MetadataInput>,
           price ?? 0,
           startDateTai,
           endDateTai
@@ -132,7 +132,7 @@ export class EditionManager extends PropsContractManager {
 
     const { transactionResult } = await waitForResultConstructor();
 
-    if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus") {
+    if (transactionResult?.status === TransactionStatus.success) {
       return new Edition(contract.id.toString(), contract, owner, metadata);
     } else {
       throw new Error(
@@ -206,20 +206,28 @@ export class EditionManager extends PropsContractManager {
 
       for (
         let i = 0;
-        i < Math.min(contractBytecode.length, bytecode.length);
+        i <
+        Math.min(
+          contractBytecode.length,
+          Props721EditionContractFactory.bytecode.length
+        );
         i++
       ) {
-        if (contractBytecode[i] === bytecode[i]) {
+        if (
+          contractBytecode[i] === Props721EditionContractFactory.bytecode[i]
+        ) {
           similarCount++;
         } else {
           dissimilarCount++;
         }
       }
 
-      dissimilarCount += Math.abs(contractBytecode.length - bytecode.length);
+      dissimilarCount += Math.abs(
+        contractBytecode.length - Props721EditionContractFactory.bytecode.length
+      );
 
       const similarityPercentage =
-        (similarCount / Math.max(contractBytecode.length, bytecode.length)) *
+        (similarCount / Math.max(contractBytecode.length, Props721EditionContractFactory.bytecode.length)) *
         100;
 
       if (similarityPercentage >= 99.98) {

@@ -1,7 +1,7 @@
 
 import { NFTMetadata } from "../common/types";
 import { BN } from "fuels";
-import type { MetadataInput } from "../sway-api/contracts/Props721EditionContractAbi";
+import type { MetadataInput } from "../sway-api/contracts/Props721EditionContract";
 
 /**
  * Encodes an NFTMetadata object into an array of values of MetadataInput.

@@ -1,11 +1,11 @@
 import { PropsContract } from './contract';
-import { Props721EditionContractAbi } from '../sway-api/contracts';
+import { Props721EditionContract } from '../sway-api/contracts';
 import { Account } from 'fuels';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 describe('PropsContract', () => {
   let contract: PropsContract;
-  let mockContract: Props721EditionContractAbi;
+  let mockContract: Props721EditionContract;
   let mockAccount: Account;
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('PropsContract', () => {
         merkle_uri: vi.fn().mockReturnThis(),
         get: vi.fn().mockResolvedValue({ value: 'ipfs://mockuri' }),
       },
-    } as unknown as Props721EditionContractAbi;
+    } as unknown as Props721EditionContract;
 
     mockAccount = {
       provider: {
