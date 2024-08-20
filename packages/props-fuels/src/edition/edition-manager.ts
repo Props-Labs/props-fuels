@@ -18,7 +18,6 @@ import { registryContractAddress } from "../common/defaults";
  * @classdesc Manages editions within the Props SDK on the Fuel network.
  */
 export class EditionManager extends PropsContractManager {
-
   /**
    * Creates a new instance of the EditionManager class.
    */
@@ -33,7 +32,8 @@ export class EditionManager extends PropsContractManager {
    * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
    */
   async create(params: EditionCreateOptions): Promise<Edition> {
-    const { name, symbol, metadata, price, startDate, endDate, options } = params;
+    const { name, symbol, metadata, price, startDate, endDate, options } =
+      params;
     // Replace the following with the actual implementation to interact with the Fuel network
     this.emit(this.events.transaction, {
       params: { name, symbol, metadata, options },
@@ -107,20 +107,21 @@ export class EditionManager extends PropsContractManager {
       owner
     );
 
-    const { waitForResult: waitForResultConstructor } = await registryContract.functions
-      .init_edition(
-        { bits: contract.id.toB256() },
-        addressIdentityInput,
-        name,
-        symbol,
-        Object.keys(metadata),
-        encodeMetadataValues(metadata),
-        price ?? 0,
-        startDateTai,
-        endDateTai,
-      )
-      .addContracts([contract])
-      .call();
+    const { waitForResult: waitForResultConstructor } =
+      await registryContract.functions
+        .init_edition(
+          { bits: contract.id.toB256() },
+          addressIdentityInput,
+          name,
+          symbol,
+          Object.keys(metadata),
+          encodeMetadataValues(metadata),
+          price ?? 0,
+          startDateTai,
+          endDateTai
+        )
+        .addContracts([contract])
+        .call();
 
     this.emit(this.events.pending, {
       params: { name, symbol, metadata, options },
@@ -235,14 +236,23 @@ export class EditionManager extends PropsContractManager {
     return editions;
   }
 
-  // /**
-  //  * Gets the details of a specific edition.
-  //  * @param {string} editionId - The ID of the edition to retrieve.
-  //  * @returns {Promise<EditionType>} A promise that resolves to the edition object.
-  //  */
-  // async get(editionId: string): Promise<Edition> {
-  //   // TODO
-  // }
+  /**
+   * Gets the details of a specific edition.
+   * @param {string} editionId - The ID of the edition to retrieve.
+   * @returns {Promise<EditionType>} A promise that resolves to the edition object.
+   */
+  async get(
+    editionId: string,
+    owner: Account
+  ): Promise<Edition> {
+    const edition = await Edition.fromContractIdAndWallet(
+      editionId,
+      owner,
+      false
+    );
+    return edition;
+  }
+
   // /**
   //  * Mints a new token in a specific edition.
   //  * @param {string} editionId - The ID of the edition.

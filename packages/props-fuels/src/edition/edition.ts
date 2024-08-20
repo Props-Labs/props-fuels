@@ -130,7 +130,7 @@ export class Edition extends PropsContract {
    * @param {Account} wallet - The wallet to connect.
    * @returns {Promise<Edition>} A promise that resolves to an Edition instance.
    */
-  static async fromContractIdAndWallet(contractId: string, wallet: Account): Promise<Edition> {
+  static async fromContractIdAndWallet(contractId: string, wallet: Account, loadMetadata: boolean = true): Promise<Edition> {
     const contract = Props721EditionContractAbi__factory.connect(
       contractId,
       wallet
