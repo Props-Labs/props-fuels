@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { Account, BN, Provider, getMintedAssetId } from "fuels";
 import { Collection } from "./collection";
 import { deployProps721CollectionContract, setup } from "../utils/setup";
-import { Props721CollectionContractAbi } from "../sway-api/contracts";
+import { Props721CollectionContract } from "../sway-api/contracts";
 
 describe("Collection", () => {
   let collection: Collection;
   let wallets: Account[];
   let provider: Provider;
-  let contract: Props721CollectionContractAbi;
+  let contract: Props721CollectionContract;
 
   beforeEach(async () => {
     const { wallet1, wallet2, wallet3, wallet4, provider: setupProvider } = await setup();
@@ -16,11 +16,11 @@ describe("Collection", () => {
     provider = setupProvider;
     contract = await deployProps721CollectionContract(wallet1);
     collection = new Collection("collection-id", contract, wallet1, "https://example.com/");
-    console.log("Collection Contract: ", collection);
+    // console.log("Collection Contract: ", collection);
   });
 
   it("should create an collection instance", () => {
-    console.log("Collection: ", collection);
+    // console.log("Collection: ", collection);
     expect(collection).toBeInstanceOf(Collection);
     expect(collection.id).toBe("collection-id");
     expect(collection.baseUri).toBe("https://example.com/");

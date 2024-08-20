@@ -1,24 +1,24 @@
-import { Account, Address, BN, BytesLike, DateTime } from "fuels";
+import { Account, Address, BN, BytesLike, DateTime, TransactionStatus } from "fuels";
 import { NFTMetadata, EditionCreateConfigurationOptions, Network, EditionCreateOptions } from "../common/types";
 import { defaultEndDate, defaultNetwork, defaultStartDate } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721EditionContractConfigurableOptions, supportedProps721EditionContractConfigurableOptionsMapping } from "../common/constants";
-import { Props721EditionContractAbi__factory } from "../sway-api/contracts";
-import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
-import type { MetadataInput } from "../sway-api/contracts/Props721EditionContractAbi";
+import { Props721EditionContractFactory } from "../sway-api/contracts";
+import type { MetadataInput } from "../sway-api/contracts/PropsRegistryContract";
 import { executeGraphQLQuery } from "../core/fuels-api";
 import { Edition } from "./edition";
 import { randomBytes } from "fuels";
 import { encodeMetadataValues } from "../utils/metadata";
 import { PropsContractManager } from "../contract/contract-manager";
-import { PropsRegistryContractAbi__factory } from "../sway-api/contracts";
+import { PropsRegistryContractFactory } from "../sway-api/contracts";
 import { registryContractAddress } from "../common/defaults";
+import { PropsRegistryContract } from "../sway-api";
+import { Vec } from "../sway-api/contracts/common";
 
 /**
  * @class EditionManager
  * @classdesc Manages editions within the Props SDK on the Fuel network.
  */
 export class EditionManager extends PropsContractManager {
-
   /**
    * Creates a new instance of the EditionManager class.
    */
@@ -33,7 +33,8 @@ export class EditionManager extends PropsContractManager {
    * @returns {Promise<string>} A promise that resolves to the ID of the created edition.
    */
   async create(params: EditionCreateOptions): Promise<Edition> {
-    const { name, symbol, metadata, price, startDate, endDate, options } = params;
+    const { name, symbol, metadata, price, startDate, endDate, options } =
+      params;
     // Replace the following with the actual implementation to interact with the Fuel network
     this.emit(this.events.transaction, {
       params: { name, symbol, metadata, options },
@@ -64,8 +65,7 @@ export class EditionManager extends PropsContractManager {
 
     const salt: BytesLike = randomBytes(32);
     const { waitForResult } =
-      await Props721EditionContractAbi__factory.deployContract(
-        bytecode,
+      await Props721EditionContractFactory.deploy(
         owner,
         {
           configurableConstants,
@@ -81,6 +81,9 @@ export class EditionManager extends PropsContractManager {
     });
 
     const { contract } = await waitForResult();
+
+    // console.log("contract: ", contract);
+    // console.log("contract id: ", contract.id.toB256());
 
     const address = Address.fromDynamicInput(owner.address);
     const addressInput = { bits: address.toB256() };
@@ -102,24 +105,26 @@ export class EditionManager extends PropsContractManager {
       ? DateTime.fromUnixMilliseconds(endDate).toTai64()
       : defaultEndDate;
 
-    const registryContract = PropsRegistryContractAbi__factory.connect(
+    const registryContract = new PropsRegistryContract(
       registryContractAddress,
       owner
     );
 
-    const { waitForResult: waitForResultConstructor } = await contract.functions
-      .constructor(
-        addressIdentityInput,
-        name,
-        symbol,
-        Object.keys(metadata),
-        encodeMetadataValues(metadata),
-        price ?? 0,
-        startDateTai,
-        endDateTai,
-      )
-      .addContracts([registryContract])
-      .call();
+    const { waitForResult: waitForResultConstructor } =
+      await registryContract.functions
+        .init_edition(
+          { bits: contract.id.toB256() },
+          addressIdentityInput,
+          name,
+          symbol,
+          Object.keys(metadata),
+          encodeMetadataValues(metadata) as Vec<MetadataInput>,
+          price ?? 0,
+          startDateTai,
+          endDateTai
+        )
+        .addContracts([contract])
+        .call();
 
     this.emit(this.events.pending, {
       params: { name, symbol, metadata, options },
@@ -130,7 +135,7 @@ export class EditionManager extends PropsContractManager {
 
     const { transactionResult } = await waitForResultConstructor();
 
-    if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus") {
+    if (transactionResult?.status === TransactionStatus.success) {
       return new Edition(contract.id.toString(), contract, owner, metadata);
     } else {
       throw new Error(
@@ -199,26 +204,27 @@ export class EditionManager extends PropsContractManager {
       );
 
       const contractBytecode = bytecodeData.data.contract.bytecode;
-      let similarCount = 0;
-      let dissimilarCount = 0;
 
-      for (
-        let i = 0;
-        i < Math.min(contractBytecode.length, bytecode.length);
-        i++
-      ) {
-        if (contractBytecode[i] === bytecode[i]) {
+      // Convert contractBytecode hex string to Uint8Array
+      const contractBytecodeArray = new Uint8Array(
+        contractBytecode.slice(2).match(/.{1,2}/g).map((byte: string) => parseInt(byte, 16))
+      );
+
+      let similarCount = 0;
+      let totalBytes = Math.max(
+        contractBytecodeArray.length,
+        Props721EditionContractFactory.bytecode.length
+      );
+
+      for (let i = 0; i < totalBytes; i++) {
+        if (
+          contractBytecodeArray[i] === Props721EditionContractFactory.bytecode[i]
+        ) {
           similarCount++;
-        } else {
-          dissimilarCount++;
         }
       }
 
-      dissimilarCount += Math.abs(contractBytecode.length - bytecode.length);
-
-      const similarityPercentage =
-        (similarCount / Math.max(contractBytecode.length, bytecode.length)) *
-        100;
+      const similarityPercentage = (similarCount / totalBytes) * 100;
 
       if (similarityPercentage >= 99.98) {
         matchingContracts.push(contractId);
@@ -234,14 +240,23 @@ export class EditionManager extends PropsContractManager {
     return editions;
   }
 
-  // /**
-  //  * Gets the details of a specific edition.
-  //  * @param {string} editionId - The ID of the edition to retrieve.
-  //  * @returns {Promise<EditionType>} A promise that resolves to the edition object.
-  //  */
-  // async get(editionId: string): Promise<Edition> {
-  //   // TODO
-  // }
+  /**
+   * Gets the details of a specific edition.
+   * @param {string} editionId - The ID of the edition to retrieve.
+   * @returns {Promise<EditionType>} A promise that resolves to the edition object.
+   */
+  async get(
+    editionId: string,
+    owner: Account
+  ): Promise<Edition> {
+    const edition = await Edition.fromContractIdAndWallet(
+      editionId,
+      owner,
+      false
+    );
+    return edition;
+  }
+
   // /**
   //  * Mints a new token in a specific edition.
   //  * @param {string} editionId - The ID of the edition.

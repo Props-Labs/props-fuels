@@ -1,9 +1,10 @@
-import { Account, Address, BN } from "fuels";
-import { Props721EditionContractAbi, Props721EditionContractAbi__factory } from "../sway-api/contracts";
+import { Account, Address, BN, TransactionStatus } from "fuels";
+import { Props721EditionContract, Props721EditionContractFactory, PropsFeeSplitterContract } from "../sway-api/contracts";
 import { MintResult, NFTMetadata } from "../common/types";
 import { decode } from "punycode";
 import { decodeContractMetadata } from "../utils/metadata";
 import { PropsContract } from "../contract";
+import { feeSplitterContractAddress } from "../common/defaults";
 
 /**
  * Represents an edition within the Props SDK.
@@ -18,13 +19,13 @@ export class Edition extends PropsContract {
   /**
    * Creates a new instance of the Edition class.
    * @param {string} id - The ID of the edition.
-   * @param {Props721EditionContractAbi} [contract] - Optional contract associated with the edition.
+   * @param {Props721EditionContract} [contract] - Optional contract associated with the edition.
    * @param {Account} [account] - Optional account associated with the edition.
    * @param {NFTMetadata} metadata - Metadata associated with the edition.
    */
   constructor(
     id: string,
-    contract?: Props721EditionContractAbi,
+    contract?: Props721EditionContract,
     account?: Account,
     metadata?: NFTMetadata
   ) {
@@ -56,12 +57,20 @@ export class Edition extends PropsContract {
       throw new Error("Contract or account is not connected");
     }
 
+    const feeSplitterContract = new PropsFeeSplitterContract(
+      feeSplitterContractAddress,
+      this.account
+    );
+
     try {
       const baseAssetId = this.account.provider.getBaseAssetId();
       const { value: priceValue } = await this.contract.functions.price().get();
+      console.log("Price: ", priceValue);
       const { value: fees } = await this.contract.functions
         .fees()
+        .addContracts([feeSplitterContract])
         .get();
+      console.log("Fees: ", fees);
       if (!priceValue) {
         throw new Error("Price not found");
       }
@@ -109,14 +118,15 @@ export class Edition extends PropsContract {
           numLeaves,
           maxAmount,
         )
+        .addContracts([feeSplitterContract])
         .callParams({
           forward: [price, baseAssetId],
           gasLimit: 1_000_000,
         })
         .call();
       const { transactionResult } = await waitForResult();
-      if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus")
-        return { id: transactionResult.gqlTransaction.id, transactionResult };
+      if (transactionResult?.status === TransactionStatus.success)
+        return { id: transactionResult.id, transactionResult };
       else throw new Error("Transaction failed");
     } catch (error) {
       throw error;
@@ -130,8 +140,8 @@ export class Edition extends PropsContract {
    * @param {Account} wallet - The wallet to connect.
    * @returns {Promise<Edition>} A promise that resolves to an Edition instance.
    */
-  static async fromContractIdAndWallet(contractId: string, wallet: Account): Promise<Edition> {
-    const contract = Props721EditionContractAbi__factory.connect(
+  static async fromContractIdAndWallet(contractId: string, wallet: Account, loadMetadata: boolean = true): Promise<Edition> {
+    const contract = new Props721EditionContract(
       contractId,
       wallet
     );

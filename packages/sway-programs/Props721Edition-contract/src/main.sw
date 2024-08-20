@@ -47,8 +47,7 @@ use std::block::timestamp;
 
 use libraries::*;
 
-const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
-const REGISTRY_CONTRACT_ID = 0x9b48042cdc01cf86a7d9d5f47b3ea43898c7d7a8282eede5f2f0c219d2e7c93f;
+const FEE_CONTRACT_ID = 0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562;
 
 storage {
     /// The total number of unique assets minted by this contract.
@@ -1327,17 +1326,5 @@ impl Props721Edition for Contract {
         storage.price.write(price);
         storage.start_date.write(start_date);
         storage.end_date.write(end_date);
-
-        let registry = abi(PropsRegistry, REGISTRY_CONTRACT_ID);
-        registry.register(ContractId::this(), owner);
-
-        log(ContractCreatedEvent{
-            owner,
-            name,
-            symbol,
-            price,
-            start: start_date,
-            end: end_date
-        });
     }
 }

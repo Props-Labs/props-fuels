@@ -1,15 +1,15 @@
-import { Account, Address, DateTime, BytesLike } from "fuels";
+import { Account, Address, DateTime, BytesLike, TransactionStatus } from "fuels";
 import { CollectionCreateConfigurationOptions, Network, CollectionCreateOptions } from "../common/types";
 import { defaultEndDate, defaultNetwork, defaultStartDate, registryContractAddress } from "../common/defaults";
 import { configurableOptionsTypeMapping, supportedProps721CollectionContractConfigurableOptions, supportedProps721CollectionContractConfigurableOptionsMapping } from "../common/constants";
-import { Props721CollectionContractAbi__factory } from "../sway-api/contracts";
-import bytecode from "../sway-api/contracts/Props721CollectionContractAbi.hex";
+import {
+  Props721CollectionContractFactory,
+  PropsRegistryContract,
+} from "../sway-api/contracts";
 import { executeGraphQLQuery } from "../core/fuels-api";
 import { Collection } from "../collection/collection";
 import { randomBytes } from "fuels";
-import { encodeMetadataValues } from "../utils/metadata";
 import { PropsContractManager } from "../contract/contract-manager";
-import { PropsRegistryContractAbi__factory } from "../sway-api/contracts";
 
 /**
  * @class CollectionManager
@@ -61,8 +61,7 @@ export class CollectionManager extends PropsContractManager {
 
     const salt: BytesLike = randomBytes(32);
     const { waitForResult } =
-      await Props721CollectionContractAbi__factory.deployContract(
-        bytecode,
+      await Props721CollectionContractFactory.deploy(
         owner,
         {
           configurableConstants,
@@ -97,23 +96,24 @@ export class CollectionManager extends PropsContractManager {
       ? DateTime.fromUnixMilliseconds(endDate).toTai64()
       : defaultEndDate;
 
-    const registryContract = PropsRegistryContractAbi__factory.connect(
+    const registryContract = new PropsRegistryContract(
       registryContractAddress,
       owner
     );
 
-    const { waitForResult: waitForResultConstructor } = await contract.functions
-      .constructor(
-        addressIdentityInput,
-        name,
-        symbol,
-        baseUri,
-        price ?? 0,
-        startDateTai,
-        endDateTai
-      )
-      .addContracts([registryContract])
-      .call();
+    const { waitForResult: waitForResultConstructor } =
+      await registryContract.functions.init_collection(
+          { bits: contract.id.toB256() },
+          addressIdentityInput,
+          name,
+          symbol,
+          baseUri,
+          price ?? 0,
+          startDateTai,
+          endDateTai
+        )
+        .addContracts([contract])
+        .call();
 
     this.emit(this.events.pending, {
       params: { name, symbol, baseUri, options },
@@ -124,7 +124,7 @@ export class CollectionManager extends PropsContractManager {
 
     const { transactionResult } = await waitForResultConstructor();
 
-    if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus") {
+    if (transactionResult?.status === TransactionStatus.success) {
       return new Collection(contract.id.toString(), contract, owner, baseUri);
     } else {
       throw new Error(
@@ -197,26 +197,27 @@ export class CollectionManager extends PropsContractManager {
       );
 
       const contractBytecode = bytecodeData.data.contract.bytecode;
-      let similarCount = 0;
-      let dissimilarCount = 0;
 
-      for (
-        let i = 0;
-        i < Math.min(contractBytecode.length, bytecode.length);
-        i++
-      ) {
-        if (contractBytecode[i] === bytecode[i]) {
+      // Convert contractBytecode hex string to Uint8Array
+      const contractBytecodeArray = new Uint8Array(
+        contractBytecode.slice(2).match(/.{1,2}/g).map((byte: string) => parseInt(byte, 16))
+      );
+
+      let similarCount = 0;
+      let totalBytes = Math.max(
+        contractBytecodeArray.length,
+        Props721CollectionContractFactory.bytecode.length
+      );
+
+      for (let i = 0; i < totalBytes; i++) {
+        if (
+          contractBytecodeArray[i] === Props721CollectionContractFactory.bytecode[i]
+        ) {
           similarCount++;
-        } else {
-          dissimilarCount++;
         }
       }
 
-      dissimilarCount += Math.abs(contractBytecode.length - bytecode.length);
-
-      const similarityPercentage =
-        (similarCount / Math.max(contractBytecode.length, bytecode.length)) *
-        100;
+      const similarityPercentage = (similarCount / totalBytes) * 100;
 
       if (similarityPercentage >= 99.98) {
         matchingContracts.push(contractId);

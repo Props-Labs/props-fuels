@@ -1,5 +1,5 @@
-import { Account, Address } from "fuels";
-import { Props721CollectionContractAbi, Props721EditionContractAbi } from "../sway-api";
+import { Account, Address, TransactionStatus } from "fuels";
+import { Props721CollectionContract, Props721EditionContract } from "../sway-api";
 import { Allowlist, AllowlistEntry, AllowListInput, MintResult, NFTMetadata } from "../common/types";
 import { PropsUtilities } from "../utils";
 
@@ -15,7 +15,7 @@ export class PropsContract {
   /**
    * Optional contract associated with the contract.
    */
-  public contract?: Props721EditionContractAbi | Props721CollectionContractAbi;
+  public contract?: Props721EditionContract | Props721CollectionContract;
 
   /**
    * Optional account associated with the contract.
@@ -30,7 +30,7 @@ export class PropsContract {
    */
   constructor(
     id: string,
-    contract?: Props721EditionContractAbi | Props721CollectionContractAbi,
+    contract?: Props721EditionContract | Props721CollectionContract,
     account?: Account
   ) {
     this.id = id;
@@ -193,8 +193,8 @@ export class PropsContract {
         .call();
 
       const { transactionResult } = await waitForResult();
-      if (transactionResult?.gqlTransaction?.status?.type === "SuccessStatus")
-        return { id: transactionResult.gqlTransaction.id, transactionResult };
+      if (transactionResult?.status === TransactionStatus.success)
+        return { id: transactionResult.id, transactionResult };
       else throw new Error("Airdrop transaction failed");
     } catch (error) {
       throw error;

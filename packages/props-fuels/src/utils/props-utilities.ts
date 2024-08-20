@@ -46,7 +46,7 @@ export class PropsUtilities {
       return hash;
     });
 
-    console.log("Leaves:", leaves);
+    // console.log("Leaves:", leaves);
 
     // Construct the Merkle tree
     const tree = constructTree(leaves);

@@ -1,10 +1,7 @@
 import { WalletUnlocked, Provider, BytesLike, Address, BN, Account, randomBytes, BigNumberish } from "fuels";
-import { launchTestNode, AssetId, TestMessage } from "fuels/test-utils";
-import { Props721EditionContractAbi__factory, PropsFeeSplitterContractAbi, PropsFeeSplitterContractAbi__factory, Props721CollectionContractAbi__factory, Props721CollectionContractAbi, PropsRegistryContractAbi__factory, PropsRegistryContractAbi } from "../sway-api/contracts";
-import { Props721EditionContractAbi } from "../sway-api/contracts/Props721EditionContractAbi";
-import octaneFeeSplitterBytecode from "../sway-api/contracts/PropsFeeSplitterContractAbi.hex";
-import propsRegistryBytecode from "../sway-api/contracts/PropsRegistryContractAbi.hex";
-import bytecode from "../sway-api/contracts/Props721EditionContractAbi.hex";
+import { launchTestNode, TestAssetId, TestMessage } from "fuels/test-utils";
+import { Props721EditionContractFactory, PropsFeeSplitterContract, PropsFeeSplitterContractFactory, Props721CollectionContractFactory, Props721CollectionContract, PropsRegistryContractFactory, PropsRegistryContract } from "../sway-api/contracts";
+import { Props721EditionContract } from "../sway-api/contracts/Props721EditionContract";
 import { defaultEndDate, defaultStartDate, registryContractAddress } from "../common/defaults";
 
 export async function setup(): Promise<
@@ -14,10 +11,10 @@ export async function setup(): Promise<
         wallet3: WalletUnlocked;
         wallet4: WalletUnlocked;
         provider: Provider;
-        feeSplitterContract: PropsFeeSplitterContractAbi;
+        feeSplitterContract: PropsFeeSplitterContract;
     }
 > {
-  const assets = AssetId.random(2);
+  const assets = TestAssetId.random(2);
   const message = new TestMessage({ amount: 1000 });
 
   const launched = await launchTestNode({
@@ -28,10 +25,9 @@ export async function setup(): Promise<
       amountPerCoin: 1_000_000, // Amount per coin
       messages: [message], // Initial messages
     },
-    nodeOptions: {
-      port: "4000",
+    providerOptions: {
+      resourceCacheTTL: 50000,
     },
-    launchNodeServerPort: "4000",
   });
 
   // Destructure the launched object to get wallets and contracts
@@ -46,8 +42,7 @@ export async function setup(): Promise<
   const addressIdentityInput = { Address: addressInput };
 
   const { waitForResult } =
-    await PropsFeeSplitterContractAbi__factory.deployContract(
-      octaneFeeSplitterBytecode,
+    await PropsFeeSplitterContractFactory.deploy(
       wallet1,
       {
         salt: "0x0000000000000000000000000000000000000000000000000000000000000000" as BytesLike,
@@ -58,12 +53,12 @@ export async function setup(): Promise<
     await waitForResult();
 
   // Initialize the Fee Splitter Contract
-  // const { waitForResult: waitForFeeSplitterConstructorResult } =
-  //   await feeSplitterContract.functions
-  //     .constructor(addressIdentityInput)
-  //     .call();
+  const { waitForResult: waitForFeeSplitterConstructorResult } =
+    await feeSplitterContract.functions
+      .constructor(addressIdentityInput)
+      .call();
 
-  // await waitForFeeSplitterConstructorResult();
+  await waitForFeeSplitterConstructorResult();
 
   // Log hash of deployed fee splitter contract
   const feeSplitterContractId = feeSplitterContract.id;
@@ -74,8 +69,7 @@ export async function setup(): Promise<
 
   // Deploy Props Registry Contract
   const { waitForResult: waitForPropsRegistryResult } =
-    await PropsRegistryContractAbi__factory.deployContract(
-      propsRegistryBytecode,
+    await PropsRegistryContractFactory.deploy(
       wallet1,
       {
         salt: "0x0000000000000000000000000000000000000000000000000000000000000000" as BytesLike,
@@ -103,10 +97,9 @@ export async function setup(): Promise<
   return { wallet1, wallet2, wallet3, wallet4, provider, feeSplitterContract };
 }
 
-export async function deployProps721EditionContract(wallet1:Account): Promise<Props721EditionContractAbi> {
+export async function deployProps721EditionContract(wallet1:Account): Promise<Props721EditionContract> {
     const salt: BytesLike = randomBytes(32);
-    const {waitForResult} = await Props721EditionContractAbi__factory.deployContract(
-      bytecode,
+    const {waitForResult} = await Props721EditionContractFactory.deploy(
       wallet1,
       {
         configurableConstants: {
@@ -122,7 +115,7 @@ export async function deployProps721EditionContract(wallet1:Account): Promise<Pr
     const addressInput = { bits: address.toB256() };
     const addressIdentityInput = { Address: addressInput };
 
-    const registryContract = PropsRegistryContractAbi__factory.connect(
+    const registryContract = new PropsRegistryContract(
       registryContractAddress,
       wallet1
     );
@@ -149,10 +142,9 @@ export async function deployProps721EditionContract(wallet1:Account): Promise<Pr
 
     return contract;
 }
-export async function deployProps721CollectionContract(wallet1: Account): Promise<Props721CollectionContractAbi> {
+export async function deployProps721CollectionContract(wallet1: Account): Promise<Props721CollectionContract> {
   const salt: BytesLike = randomBytes(32);
-  const { waitForResult } = await Props721CollectionContractAbi__factory.deployContract(
-    bytecode,
+  const { waitForResult } = await Props721CollectionContractFactory.deploy(
     wallet1,
     {
       configurableConstants: {
@@ -171,7 +163,7 @@ export async function deployProps721CollectionContract(wallet1: Account): Promis
   const addressInput = { bits: address.toB256() };
   const addressIdentityInput = { Address: addressInput };
 
-  const registryContract = PropsRegistryContractAbi__factory.connect(
+  const registryContract = new PropsRegistryContract(
     registryContractAddress,
     wallet1
   );

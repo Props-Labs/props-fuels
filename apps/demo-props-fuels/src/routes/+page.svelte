@@ -20,7 +20,6 @@
     let showCreateCollection = false;
     
     onMount(() => {
-        createWalletStore();
         console.log("We're here");
         propsClient = new PropsSDK({
             apiKey: 'YOUR_API_KEY',

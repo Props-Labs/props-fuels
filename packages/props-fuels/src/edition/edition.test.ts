@@ -2,13 +2,13 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { Account, BN, Provider, getMintedAssetId, toHex } from "fuels";
 import { Edition } from "./edition";
 import { deployProps721EditionContract, setup } from "../utils/setup";
-import { Props721EditionContractAbi } from "../sway-api/contracts";
+import { Props721EditionContract } from "../sway-api/contracts";
 
 describe("Edition", () => {
   let edition: Edition;
   let wallets: Account[];
   let provider: Provider;
-  let contract: Props721EditionContractAbi;
+  let contract: Props721EditionContract;
 
   beforeEach(async () => {
     const {
@@ -26,7 +26,7 @@ describe("Edition", () => {
       description: "A test edition",
       image: "test_image_url",
     });
-    vi.resetAllMocks();
+    // vi.resetAllMocks();
   });
 
   it("should create an edition instance", () => {
@@ -41,6 +41,7 @@ describe("Edition", () => {
   });
 
   it("should mint tokens", async () => {
+    console.log(edition.contract);
     expect(edition.contract).toBeDefined();
     await edition.mint(wallets[2].address.toB256(), 1);
 

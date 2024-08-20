@@ -54,6 +54,7 @@
         });
 
         console.log("Creating collection with baseUri: ", baseUri);
+        console.log("Owner: ", $wallet);
 
         propsClient.collections.create({
             name,
