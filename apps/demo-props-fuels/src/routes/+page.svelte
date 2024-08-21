@@ -7,6 +7,8 @@
 	import { Loader2 } from 'lucide-svelte';
 	import CreateModal from '$lib/components/CreateModal.svelte';
 	import CreateCollectionModal from '$lib/components/CreateCollectionModal.svelte';
+	import { success } from '$lib/utils/notifications';
+	import { airdropping, minting } from '$lib/utils/store';
 
     let editions:Edition[] = [];
     let collections:Collection[] = [];
@@ -58,21 +60,29 @@
 
     const mint = (edition: Edition) => {
         console.log("Minting: ", edition);
+        $minting = true;
         if(!$wallet || !$wallet.address) return;
         edition.mint($wallet?.address.toString(), 1).then((result) => {
             console.log("Minted: ", result);
+            success("Minted 1 successfully");
+            $minting = false;
         }).catch(error => {
             console.error("Error minting: ", error);
+            $minting = false;
         });
     }
 
     const airdrop = (edition: Edition) => {
         console.log("Airdropping: ", edition);
+        $airdropping = true;
         if(!$wallet || !$wallet.address) return;
         edition.airdrop($wallet?.address.toString(), 1).then((result) => {
             console.log("Airdropped: ", result);
+            success("Airdropped 1 successfully");
+            $airdropping = false;
         }).catch(error => {
             console.error("Error airdropping: ", error);
+            $airdropping = false;
         });
     }
 
@@ -170,5 +180,5 @@
   </main>
 </div>
 
-<CreateModal open={showCreate} on:close={() => showCreate = false} on:created={(e) => editions = [e.detail,...editions]}/>
-<CreateCollectionModal open={showCreateCollection} on:close={() => showCreateCollection = false} on:created={(e) => collections = [e.detail,...collections]}/>
+<CreateModal open={showCreate} on:close={() => showCreate = false} on:created={(e) => {editions = [e.detail,...editions]; success("Edition created successfully"); }}/>
+<CreateCollectionModal open={showCreateCollection} on:close={() => showCreateCollection = false} on:created={(e) => {collections = [e.detail,...collections]; success("Collection created successfully"); }}/>

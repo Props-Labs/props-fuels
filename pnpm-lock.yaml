@@ -115,6 +115,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^5.45.0
         version: 5.62.0(eslint@8.57.0)(typescript@4.9.5)
+      '@zerodevx/svelte-toast':
+        specifier: ^0.9.5
+        version: 0.9.5(svelte@3.59.2)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.41)
@@ -3116,6 +3119,11 @@ packages:
 
   '@web3modal/wallet@4.1.11':
     resolution: {integrity: sha512-6eJSpNcrBxufJFEQu9+ZOMUZxPqa8438RvfYKCU9nLXwoBtweo6ecpQw2yhXDlrfG+uJZhFabtPxROabn2M8Kg==}
+
+  '@zerodevx/svelte-toast@0.9.5':
+    resolution: {integrity: sha512-JLeB/oRdJfT+dz9A5bgd3Z7TuQnBQbeUtXrGIrNWMGqWbabpepBF2KxtWVhL2qtxpRqhae2f6NAOzH7xs4jUSw==}
+    peerDependencies:
+      svelte: ^3.57.0 || ^4.0.0
 
   abitype@0.9.8:
     resolution: {integrity: sha512-puLifILdm+8sjyss4S+fsUN09obiT1g2YW6CtcQF+QDzxR0euzgEB29MZujC6zMk2a6SVmtttq1fc6+YFA7WYQ==}
@@ -11500,6 +11508,10 @@ snapshots:
     dependencies:
       '@web3modal/polyfills': 4.1.11
       zod: 3.22.4
+
+  '@zerodevx/svelte-toast@0.9.5(svelte@3.59.2)':
+    dependencies:
+      svelte: 3.59.2
 
   abitype@0.9.8(typescript@4.9.5)(zod@3.22.4):
     optionalDependencies:

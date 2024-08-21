@@ -1,6 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
 	import { Collection, type Edition, type NFTMetadata } from "@props/fuels";
+	import { airdropping, minting } from "$lib/utils/store";
+	import { Loader2 } from "lucide-svelte";
   export let item:Edition|Collection;
   export let type: 'edition'|'collection' = 'edition';
   const dispatch = createEventDispatcher();
@@ -61,7 +63,19 @@
     <small class="w-[200px] text-xs">ID: {item.id}</small>
   </div>
   <div class="card-actions justify-end p-4">
-    <button class="btn btn-primary btn-lg" on:click={() => dispatch('mint', item)}>Mint</button>
-    <button class="btn btn-primary btn-lg" on:click={() => dispatch('airdrop', item)}>Airdrop To Self</button>
+    <button class="btn btn-primary btn-lg" on:click={() => dispatch('mint', item)}>
+      {#if $minting}
+        <span class="animate-spin"><Loader2/></span>
+      {:else}
+        Mint
+      {/if}
+    </button>
+    <button class="btn btn-primary btn-lg" on:click={() => dispatch('airdrop', item)}>
+      {#if $airdropping}
+        <span class="animate-spin"><Loader2/></span>
+      {:else}
+        Airdrop To Self
+      {/if}
+    </button>
   </div>
 </div>

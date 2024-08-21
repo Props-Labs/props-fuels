@@ -19,6 +19,7 @@
 		"@sveltejs/kit": "^1.5.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
+		"@zerodevx/svelte-toast": "^0.9.5",
 		"autoprefixer": "^10.4.20",
 		"daisyui": "^4.12.10",
 		"eslint": "^8.28.0",
