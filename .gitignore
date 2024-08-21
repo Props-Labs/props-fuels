@@ -48,8 +48,6 @@ build/
 # SvelteKit
 .svelte-kit/
 .vite/
-vite.config.js
-vite.config.ts
 
 # Vite
 .vite/
