@@ -138,7 +138,7 @@ export class Edition extends PropsContract {
         })
         .call();
 
-      this.emit(PropsEvents.getInstance().transaction, {
+      this.emit(PropsEvents.getInstance().pending, {
         message: "Waiting for transaction to be clear...",
         transactionIndex: 1,
         transactionCount: 1,
