@@ -1,5 +1,5 @@
 {
-  "name": "@props/fuels",
+  "name": "@props-labs/fuels",
   "version": "0.1.0",
   "description": "Props Minting SDK for managing NFTs on the Fuel network",
   "author": "Props Labs, Calvin Hoenes <hello@props.app> (https://www.props.app)",
@@ -34,6 +34,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Props-Labs/octane.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "license": "MIT"
 }

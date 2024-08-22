@@ -1,8 +1,8 @@
-[**@props/fuels**](../README.md) • **Docs**
+[**@props-labs/fuels**](../README.md) • **Docs**
 
 ***
 
-[@props/fuels](../globals.md) / PropsFeeSplitterContractAbi\_\_factory
+[@props-labs/fuels](../globals.md) / PropsFeeSplitterContractAbi\_\_factory
 
 # Variable: PropsFeeSplitterContractAbi\_\_factory
 

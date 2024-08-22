@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte'
-    import { type Edition, type Collection, PropsSDK } from '@props/fuels'
+    import { type Edition, type Collection, PropsSDK } from '@props-labs/fuels'
     import { account, connect, connected, createWalletStore, wallet, loading as loadingWallet } from 'svelte-fuels';
 	import List from '$lib/components/List.svelte';
 	import Grid from '$lib/components/Grid.svelte';
@@ -39,6 +39,11 @@
             editions = result;
             editionsLoaded = true;
             console.log("Editions: ", editions);
+            editions[0].contract?.functions.price().get().then((result) => {
+                console.log("Price: ", result);
+            }).catch(error => {
+                console.error("Error getting price: ", error);
+            });
         }).catch(error => {
             console.error("Error listing editions: ", error);
         });

@@ -14,7 +14,7 @@ Use the `create` method to create a new edition. You need to provide the name of
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Edition } from '@props/fuels';
+import { PropsSDK, Edition } from '@props-labs/fuels';
 
 const wallet = new Wallet('private_key');
 
@@ -45,7 +45,7 @@ The `builderRevenueShareAddress` is the address that will receive the builder re
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Edition } from '@props/fuels';
+import { PropsSDK, Edition } from '@props-labs/fuels';
 
 const wallet = new Wallet('private_key');
 
@@ -78,7 +78,7 @@ The example below demonstrates how to create an edition with start and end dates
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Edition } from '@props/fuels';
+import { PropsSDK, Edition } from '@props-labs/fuels';
 
 const wallet = new Wallet('private_key');
 
@@ -113,7 +113,7 @@ To mint tokens, you need to use the `mint` method of the `Edition` class. Below 
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Edition } from '@props/fuels';
+import { PropsSDK, Edition } from '@props-labs/fuels';
 
 const editionId = '0x1234567890123456789012345678901234567890' // Edition ID aka Contract ID
 
@@ -182,7 +182,7 @@ The `Editions` class emits events that you can listen to. Below is a list of eve
 ### Listening for Events
 
 ```javascript
-import { PropsSDK, Editions } from '@props/fuels';
+import { PropsSDK, Editions } from '@props-labs/fuels';
 
 const propsClient = new PropsSDK({
   network: 'testnet',

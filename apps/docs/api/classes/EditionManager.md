@@ -1,8 +1,8 @@
-[**@props/fuels**](../README.md) • **Docs**
+[**@props-labs/fuels**](../README.md) • **Docs**
 
 ***
 
-[@props/fuels](../globals.md) / EditionManager
+[@props-labs/fuels](../globals.md) / EditionManager
 
 # Class: EditionManager
 

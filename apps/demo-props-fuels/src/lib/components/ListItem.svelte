@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Edition } from "@props/fuels";
+	import type { Edition } from "@props-labs/fuels";
 
     export let item:Edition;
 </script>

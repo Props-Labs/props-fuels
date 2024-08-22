@@ -2,7 +2,7 @@
     import { createEventDispatcher, onMount } from 'svelte';
     import { Loader2, Plus } from 'lucide-svelte';
 	import { wallet, connected, connect } from 'svelte-fuels';
-	import { PropsSDK, Edition } from '@props/fuels';
+	import { PropsSDK, Edition } from '@props-labs/fuels';
     const dispatch = createEventDispatcher();
 
     let propsClient:PropsSDK|null;

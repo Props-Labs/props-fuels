@@ -1,8 +1,8 @@
-[**@props/fuels**](../README.md) • **Docs**
+[**@props-labs/fuels**](../README.md) • **Docs**
 
 ***
 
-[@props/fuels](../globals.md) / PropsConfigurationOptions
+[@props-labs/fuels](../globals.md) / PropsConfigurationOptions
 
 # Type Alias: PropsConfigurationOptions
 

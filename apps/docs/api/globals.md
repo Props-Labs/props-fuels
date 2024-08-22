@@ -1,8 +1,8 @@
-[**@props/fuels**](README.md) • **Docs**
+[**@props-labs/fuels**](README.md) • **Docs**
 
 ***
 
-# @props/fuels
+# @props-labs/fuels
 
 ## Classes
 

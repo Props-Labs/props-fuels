@@ -39,7 +39,7 @@
 	},
 	"dependencies": {
 		"@beyonk/svelte-datepicker": "^13.0.4",
-		"@props/fuels": "workspace:*",
+		"@props-labs/fuels": "workspace:*",
 		"dayjs": "^1.11.12",
 		"lodash": "^4.17.21",
 		"lucide-svelte": "^0.424.0",

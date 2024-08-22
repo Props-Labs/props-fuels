@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
 	import GridItem from "./GridItem.svelte";
-	import type { Edition } from '@props/fuels';
+	import type { Edition } from '@props-labs/fuels';
 
     export let items: Array<Edition | Collection>;
     export let type: 'collection' | 'edition' = 'edition';

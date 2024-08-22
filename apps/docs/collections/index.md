@@ -14,7 +14,7 @@ Use the `create` method to create a new collection. You need to provide the name
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Collection } from '@props/fuels';
+import { PropsSDK, Collection } from '@props-labs/fuels';
 
 const wallet = new Wallet('private_key');
 
@@ -41,7 +41,7 @@ The `builderRevenueShareAddress` is the address that will receive the builder re
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Collection } from '@props/fuels';
+import { PropsSDK, Collection } from '@props-labs/fuels';
 
 const wallet = new Wallet('private_key');
 
@@ -70,7 +70,7 @@ The example below demonstrates how to create a collection with start and end dat
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Collection } from '@props/fuels';
+import { PropsSDK, Collection } from '@props-labs/fuels';
 
 const wallet = new Wallet('private_key');
 
@@ -100,7 +100,7 @@ To mint tokens, you need to use the `mint` method of the `Collection` class. Bel
 
 ```javascript
 import { Wallet } from 'fuels';
-import { PropsSDK, Collection } from '@props/fuels';
+import { PropsSDK, Collection } from '@props-labs/fuels';
 
 const collectionId = '0x1234567890123456789012345678901234567890' // Collection ID aka Contract ID
 
@@ -169,7 +169,7 @@ The `Collections` class emits events that you can listen to. Below is a list of 
 ### Listening for Events
 
 ```javascript
-import { PropsSDK, Collections } from '@props/fuels';
+import { PropsSDK, Collections } from '@props-labs/fuels';
 
 const propsClient = new PropsSDK({
   network: 'testnet',

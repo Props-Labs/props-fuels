@@ -1,8 +1,8 @@
-[**@props/fuels**](../README.md) • **Docs**
+[**@props-labs/fuels**](../README.md) • **Docs**
 
 ***
 
-[@props/fuels](../globals.md) / EditionCreateConfigurationOptions
+[@props-labs/fuels](../globals.md) / EditionCreateConfigurationOptions
 
 # Type Alias: EditionCreateConfigurationOptions
 

@@ -1,4 +1,4 @@
-**@props/fuels** • [**Docs**](globals.md)
+**@props-labs/fuels** • [**Docs**](globals.md)
 
 ***
 
@@ -19,15 +19,15 @@ For detailed documentation and API reference, please visit our comprehensive doc
 To install the SDK, run:
 
 ```bash
-npm install @props/fuels
+npm install @props-labs/fuels
 ```
 
 ```bash
-pnpm install @props/fuels
+pnpm install @props-labs/fuels
 ```
 
 ```bash
-yarn add @props/fuels
+yarn add @props-labs/fuels
 ```
 
 ## Usage
@@ -35,7 +35,7 @@ yarn add @props/fuels
 To use the SDK, you must first create an instance of the `PropsSDK` class:
 
 ```javascript
-import { PropsSDK } from '@props/fuels';
+import { PropsSDK } from '@props-labs/fuels';
 import { Provider, Wallet } from 'fuels';
 
 const provider = new Provider('https://testnet.fuel.network');

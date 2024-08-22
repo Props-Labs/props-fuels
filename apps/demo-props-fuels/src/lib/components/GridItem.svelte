@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
-	import { Collection, type Edition, type NFTMetadata } from "@props/fuels";
+	import { Collection, type Edition, type NFTMetadata } from "@props-labs/fuels";
 	import { airdropping, minting } from "$lib/utils/store";
 	import { Loader2 } from "lucide-svelte";
   export let item:Edition|Collection;
