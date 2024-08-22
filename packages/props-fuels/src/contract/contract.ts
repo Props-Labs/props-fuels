@@ -2,11 +2,12 @@ import { Account, Address, TransactionStatus } from "fuels";
 import { Props721CollectionContract, Props721EditionContract } from "../sway-api";
 import { Allowlist, AllowlistEntry, AllowListInput, MintResult, NFTMetadata } from "../common/types";
 import { PropsUtilities } from "../utils";
+import { PropsEventEmitter } from "../core/events";
 
 /**
  * Class representing a Props Contract.
  */
-export class PropsContract {
+export class PropsContract extends PropsEventEmitter {
   /**
    * The ID of the contract.
    */
@@ -33,6 +34,7 @@ export class PropsContract {
     contract?: Props721EditionContract | Props721CollectionContract,
     account?: Account
   ) {
+    super();
     this.id = id;
     this.contract = contract;
     this.account = account;
@@ -75,7 +77,9 @@ export class PropsContract {
    * @returns {Promise<AllowlistEntry>} A promise that resolves to the allowlist entry for the address.
    * @throws {Error} If the contract or account is not connected, or if the fetch or JSON parsing fails.
    */
-  protected async getAllowlistEntryByAddress(address: string): Promise<{entry: AllowlistEntry, num_leaves: number}> {
+  protected async getAllowlistEntryByAddress(
+    address: string
+  ): Promise<{ entry: AllowlistEntry; num_leaves: number }> {
     console.log("getAllowlistEntryByAddress", address);
     if (!this.contract || !this.account) {
       throw new Error("Contract or account is not connected");
@@ -123,10 +127,10 @@ export class PropsContract {
    */
   async getAllowlistAllocationByAddress(address: string): Promise<number> {
     console.log("Getting allowlist allocation for address:", address);
-    const { entry: allocation } = await this.getAllowlistEntryByAddress(address);
+    const { entry: allocation } =
+      await this.getAllowlistEntryByAddress(address);
     return allocation.amount;
   }
-
 
   /**
    * Sets the start and end dates for the contract.
@@ -141,8 +145,12 @@ export class PropsContract {
     }
 
     try {
-      const startTimestamp = (BigInt(startDate) + BigInt('4611686018427387904')).toString();
-      const endTimestamp = (BigInt(endDate) + BigInt('4611686018427387904')).toString();
+      const startTimestamp = (
+        BigInt(startDate) + BigInt("4611686018427387904")
+      ).toString();
+      const endTimestamp = (
+        BigInt(endDate) + BigInt("4611686018427387904")
+      ).toString();
 
       const { waitForResult } = await this.contract.functions
         .set_dates(startTimestamp, endTimestamp)
@@ -152,7 +160,9 @@ export class PropsContract {
         .call();
 
       await waitForResult();
-      console.log(`Dates set successfully: start=${new Date(startDate)}, end=${new Date(endDate)}`);
+      console.log(
+        `Dates set successfully: start=${new Date(startDate)}, end=${new Date(endDate)}`
+      );
     } catch (error) {
       console.error("Failed to set dates:", error);
       throw error;
@@ -166,27 +176,20 @@ export class PropsContract {
    * @returns {Promise<MintResult|Error>} A promise that resolves with the airdrop result.
    * @throws {Error} If the airdrop process fails.
    */
-  async airdrop(
-    to: string,
-    amount: number,
-  ): Promise<MintResult|Error> {
+  async airdrop(to: string, amount: number): Promise<MintResult | Error> {
     if (!this.contract || !this.account) {
       throw new Error("Contract or account is not connected");
     }
 
     try {
       const baseAssetId = this.account.provider.getBaseAssetId();
-    
+
       const address = Address.fromDynamicInput(to);
       const addressInput = { bits: address.toB256() };
       const addressIdentityInput = { Address: addressInput };
-      
 
       const { waitForResult } = await this.contract.functions
-        .airdrop(
-          addressIdentityInput,
-          amount
-        )
+        .airdrop(addressIdentityInput, amount)
         .callParams({
           gasLimit: 1_000_000,
         })

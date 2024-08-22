@@ -16,6 +16,13 @@ export class PropsEvents {
    * @type {string}
    * @public
    */
+  public waiting: string = "waiting";
+
+  /**
+   * Event state indicating a transaction that requires approval.
+   * @type {string}
+   * @public
+   */
   public transaction: string = "transaction";
 
   /**
