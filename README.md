@@ -16,15 +16,15 @@ For detailed documentation and API reference, please visit our comprehensive doc
 To install the SDK, run:
 
 ```bash
-npm install @props/fuels
+npm install @props-labs/fuels
 ```
 
 ```bash
-pnpm install @props/fuels
+pnpm install @props-labs/fuels
 ```
 
 ```bash
-yarn add @props/fuels
+yarn add @props-labs/fuels
 ```
 
 ## Usage
