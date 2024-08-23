@@ -65,7 +65,22 @@ export class PropsContract extends PropsEventEmitter {
     }
 
     try {
-      await this.contract.functions.set_merkle(root, uri).call();
+
+      this.emit(PropsEvents.getInstance().transaction, {
+        message: "Please approve the transaction in your wallet...",
+        transactionIndex: 1,
+        transactionCount: 1,
+      });
+
+      const { waitForResult } = await this.contract.functions.set_merkle(root, uri).call();
+
+      this.emit(PropsEvents.getInstance().pending, {
+        message: "Waiting for transaction to be confirmed...",
+        transactionIndex: 1,
+        transactionCount: 1,
+      });
+
+      await waitForResult();
     } catch (error) {
       throw new Error(`Failed to set allowlist: ${error}`);
     }
