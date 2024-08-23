@@ -38,10 +38,9 @@ export class PropsUtilities {
 
     // Convert entries to leaves
     const leaves = entries.map((entry) => {
-      const addressBytes = Buffer.from(entry.address.slice(2), "hex");
-      const amountBytes = Buffer.alloc(8);
-      amountBytes.writeBigUInt64LE(BigInt(entry.amount));
-      const concatenatedBytes = Buffer.concat([addressBytes.reverse(), amountBytes]);
+      const addressBytes = hexToUint8Array(entry.address.slice(2));
+      const amountBytes = numberToLittleEndianUint8Array(entry.amount, 8);
+      const concatenatedBytes = new Uint8Array([...addressBytes.reverse(), ...amountBytes]);
       const hash = sha256(toHex(concatenatedBytes));
       return hash;
     });
@@ -68,4 +67,20 @@ export class PropsUtilities {
 
     return { root, allowlist };
   }
+}
+
+// Helper functions
+
+function hexToUint8Array(hex: string): Uint8Array {
+  return new Uint8Array(hex.match(/.{1,2}/g)!.map(byte => parseInt(byte, 16)));
+}
+
+function numberToLittleEndianUint8Array(num: number, byteLength: number): Uint8Array {
+  const arr = new Uint8Array(byteLength);
+  let value = BigInt(num);
+  for (let i = 0; i < byteLength; i++) {
+    arr[i] = Number(value & BigInt(255));
+    value >>= BigInt(8);
+  }
+  return arr;
 }
