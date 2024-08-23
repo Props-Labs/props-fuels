@@ -106,7 +106,7 @@ pub(crate) async fn setup() -> (
         .await
         .unwrap();
 
-    // println!("fee_id: {:?}", fee_id.toB256());
+    println!("fee_id: {:?}", fee_id.hash());
 
     let fee_instance_1 = PropsFeeSplitter::new(fee_id.clone(), wallet1.clone());
 

@@ -69,6 +69,7 @@ pub(crate) async fn setup() -> (
         .unwrap();
 
     println!("Contract deployed at: {:?}", id);
+    println!("Fee Splitter ID hex hash: {}", id.hash().to_string());
 
     let instance_1 = PropsFeeSplitter::new(id.clone(), wallet1.clone());
     let instance_2 = PropsFeeSplitter::new(id.clone(), wallet2.clone());
