@@ -72,15 +72,11 @@ export class PropsContract extends PropsEventEmitter {
   }
 
   /**
-   * Private function to get the allowlist for a given address.
-   * @param {string} address - The address to get the allowlist for.
-   * @returns {Promise<AllowlistEntry>} A promise that resolves to the allowlist entry for the address.
+   * Fetches the entire allowlist from the Merkle URI.
+   * @returns {Promise<Record<string, AllowlistEntry>>} A promise that resolves to the entire allowlist.
    * @throws {Error} If the contract or account is not connected, or if the fetch or JSON parsing fails.
    */
-  protected async getAllowlistEntryByAddress(
-    address: string
-  ): Promise<{ entry: AllowlistEntry; num_leaves: number }> {
-    console.log("getAllowlistEntryByAddress", address);
+  public async getAllowlist(): Promise<Record<string, AllowlistEntry>> {
     if (!this.contract || !this.account) {
       throw new Error("Contract or account is not connected");
     }
@@ -103,7 +99,26 @@ export class PropsContract extends PropsEventEmitter {
         throw new Error(`Failed to fetch allowlist from URI: ${uri}`);
       }
 
-      const allowlist = await response.json();
+      return await response.json();
+    } catch (error) {
+      console.error("Failed to fetch allowlist:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Private function to get the allowlist entry for a given address.
+   * @param {string} address - The address to get the allowlist for.
+   * @returns {Promise<{ entry: AllowlistEntry; num_leaves: number }>} A promise that resolves to the allowlist entry for the address and the total number of leaves.
+   * @throws {Error} If the address is not found in the allowlist.
+   */
+  protected async getAllowlistEntryByAddress(
+    address: string
+  ): Promise<{ entry: AllowlistEntry; num_leaves: number }> {
+    console.log("getAllowlistEntryByAddress", address);
+    
+    try {
+      const allowlist = await this.getAllowlist();
       const allocation = allowlist[address];
 
       if (allocation === undefined) {
@@ -115,7 +130,7 @@ export class PropsContract extends PropsEventEmitter {
       return { entry: allocation, num_leaves };
     } catch (error) {
       console.error("Original error:", error);
-      throw error; // Re-throw the original error
+      throw error;
     }
   }
 
