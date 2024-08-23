@@ -1,6 +1,6 @@
 {
   "name": "@props-labs/fuels",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "description": "Props Minting SDK for managing NFTs on the Fuel network",
   "author": "Props Labs, Calvin Hoenes <hello@props.app> (https://www.props.app)",
   "main": "dist/index.js",

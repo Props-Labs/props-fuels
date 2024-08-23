@@ -6,6 +6,7 @@ import { decodeContractMetadata } from "../utils/metadata";
 import { PropsContract } from "../contract";
 import { feeSplitterContractAddress } from "../common/defaults";
 import { PropsEvents } from "../core";
+import { MetadataOutput } from "../sway-api/contracts/Props721EditionContract";
 
 /**
  * Represents an edition within the Props SDK.
@@ -152,6 +153,27 @@ export class Edition extends PropsContract {
     } catch (error) {
       throw error;
     }
+  }
+
+  /**
+   * Retrieves the metadata for the edition.
+   * @returns {Promise<Array<[string, string]>>} A promise that resolves to an array of key-value pairs representing the metadata.
+   */
+  async getMetadata(): Promise<Array<[string, MetadataOutput]>> {
+    if (!this.contract) {
+      throw new Error("Contract is not connected");
+    }
+
+    const zeroAddress = '0x0000000000000000000000000000000000000000000000000000000000000000';
+    const { value } = await (this.contract as Props721EditionContract).functions
+      .total_metadata({ bits: zeroAddress })
+      .get();
+
+    if (!value) {
+      return [];
+    }
+
+    return value.map(([key, metadata]) => [key, metadata]);
   }
 
 

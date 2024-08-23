@@ -2,7 +2,7 @@ import { Account, Address, TransactionStatus } from "fuels";
 import { Props721CollectionContract, Props721EditionContract } from "../sway-api";
 import { Allowlist, AllowlistEntry, AllowListInput, MintResult, NFTMetadata } from "../common/types";
 import { PropsUtilities } from "../utils";
-import { PropsEventEmitter } from "../core/events";
+import { PropsEventEmitter, PropsEvents } from "../core/events";
 
 /**
  * Class representing a Props Contract.
@@ -152,12 +152,24 @@ export class PropsContract extends PropsEventEmitter {
         BigInt(endDate) + BigInt("4611686018427387904")
       ).toString();
 
+      this.emit(PropsEvents.getInstance().transaction, {
+        message: "Please approve the transaction in your wallet...",
+        transactionIndex: 1,
+        transactionCount: 1,
+      });
+
       const { waitForResult } = await this.contract.functions
         .set_dates(startTimestamp, endTimestamp)
         .callParams({
           gasLimit: 1_000_000,
         })
         .call();
+
+      this.emit(PropsEvents.getInstance().pending, {
+        message: "Waiting for transaction to be confirmed...",
+        transactionIndex: 1,
+        transactionCount: 1,
+      });
 
       await waitForResult();
       console.log(

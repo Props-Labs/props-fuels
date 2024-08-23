@@ -26,7 +26,7 @@ describe("Edition", () => {
       description: "A test edition",
       image: "test_image_url",
     });
-    // vi.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should create an edition instance", () => {
@@ -101,5 +101,28 @@ describe("Edition", () => {
 
     // Restore the original fetch function
     global.fetch = originalFetch;
+  });
+
+  it("should return the correct metadata", async () => {
+    // Mock the metadata that we expect to receive
+    const expectedMetadata = [
+      ["name", { String: "Test Edition" }],
+      ["description", { String: "A test edition" }],
+      ["image", { String: "test_image_url" }],
+    ];
+
+    // Call the getMetadata function
+    const metadata = await edition.getMetadata();
+
+    // Check if the returned metadata matches the expected metadata
+    expect(metadata).toEqual(expectedMetadata);
+
+    // Check individual metadata entries
+    expect(metadata[0][0]).toBe("name");
+    expect(metadata[0][1]).toEqual({ String: "Test Edition" });
+    expect(metadata[1][0]).toBe("description");
+    expect(metadata[1][1]).toEqual({ String: "A test edition" });
+    expect(metadata[2][0]).toBe("image");
+    expect(metadata[2][1]).toEqual({ String: "test_image_url" });
   });
 });
