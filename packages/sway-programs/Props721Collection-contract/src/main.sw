@@ -457,6 +457,7 @@ impl SRC3PayableExtension for Contract {
 
         let mut total_price: u64 = 0;
         let mut total_fee: u64 = 0;
+        let mut affiliate_fee: u64 = 0;
 
         let price = storage.price.try_read().unwrap_or(0);
         let total_assets = storage.total_assets.try_read().unwrap_or(0);
@@ -497,7 +498,7 @@ impl SRC3PayableExtension for Contract {
         // Check and transfer affiliate fee
         if let Some(Identity::Address(affiliate_address)) = affiliate {
             if AFFILIATE_FEE_PERCENTAGE > 0 {
-                let affiliate_fee = (price * AFFILIATE_FEE_PERCENTAGE) / 100;
+                affiliate_fee = (price * AFFILIATE_FEE_PERCENTAGE) / 100;
                 require(price_amount >= affiliate_fee, MintError::NotEnoughTokens(price_amount));
                 total_fee += affiliate_fee;
                 transfer(Identity::Address(affiliate_address), AssetId::base(), affiliate_fee);
@@ -550,6 +551,22 @@ impl SRC3PayableExtension for Contract {
                 new_sub_id,
                 1,
             );
+
+            log(MintEvent{
+                recipient,
+                amount,
+                affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
+                max_amount: max_amount.unwrap_or(0),
+                total_price,
+                total_fee,
+                price_amount,
+                builder_fee: BUILDER_FEE,
+                affiliate_fee,
+                fee,
+                creator_price,
+                asset_id: asset,
+                new_minted_id
+            });
 
             last_minted_id = new_minted_id;
             minted_count += 1;
@@ -619,6 +636,12 @@ impl SRC3PayableExtension for Contract {
                 1,
             );
 
+            log(AirdropEvent{
+                recipient,
+                amount,
+                new_minted_id
+            });
+
             last_minted_id = new_minted_id;
             minted_count += 1;
         }
@@ -667,6 +690,10 @@ impl SRC3PayableExtension for Contract {
     fn burn(sub_id: SubId, amount: u64) {
         require_not_paused();
         _burn(storage.total_supply, sub_id, amount);
+        log(BurnEvent{
+            amount,
+            sub_id
+        });
     }
 }
 
@@ -753,6 +780,9 @@ impl SetTokenUri for Contract {
     fn set_base_uri(uri: String) {
         only_owner();
         storage.base_uri.write_slice(uri);
+        log(SetBaseUriEvent{
+            base_uri: uri
+        });
     }
 
     /// Returns the base URI for the token metadata.
@@ -850,6 +880,9 @@ impl SetMintMetadata for Contract {
     fn set_price(price: u64) {
         only_owner();
         storage.price.write(price);
+        log(SetMintPriceEvent{
+            price
+        });
     }
 
     /// Returns the price for minting an NFT.
@@ -1013,6 +1046,10 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.start_date.write(start);
         storage.end_date.write(end);
+        log(SetMintDatesEvent{
+            start,
+            end
+        });
     }
 
     /// Sets the Merkle root for the contract.
@@ -1122,6 +1159,10 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.merkle_root.write(root);
         storage.merkle_uri.write_slice(uri);
+        log(SetMerkleRootEvent{
+            root,
+            uri
+        });
     }
 
 }

@@ -1,6 +1,6 @@
 [package]
 name = "Props721Collection-contract"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Calvin Hoenes <calvin@props.app>"]
 edition = "2021"
 license = "Apache-2.0"

@@ -597,7 +597,6 @@ impl SRC3PayableExtension for Contract {
             );
 
             log(AirdropEvent{
-                sender: msg_sender().unwrap(),
                 recipient,
                 amount,
                 new_minted_id
@@ -651,14 +650,10 @@ impl SRC3PayableExtension for Contract {
     fn burn(sub_id: SubId, amount: u64) {
         require_not_paused();
         _burn(storage.total_supply, sub_id, amount);
-        // log(BurnEvent{
-        //     current_time:timestamp(),
-        //     block_height: height(),
-        //     recipient: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     amount,
-        //     sub_id
-        // });
+        log(BurnEvent{
+            amount,
+            sub_id
+        });
     }
 }
 
@@ -854,15 +849,11 @@ impl SetAssetMetadata for Contract {
         only_owner();
         require(storage.metadata.get(AssetId::from(SubId::zero()), key).is_none(), SetError::ValueAlreadySet);
         _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, metadata);
-        // log(SetMetadataEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     asset,
-        //     key,
-        //     metadata
-        // });
+        log(SetMetadataEvent{
+            asset,
+            key,
+            metadata
+        });
     }
 }
 
@@ -896,13 +887,9 @@ impl SetMintMetadata for Contract {
     fn set_price(price: u64) {
         only_owner();
         storage.price.write(price);
-        // log(SetMintPriceEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     price
-        // });
+        log(SetMintPriceEvent{
+            price
+        });
     }
 
     /// Returns the price for minting an NFT.
@@ -1066,14 +1053,10 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.start_date.write(start);
         storage.end_date.write(end);
-        // log(SetMintDatesEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     start,
-        //     end
-        // });
+        log(SetMintDatesEvent{
+            start,
+            end
+        });
     }
 
     /// Sets the Merkle root for the contract.
@@ -1183,14 +1166,10 @@ impl SetMintMetadata for Contract {
         only_owner();
         storage.merkle_root.write(root);
         storage.merkle_uri.write_slice(uri);
-        // log(SetMerkleRootEvent{
-        //     current_time: timestamp(),
-        //     block_height: height(),
-        //     sender: msg_sender().unwrap(),
-        //     contract_id: ContractId::this(),
-        //     root,
-        //     uri
-        // });
+        log(SetMerkleRootEvent{
+            root,
+            uri
+        });
     }
 
 }
