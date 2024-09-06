@@ -39,7 +39,7 @@ export class Collection extends PropsContract {
     this.contract = contract;
     this.account = account;
     this.baseUri = baseUri;
-    this.fetchSampleTokens();
+    // this.fetchSampleTokens();
   }
 
   /**
