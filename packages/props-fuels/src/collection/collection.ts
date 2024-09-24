@@ -4,6 +4,7 @@ import { MintResult } from "../common/types";
 import { NFTMetadata } from "../common/types";
 import { PropsContract } from "../contract";
 import { feeSplitterContractAddress } from "../common/defaults";
+import { PropsEvents } from "../core";
 
 /**
  * Represents an edition within the Props SDK.
@@ -39,7 +40,6 @@ export class Collection extends PropsContract {
     this.contract = contract;
     this.account = account;
     this.baseUri = baseUri;
-    // this.fetchSampleTokens();
   }
 
   /**
@@ -93,6 +93,12 @@ export class Collection extends PropsContract {
       this.account
     );
 
+    this.emit(PropsEvents.getInstance().waiting, {
+      message: "Initializing mint...",
+      transactionIndex: 1,
+      transactionCount: 1,
+    });
+
     try {
       const baseAssetId = this.account.provider.getBaseAssetId();
       const { value: priceValue } = await this.contract.functions.price().get();
@@ -134,6 +140,12 @@ export class Collection extends PropsContract {
         maxAmount = entry.amount;
       }
 
+      this.emit(PropsEvents.getInstance().transaction, {
+        message: "Please approve the transaction in your wallet...",
+        transactionIndex: 1,
+        transactionCount: 1,
+      });
+
       const { waitForResult } = await this.contract.functions
         .mint(
           addressIdentityInput,
@@ -155,6 +167,13 @@ export class Collection extends PropsContract {
           gasLimit: 1_000_000,
         })
         .call();
+
+      this.emit(PropsEvents.getInstance().pending, {
+        message: "Waiting for transaction to be clear...",
+        transactionIndex: 1,
+        transactionCount: 1,
+      });
+      
       const { transactionResult } = await waitForResult();
       if (transactionResult?.status === TransactionStatus.success)
         return { id: transactionResult.id, transactionResult };

@@ -112,6 +112,8 @@ pub(crate) async fn setup() -> (
 
     let fee_instance_1 = PropsFeeSplitter::new(fee_id.clone(), wallet1.clone());
 
+    println!("fee_id hash: {:?}", fee_id.hash());
+
     let registry_id = Contract::load_from(REGISTRY_CONTRACT_BINARY_PATH, LoadConfiguration::default())
         .unwrap()
         .deploy(&wallet1, TxPolicies::default())

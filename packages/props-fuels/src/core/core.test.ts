@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { Account, AssetId } from "fuels";
 import { PropsSDK } from "./core";
 import { setup } from "../utils/setup";
@@ -7,10 +7,16 @@ import { supportedNetworks } from "../common/constants";
 describe("PropsSDK", () => {
   let octane: PropsSDK;
   let wallets: Account[];
+  let cleanup: () => void;
 
   beforeEach(async () => {
-    const { wallet1, wallet2, wallet3, wallet4 } = await setup();
+    const { wallet1, wallet2, wallet3, wallet4, cleanup: setupCleanup } = await setup();
     wallets = [wallet1, wallet2, wallet3, wallet4];
+    cleanup = setupCleanup;
+  });
+
+  afterEach(async () => {
+    await cleanup();
   });
 
   it("should initialize Props with the correct network", async () => {

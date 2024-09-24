@@ -47,7 +47,7 @@ use std::block::timestamp;
 
 use libraries::*;
 
-const FEE_CONTRACT_ID = 0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562;
+const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
 
 storage {
     /// The total number of unique assets minted by this contract.
@@ -1172,6 +1172,31 @@ impl SetMintMetadata for Contract {
         });
     }
 
+    /// Returns the maximum supply of tokens that can be minted.
+    ///
+    /// # Returns
+    ///
+    /// * [Option<u64>] - The maximum supply of tokens.
+    ///
+    /// # Number of Storage Accesses
+    ///
+    /// * Reads: `1`
+    ///
+    /// # Examples
+    ///
+    /// ```sway
+    /// use sway_libs::mint::SetMintMetadata;
+    ///
+    /// fn foo(contract_id: ContractId) {
+    ///     let mint_abi = abi(SetMintMetadata, contract_id);
+    ///     let max_supply = mint_abi.max_supply();
+    ///     assert(max_supply.is_some());
+    /// }
+    /// ```
+    #[storage(read)]
+    fn max_supply() -> Option<u64> {
+        Some(MAX_SUPPLY)
+    }
 }
 
 impl Pausable for Contract {

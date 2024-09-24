@@ -12,6 +12,7 @@ export async function setup(): Promise<
         wallet4: WalletUnlocked;
         provider: Provider;
         feeSplitterContract: PropsFeeSplitterContract;
+        cleanup: () => void;
     }
 > {
   const assets = TestAssetId.random(2);
@@ -35,6 +36,7 @@ export async function setup(): Promise<
     contracts: [],
     wallets: [wallet1, wallet2, wallet3, wallet4],
     provider,
+    cleanup
   } = launched;
 
   const address = Address.fromDynamicInput(wallet1.address);
@@ -94,7 +96,7 @@ export async function setup(): Promise<
   //   registryContractId.toB256()
   // );
 
-  return { wallet1, wallet2, wallet3, wallet4, provider, feeSplitterContract };
+  return { wallet1, wallet2, wallet3, wallet4, provider, feeSplitterContract, cleanup };
 }
 
 export async function deployProps721EditionContract(wallet1:Account): Promise<Props721EditionContract> {

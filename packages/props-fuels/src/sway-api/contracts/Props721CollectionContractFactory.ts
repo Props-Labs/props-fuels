@@ -10,8 +10,9 @@
   Fuel-Core version: 0.33.0
 */
 
-import { ContractFactory, decompressBytecode } from "fuels";
+import { ContractFactory } from "fuels";
 import type { Provider, Account, DeployContractOptions, DeployContractResult } from "fuels";
+import { decompressBytecode } from "../../utils/bytecode";
 
 import { Props721CollectionContract } from "./Props721CollectionContract";
 

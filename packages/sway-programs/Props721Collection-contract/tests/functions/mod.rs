@@ -17,3 +17,5 @@ mod set_base_uri;
 mod start_date;
 mod end_date;
 mod set_dates;
+mod max_supply;
+

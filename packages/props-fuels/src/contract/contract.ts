@@ -203,4 +203,36 @@ export class PropsContract extends PropsEventEmitter {
       throw error;
     }
   }
+
+  /**
+   * Get the total number of assets in the collection.
+   * @returns {Promise<number>} A promise that resolves to the total number of assets.
+   */
+  async getTotalAssets(): Promise<number> {
+    if (!this.contract) {
+      throw new Error("Contract is not connected");
+    }
+    try {
+      const { value } = await this.contract.functions.total_assets().get();
+      return Number(value);
+    } catch (error) {
+      throw new Error(`Failed to get total assets: ${error}`);
+    }
+  }
+
+  /**
+   * Get the maximum supply of the collection.
+   * @returns {Promise<number>} A promise that resolves to the maximum supply.
+   */
+  async getMaxSupply(): Promise<number> {
+    if (!this.contract) {
+      throw new Error("Contract is not connected");
+    }
+    try {
+      const { value } = await this.contract.functions.max_supply().get();
+      return Number(value);
+    } catch (error) {
+      throw new Error(`Failed to get max supply: ${error}`);
+    }
+  }
 }

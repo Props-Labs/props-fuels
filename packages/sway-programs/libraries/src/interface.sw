@@ -112,6 +112,9 @@ abi SetMintMetadata {
 
     #[storage(write)]
     fn set_merkle(root: b256, uri: String);
+
+    #[storage(read)]
+    fn max_supply() -> Option<u64>;
 }
 
 pub fn concat(a: String, b: String) -> String {
