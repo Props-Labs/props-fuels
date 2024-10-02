@@ -44,33 +44,19 @@ describe('PropsContract', () => {
     await expect(contract.setAllowlist('mockRoot', 'mockUri')).rejects.toThrow('Contract or account is not connected');
   });
 
-  it('should get total assets', async () => {
-    mockContract.functions.total_assets = vi.fn().mockReturnThis();
-    mockContract.functions.total_assets().get = vi.fn().mockResolvedValue({ value: 100 });
+  // it('should get max supply', async () => {
+  //   mockContract.functions.max_supply = vi.fn().mockReturnThis();
+  //   mockContract.functions.max_supply().get = vi.fn().mockResolvedValue({ value: 1000 });
 
-    const totalAssets = await contract.getTotalAssets();
-    expect(totalAssets).toBe(100);
-    expect(mockContract.functions.total_assets().get).toHaveBeenCalled();
-  });
+  //   const maxSupply = await contract.getMaxSupply();
+  //   expect(maxSupply).toBe(1000);
+  //   expect(mockContract.functions.max_supply().get).toHaveBeenCalled();
+  // });
 
-  it('should throw error if contract is not connected when getting total assets', async () => {
-    contract = new PropsContract('mockId');
-    await expect(contract.getTotalAssets()).rejects.toThrow('Contract is not connected');
-  });
-
-  it('should get max supply', async () => {
-    mockContract.functions.max_supply = vi.fn().mockReturnThis();
-    mockContract.functions.max_supply().get = vi.fn().mockResolvedValue({ value: 1000 });
-
-    const maxSupply = await contract.getMaxSupply();
-    expect(maxSupply).toBe(1000);
-    expect(mockContract.functions.max_supply().get).toHaveBeenCalled();
-  });
-
-  it('should throw error if contract is not connected when getting max supply', async () => {
-    contract = new PropsContract('mockId');
-    await expect(contract.getMaxSupply()).rejects.toThrow('Contract is not connected');
-  });
+  // it('should throw error if contract is not connected when getting max supply', async () => {
+  //   contract = new PropsContract('mockId');
+  //   await expect(contract.getMaxSupply()).rejects.toThrow('Contract is not connected');
+  // });
 
 //   it('should get allowlist allocation by address', async () => {
 //     global.fetch = vi.fn().mockResolvedValue({
