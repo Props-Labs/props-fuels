@@ -1,5 +1,18 @@
 library;
 
+pub mod events;
+
+pub use events::{
+    MintEvent,
+    BurnEvent,
+    AirdropEvent,
+    SetMetadataEvent,
+    SetMintPriceEvent,
+    SetMintDatesEvent,
+    SetMerkleRootEvent,
+    SetBaseUriEvent
+};
+
 use std::string::String;
 use std::bytes::Bytes;
 use standards::{src5::{State}, src7::{Metadata}};
@@ -99,6 +112,9 @@ abi SetMintMetadata {
 
     #[storage(write)]
     fn set_merkle(root: b256, uri: String);
+
+    #[storage(read)]
+    fn max_supply() -> Option<u64>;
 }
 
 pub fn concat(a: String, b: String) -> String {
@@ -131,47 +147,4 @@ pub fn convert_num_to_ascii_bytes(num: u64) -> Bytes {
         reversed_bytes.push(bytes.pop().unwrap());
     }
     return reversed_bytes;
-}
-
-
-
-pub struct ContractCreatedEvent {
-    pub owner: Identity,
-    pub name: String,
-    pub symbol: String,
-    pub price: u64,
-    pub start: u64,
-    pub end: u64
-}
-
-pub struct MintEvent {
-    pub recipient: Identity,
-    pub amount: u64,
-    pub affiliate: Identity,
-    pub max_amount: u64,
-    pub total_price: u64,
-    pub total_fee: u64,
-    pub price_amount: u64,
-    pub builder_fee: u64,
-    pub affiliate_fee: u64,
-    pub fee: u64,
-    pub creator_price: u64,
-    pub asset_id: AssetId,
-    pub new_minted_id: u64
-}
-
-pub struct AirdropEvent {
-    pub sender: Identity,
-    pub recipient: Identity,
-    pub amount: u64,
-    pub new_minted_id: u64
-}
-
-pub struct RegisterEvent {
-    pub contract_id: ContractId,
-    pub owner: Identity
-}
-
-pub struct DeregisterEvent {
-    pub contract_id: ContractId,
 }

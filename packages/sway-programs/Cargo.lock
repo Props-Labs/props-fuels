@@ -14,7 +14,7 @@ dependencies = [
 
 [[package]]
 name = "Props721Collection-contract"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "fuel-merkle 0.50.0",
  "fuels",
@@ -25,7 +25,7 @@ dependencies = [
 
 [[package]]
 name = "Props721Edition-contract"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "fuel-merkle 0.50.0",
  "fuels",

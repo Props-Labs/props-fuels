@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { Account, AssetId, BN, getMintedAssetId, Provider } from "fuels";
 import { CollectionManager } from "../collection/collection-manager";
 import { setup } from "../utils/setup";
@@ -13,14 +13,20 @@ describe("CollectionManager", () => {
   let wallets: Account[];
   let provider: Provider;
   let feeSplitterContract: PropsFeeSplitterContract;
+  let cleanup: () => void;
 
   beforeEach(async () => {
     manager = new CollectionManager();
-    const { wallet1, wallet2, wallet3, wallet4, provider: setupProvider, feeSplitterContract: setupFeeSplitterContract } = await setup();
+    const { wallet1, wallet2, wallet3, wallet4, provider: setupProvider, feeSplitterContract: setupFeeSplitterContract, cleanup: setupCleanup } = await setup();
     wallets = [wallet1, wallet2, wallet3, wallet4];
     provider = setupProvider;
     feeSplitterContract = setupFeeSplitterContract;
+    cleanup = setupCleanup;
   });
+
+  afterEach(async () => {
+    await cleanup();
+  }); 
 
   it("should create a new collection", async () => {
     const collection: Collection = await manager.create({

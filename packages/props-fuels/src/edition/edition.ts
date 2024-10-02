@@ -52,7 +52,9 @@ export class Edition extends PropsContract {
   async mint(
     to: string,
     amount: number,
-    affiliate?: string
+    affiliate?: string,
+    price?: BN,
+    fees?: BN[]
   ): Promise<MintResult|Error> {
     if (!this.contract || !this.account) {
       throw new Error("Contract or account is not connected");
@@ -72,20 +74,30 @@ export class Edition extends PropsContract {
       });
 
       const baseAssetId = this.account.provider.getBaseAssetId();
-      const { value: priceValue } = await this.contract.functions.price().get();
-      console.log("Price: ", priceValue);
-      const { value: fees } = await this.contract.functions
-        .fees()
-        .addContracts([feeSplitterContract])
-        .get();
-      if (!priceValue) {
+      if(!price) {
+        const { value: priceValue } = await this.contract.functions.price().get();
+        price = priceValue;
+        if (!priceValue) {
+          throw new Error("Price not found");
+        }
+      }
+      if(!price) {
         throw new Error("Price not found");
+      }
+
+      if (!fees) {
+        const { value } = await this.contract.functions
+          .fees()
+          .addContracts([feeSplitterContract])
+          .get();
+        fees = value;
       }
       if (!fees) {
         throw new Error("Fees not found");
       }
+
       const totalFees = fees.reduce((acc, fee) => acc.add(fee), new BN(0));
-      const price = priceValue.mul(amount).add(totalFees);
+      const totalPrice = price.mul(amount).add(totalFees);
       const address = Address.fromDynamicInput(to);
       const addressInput = { bits: address.toB256() };
       const addressIdentityInput = { Address: addressInput };

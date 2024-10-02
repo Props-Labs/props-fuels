@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { Account, BN, Provider, getMintedAssetId, toHex } from "fuels";
 import { Edition } from "./edition";
 import { deployProps721EditionContract, setup } from "../utils/setup";
@@ -9,6 +9,7 @@ describe("Edition", () => {
   let wallets: Account[];
   let provider: Provider;
   let contract: Props721EditionContract;
+  let cleanup: () => void;
 
   beforeEach(async () => {
     const {
@@ -17,6 +18,7 @@ describe("Edition", () => {
       wallet3,
       wallet4,
       provider: setupProvider,
+      cleanup: setupCleanup,
     } = await setup();
     wallets = [wallet1, wallet2, wallet3, wallet4];
     provider = setupProvider;
@@ -26,7 +28,12 @@ describe("Edition", () => {
       description: "A test edition",
       image: "test_image_url",
     });
+    cleanup = setupCleanup;
     // vi.resetAllMocks();
+  });
+
+  afterEach(async () => {
+    await cleanup();
   });
 
   it("should create an edition instance", () => {

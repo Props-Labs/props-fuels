@@ -121,11 +121,11 @@ pub(crate) async fn constructor(
     start_date: u64,
     end_date: u64,
 ) -> FuelCallResponse<()> {
-    let id = Bech32ContractId::from(
-        ContractId::from_str("0x9b48042cdc01cf86a7d9d5f47b3ea43898c7d7a8282eede5f2f0c219d2e7c93f")
-        .unwrap(),
-    );
-    let resp = contract.methods().constructor(owner, name, symbol, base_uri, price, start_date, end_date).with_contract_ids(&[id.clone()]).call().await.unwrap();
+    // let id = Bech32ContractId::from(
+    //     ContractId::from_str("0x9b48042cdc01cf86a7d9d5f47b3ea43898c7d7a8282eede5f2f0c219d2e7c93f")
+    //     .unwrap(),
+    // );
+    let resp = contract.methods().constructor(owner, name, symbol, base_uri, price, start_date, end_date).call().await.unwrap();
     resp
 }
 
@@ -242,13 +242,6 @@ pub(crate) async fn set_merkle_root(
         .unwrap()
 }
 
-// pub(crate) async fn merkle_root(contract: &Props721Collection<WalletUnlocked>) -> Option<Bits256> {
-//     contract
-//         .methods()
-//         .merkle_root()
-//         .call()
-//         .await
-//         .unwrap()
-//         .value
-// }
-
+pub(crate) async fn max_supply(contract: &Props721Collection<WalletUnlocked>) -> Option<u64> {
+    contract.methods().max_supply().call().await.unwrap().value
+}

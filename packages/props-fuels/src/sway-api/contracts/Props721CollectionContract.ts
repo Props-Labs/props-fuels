@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.0
+  Fuels version: 0.94.2
   Forc version: 0.63.1
   Fuel-Core version: 0.33.0
 */
@@ -50,12 +50,26 @@ export type StateOutput = Enum<{ Uninitialized: void, Initialized: IdentityOutpu
 
 export type AddressInput = { bits: string };
 export type AddressOutput = AddressInput;
+export type AirdropEventInput = { recipient: IdentityInput, amount: BigNumberish, new_minted_id: BigNumberish };
+export type AirdropEventOutput = { recipient: IdentityOutput, amount: BN, new_minted_id: BN };
 export type AssetIdInput = { bits: string };
 export type AssetIdOutput = AssetIdInput;
+export type BurnEventInput = { amount: BigNumberish, sub_id: string };
+export type BurnEventOutput = { amount: BN, sub_id: string };
 export type ContractIdInput = { bits: string };
 export type ContractIdOutput = ContractIdInput;
+export type MintEventInput = { recipient: IdentityInput, amount: BigNumberish, affiliate: IdentityInput, max_amount: BigNumberish, total_price: BigNumberish, total_fee: BigNumberish, price_amount: BigNumberish, builder_fee: BigNumberish, affiliate_fee: BigNumberish, fee: BigNumberish, creator_price: BigNumberish, asset_id: AssetIdInput, new_minted_id: BigNumberish };
+export type MintEventOutput = { recipient: IdentityOutput, amount: BN, affiliate: IdentityOutput, max_amount: BN, total_price: BN, total_fee: BN, price_amount: BN, builder_fee: BN, affiliate_fee: BN, fee: BN, creator_price: BN, asset_id: AssetIdOutput, new_minted_id: BN };
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
+export type SetBaseUriEventInput = { base_uri: StdString };
+export type SetBaseUriEventOutput = SetBaseUriEventInput;
+export type SetMerkleRootEventInput = { root: string, uri: StdString };
+export type SetMerkleRootEventOutput = SetMerkleRootEventInput;
+export type SetMintDatesEventInput = { start: BigNumberish, end: BigNumberish };
+export type SetMintDatesEventOutput = { start: BN, end: BN };
+export type SetMintPriceEventInput = { price: BigNumberish };
+export type SetMintPriceEventOutput = { price: BN };
 
 export type Props721CollectionContractConfigurables = Partial<{
   MAX_SUPPLY: BigNumberish;
@@ -208,24 +222,59 @@ const abi = {
       "concreteTypeId": "8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a"
     },
     {
+      "type": "struct libraries::events::AirdropEvent",
+      "concreteTypeId": "43052c3eb9b6a222401d50809c2efdadc567cfe06e22216115496d6984df3fa5",
+      "metadataTypeId": 14
+    },
+    {
+      "type": "struct libraries::events::BurnEvent",
+      "concreteTypeId": "2769ef34ccbbc10eac688f4fb27162e5a165446d30bd0a8535e2e511170a7660",
+      "metadataTypeId": 15
+    },
+    {
+      "type": "struct libraries::events::MintEvent",
+      "concreteTypeId": "8918e0ef064a0148dea2d218f022d9b9065aea529e92f028167175e90d883194",
+      "metadataTypeId": 16
+    },
+    {
+      "type": "struct libraries::events::SetBaseUriEvent",
+      "concreteTypeId": "11fa344e77188f4fab22da4fbec65dafa6fd9e7537e0611f78e3df2341787c24",
+      "metadataTypeId": 17
+    },
+    {
+      "type": "struct libraries::events::SetMerkleRootEvent",
+      "concreteTypeId": "7a9864e9042b8444476db1107e29d8f6df19449b90501beb9a589903400d47e5",
+      "metadataTypeId": 18
+    },
+    {
+      "type": "struct libraries::events::SetMintDatesEvent",
+      "concreteTypeId": "788c9cfcf0567b3194bbdb3a842065bc0aaf694a747136d4b9ed4ffa52b0c15e",
+      "metadataTypeId": 19
+    },
+    {
+      "type": "struct libraries::events::SetMintPriceEvent",
+      "concreteTypeId": "8e19313db1ba0eced06c7a689e8ba78c6949185dfffc7e4bd8ce2da93a2cb715",
+      "metadataTypeId": 20
+    },
+    {
       "type": "struct std::address::Address",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "metadataTypeId": 14
+      "metadataTypeId": 21
     },
     {
       "type": "struct std::asset_id::AssetId",
       "concreteTypeId": "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
-      "metadataTypeId": 15
+      "metadataTypeId": 22
     },
     {
       "type": "struct std::string::String",
       "concreteTypeId": "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c",
-      "metadataTypeId": 19
+      "metadataTypeId": 26
     },
     {
       "type": "struct std::vec::Vec<b256>",
       "concreteTypeId": "32559685d0c9845f059bf9d472a0a38cf77d36c23dfcffe5489e86a65cdd9198",
-      "metadataTypeId": 21,
+      "metadataTypeId": 28,
       "typeArguments": [
         "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
       ]
@@ -233,7 +282,7 @@ const abi = {
     {
       "type": "struct sway_libs::ownership::events::OwnershipSet",
       "concreteTypeId": "e1ef35033ea9d2956f17c3292dea4a46ce7d61fdf37bbebe03b7b965073f43b5",
-      "metadataTypeId": 22
+      "metadataTypeId": 29
     },
     {
       "type": "u64",
@@ -285,7 +334,7 @@ const abi = {
         },
         {
           "name": "OutsideMintingPeriod",
-          "typeId": 19
+          "typeId": 26
         },
         {
           "name": "InvalidProof",
@@ -335,7 +384,7 @@ const abi = {
         },
         {
           "name": "Bytes",
-          "typeId": 16
+          "typeId": 23
         },
         {
           "name": "Int",
@@ -343,7 +392,7 @@ const abi = {
         },
         {
           "name": "String",
-          "typeId": 19
+          "typeId": 26
         }
       ]
     },
@@ -353,11 +402,11 @@ const abi = {
       "components": [
         {
           "name": "Address",
-          "typeId": 14
+          "typeId": 21
         },
         {
           "name": "ContractId",
-          "typeId": 18
+          "typeId": 25
         }
       ]
     },
@@ -445,8 +494,146 @@ const abi = {
       "metadataTypeId": 13
     },
     {
-      "type": "struct std::address::Address",
+      "type": "struct libraries::events::AirdropEvent",
       "metadataTypeId": 14,
+      "components": [
+        {
+          "name": "recipient",
+          "typeId": 5
+        },
+        {
+          "name": "amount",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "new_minted_id",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    },
+    {
+      "type": "struct libraries::events::BurnEvent",
+      "metadataTypeId": 15,
+      "components": [
+        {
+          "name": "amount",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "sub_id",
+          "typeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
+        }
+      ]
+    },
+    {
+      "type": "struct libraries::events::MintEvent",
+      "metadataTypeId": 16,
+      "components": [
+        {
+          "name": "recipient",
+          "typeId": 5
+        },
+        {
+          "name": "amount",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "affiliate",
+          "typeId": 5
+        },
+        {
+          "name": "max_amount",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "total_price",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "total_fee",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "price_amount",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "builder_fee",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "affiliate_fee",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "fee",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "creator_price",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "asset_id",
+          "typeId": 22
+        },
+        {
+          "name": "new_minted_id",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    },
+    {
+      "type": "struct libraries::events::SetBaseUriEvent",
+      "metadataTypeId": 17,
+      "components": [
+        {
+          "name": "base_uri",
+          "typeId": 26
+        }
+      ]
+    },
+    {
+      "type": "struct libraries::events::SetMerkleRootEvent",
+      "metadataTypeId": 18,
+      "components": [
+        {
+          "name": "root",
+          "typeId": "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
+        },
+        {
+          "name": "uri",
+          "typeId": 26
+        }
+      ]
+    },
+    {
+      "type": "struct libraries::events::SetMintDatesEvent",
+      "metadataTypeId": 19,
+      "components": [
+        {
+          "name": "start",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "end",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    },
+    {
+      "type": "struct libraries::events::SetMintPriceEvent",
+      "metadataTypeId": 20,
+      "components": [
+        {
+          "name": "price",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        }
+      ]
+    },
+    {
+      "type": "struct std::address::Address",
+      "metadataTypeId": 21,
       "components": [
         {
           "name": "bits",
@@ -456,7 +643,7 @@ const abi = {
     },
     {
       "type": "struct std::asset_id::AssetId",
-      "metadataTypeId": 15,
+      "metadataTypeId": 22,
       "components": [
         {
           "name": "bits",
@@ -466,11 +653,11 @@ const abi = {
     },
     {
       "type": "struct std::bytes::Bytes",
-      "metadataTypeId": 16,
+      "metadataTypeId": 23,
       "components": [
         {
           "name": "buf",
-          "typeId": 17
+          "typeId": 24
         },
         {
           "name": "len",
@@ -480,7 +667,7 @@ const abi = {
     },
     {
       "type": "struct std::bytes::RawBytes",
-      "metadataTypeId": 17,
+      "metadataTypeId": 24,
       "components": [
         {
           "name": "ptr",
@@ -494,7 +681,7 @@ const abi = {
     },
     {
       "type": "struct std::contract_id::ContractId",
-      "metadataTypeId": 18,
+      "metadataTypeId": 25,
       "components": [
         {
           "name": "bits",
@@ -504,17 +691,17 @@ const abi = {
     },
     {
       "type": "struct std::string::String",
-      "metadataTypeId": 19,
+      "metadataTypeId": 26,
       "components": [
         {
           "name": "bytes",
-          "typeId": 16
+          "typeId": 23
         }
       ]
     },
     {
       "type": "struct std::vec::RawVec",
-      "metadataTypeId": 20,
+      "metadataTypeId": 27,
       "components": [
         {
           "name": "ptr",
@@ -531,11 +718,11 @@ const abi = {
     },
     {
       "type": "struct std::vec::Vec",
-      "metadataTypeId": 21,
+      "metadataTypeId": 28,
       "components": [
         {
           "name": "buf",
-          "typeId": 20,
+          "typeId": 27,
           "typeArguments": [
             {
               "name": "",
@@ -554,7 +741,7 @@ const abi = {
     },
     {
       "type": "struct sway_libs::ownership::events::OwnershipSet",
-      "metadataTypeId": 22,
+      "metadataTypeId": 29,
       "components": [
         {
           "name": "new_owner",
@@ -5036,8 +5223,16 @@ const abi = {
       "concreteTypeId": "ee89c439b5472cab716006d7c677d16e15301e6c82cfce12cebfa57919f537de"
     },
     {
+      "logId": "4829314823340073506",
+      "concreteTypeId": "43052c3eb9b6a222401d50809c2efdadc567cfe06e22216115496d6984df3fa5"
+    },
+    {
       "logId": "4237256875605624201",
       "concreteTypeId": "3acdc2adac8e0589c5864525e0edc9dc61a9571a4d09c3c57b58ea76d33f4b46"
+    },
+    {
+      "logId": "2840064050086002958",
+      "concreteTypeId": "2769ef34ccbbc10eac688f4fb27162e5a165446d30bd0a8535e2e511170a7660"
     },
     {
       "logId": "5557842539076482339",
@@ -5046,6 +5241,26 @@ const abi = {
     {
       "logId": "13375681076267723605",
       "concreteTypeId": "b99ff7124bda2b55402338105d5a582d311c1113da1c5f5b1b6f2c32bcd91965"
+    },
+    {
+      "logId": "9878893099844501832",
+      "concreteTypeId": "8918e0ef064a0148dea2d218f022d9b9065aea529e92f028167175e90d883194"
+    },
+    {
+      "logId": "1295405354432630607",
+      "concreteTypeId": "11fa344e77188f4fab22da4fbec65dafa6fd9e7537e0611f78e3df2341787c24"
+    },
+    {
+      "logId": "8686490391468735281",
+      "concreteTypeId": "788c9cfcf0567b3194bbdb3a842065bc0aaf694a747136d4b9ed4ffa52b0c15e"
+    },
+    {
+      "logId": "8833921621047346244",
+      "concreteTypeId": "7a9864e9042b8444476db1107e29d8f6df19449b90501beb9a589903400d47e5"
+    },
+    {
+      "logId": "10239269368848060110",
+      "concreteTypeId": "8e19313db1ba0eced06c7a689e8ba78c6949185dfffc7e4bd8ce2da93a2cb715"
     },
     {
       "logId": "2161305517876418151",
@@ -5061,37 +5276,37 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 76032
+      "offset": 80616
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 75952
+      "offset": 80536
     },
     {
       "name": "BUILDER_FEE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 75944
+      "offset": 80528
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 75984
+      "offset": 80568
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 76016
+      "offset": 80600
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 75936
+      "offset": 80520
     },
     {
       "name": "DISABLE_AIRDROP",
       "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-      "offset": 76024
+      "offset": 80608
     }
   ]
 };

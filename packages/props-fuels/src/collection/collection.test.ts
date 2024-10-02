@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { Account, BN, Provider, getMintedAssetId } from "fuels";
 import { Collection } from "./collection";
 import { deployProps721CollectionContract, setup } from "../utils/setup";
@@ -9,14 +9,21 @@ describe("Collection", () => {
   let wallets: Account[];
   let provider: Provider;
   let contract: Props721CollectionContract;
+  let cleanup: () => void;
 
   beforeEach(async () => {
-    const { wallet1, wallet2, wallet3, wallet4, provider: setupProvider } = await setup();
+    const { wallet1, wallet2, wallet3, wallet4, provider: setupProvider, cleanup: setupCleanup } = await setup();
     wallets = [wallet1, wallet2, wallet3, wallet4];
     provider = setupProvider;
     contract = await deployProps721CollectionContract(wallet1);
     collection = new Collection("collection-id", contract, wallet1, "https://example.com/");
     // console.log("Collection Contract: ", collection);
+    console.log("Cleanup: ", setupCleanup);
+    cleanup = setupCleanup;
+  });
+
+  afterEach(async () => {
+    await cleanup();
   });
 
   it("should create an collection instance", () => {
@@ -39,6 +46,9 @@ describe("Collection", () => {
     const assetId = getMintedAssetId(collection?.contract?.id.toB256() ?? "", subId);
 
     const balance: BN = await wallets[2].getBalance(assetId);
+    const totalAssets = await collection.getTotalAssets();
+    console.log("Total Assets: ", totalAssets);
+    expect(totalAssets).toBe(1);
     expect(balance.toString()).toBe("1");
   });
 
@@ -85,5 +95,17 @@ describe("Collection", () => {
 
     // Restore the original fetch function
     global.fetch = originalFetch;
+  });
+
+  it("should get total assets", async () => {
+    await collection.mint(wallets[0].address.toB256(), 2);
+    const totalAssets = await collection.getTotalAssets();
+    console.log("Total Assets: ", totalAssets);
+    expect(totalAssets).toBe(2);
+  });
+
+  it("should throw error if contract is not connected when getting total assets", async () => {
+    const invalidCollection = new Collection("invalid-id");
+    await expect(invalidCollection.getTotalAssets()).rejects.toThrow('Contract is not connected');
   });
 });

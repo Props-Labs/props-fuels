@@ -272,13 +272,6 @@ pub(crate) async fn set_merkle_root(
         .unwrap()
 }
 
-// pub(crate) async fn merkle_root(contract: &Props721Edition<WalletUnlocked>) -> Option<Bits256> {
-//     contract
-//         .methods()
-//         .merkle_root()
-//         .call()
-//         .await
-//         .unwrap()
-//         .value
-// }
-
+pub(crate) async fn max_supply(contract: &Props721Edition<WalletUnlocked>) -> Option<u64> {
+    contract.methods().max_supply().call().await.unwrap().value
+}   
