@@ -136,7 +136,7 @@ describe("EditionManager", () => {
       await edition.connect(wallets[3]);
 
       // Mint a token to trigger fee and revenue share distribution
-      await edition.mint(wallets[3].address.toB256(), 1);
+      await edition.mint(wallets[3].address.toB256(), 1, undefined, new BN(1005));
 
       const balanceAfterMint: BN = await wallets[3].getBalance(wallets[3].provider.getBaseAssetId());
       const expectedBalanceAfterMint = balancesBeforeMint[3].sub(new BN(1000));
@@ -147,10 +147,99 @@ describe("EditionManager", () => {
       const builderFeeBalance: BN = await wallets[1].getBalance(assetId);
       const builderRevenueShareBalance: BN = await wallets[2].getBalance(assetId);
 
+      console.log("builderFeeBalance", builderFeeBalance.toString());
+      console.log("builderRevenueShareBalance", builderRevenueShareBalance.toString());
+
       // Assuming the minting process distributes the fees and shares correctly
       expect(builderFeeBalance.toString()).toBe((balancesBeforeMint[1].add(builderFee)).toString()); // 5% of 1 token
       expect(builderRevenueShareBalance.toString()).toEqual(
         (balancesBeforeMint[2].add((builderRevenueSharePercentage/100)*1000)).toString()
+      ); // 10% of 1 token
+    });
+
+    it("should allow 100% builder revenue share", async () => {
+      const builderFeeAddress = wallets[1].address.toB256();
+      const builderRevenueShareAddress = wallets[2].address.toB256();
+      const builderFee = 0;
+      const builderRevenueSharePercentage = 100; // 100%
+
+      const edition: Edition = await manager.create({
+        name: "Edition 2",
+        symbol: "ED2",
+        metadata: {
+          name: "Edition 2",
+          description: "Second edition",
+          image: "image_url_2",
+        },
+        price: 1000,
+        options: {
+          maxSupply: 100,
+          owner: wallets[0],
+          builderFeeAddress,
+          builderFee,
+          builderRevenueShareAddress,
+          builderRevenueSharePercentage,
+        },
+      });
+
+      if (!edition.contract) {
+        throw new Error("Edition contract not found");
+      }
+
+      const { value: totalPrice } = await edition.contract.functions
+        .total_price()
+        .get();
+      expect(totalPrice?.toString()).toBe((1000).toString());
+
+      if (!edition.contract) {
+        throw new Error("Edition contract not found");
+      }
+
+      // Store balances before minting the token
+      const balancesBeforeMint: BN[] = [];
+      for (let i = 0; i < wallets.length; i++) {
+        const balance: BN = await wallets[i].getBalance(
+          wallets[i].provider.getBaseAssetId()
+        );
+        balancesBeforeMint.push(balance);
+      }
+
+      await edition.connect(wallets[3]);
+
+      // Mint a token to trigger fee and revenue share distribution
+      await edition.mint(
+        wallets[3].address.toB256(),
+        1,
+        undefined,
+        new BN(1000)
+      );
+
+      const balanceAfterMint: BN = await wallets[3].getBalance(
+        wallets[3].provider.getBaseAssetId()
+      );
+      const expectedBalanceAfterMint = balancesBeforeMint[3].sub(new BN(1000));
+
+      // Check balances to ensure fees and revenue shares are distributed
+      const assetId = wallets[0].provider.getBaseAssetId();
+
+      const builderFeeBalance: BN = await wallets[1].getBalance(assetId);
+      const builderRevenueShareBalance: BN =
+        await wallets[2].getBalance(assetId);
+
+      console.log("builderFeeBalance", builderFeeBalance.toString());
+      console.log(
+        "builderRevenueShareBalance",
+        builderRevenueShareBalance.toString()
+      );
+
+      // Assuming the minting process distributes the fees and shares correctly
+      expect(builderFeeBalance.toString()).toBe(
+        balancesBeforeMint[1].add(builderFee).toString()
+      ); // 5% of 1 token
+      expect(builderRevenueShareBalance.toString()).toEqual(
+        balancesBeforeMint[2]
+          .add(new BN(1000))
+          .toString()
       ); // 10% of 1 token
     });
 
