@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@fuel-ts/merkle": "^0.93.0",
-    "fuels": "0.0.0-next-20240819235155",
+    "fuels": "0.0.0-next-20241007021347",
     "pako": "^2.1.0"
   },
   "devDependencies": {
