@@ -160,12 +160,94 @@ describe("CollectionManager", () => {
 
       const builderFeeBalance: BN = await wallets[1].getBalance(assetId);
       const builderRevenueShareBalance: BN = await wallets[2].getBalance(assetId);
-
+    
       // Assuming the minting process distributes the fees and shares correctly
       expect(builderFeeBalance.toString()).toBe((balancesBeforeMint[1].add(builderFee)).toString()); // 5% of 1 token
       expect(builderRevenueShareBalance.toString()).toEqual(
         (balancesBeforeMint[2].add((builderRevenueSharePercentage/100)*1000)).toString()
       ); // 10% of 1 token
+    });
+
+    it("should allow 100% builder revenue share", async () => {
+      const builderFeeAddress = wallets[1].address.toB256();
+      const builderRevenueShareAddress = wallets[2].address.toB256();
+      const builderFee = 0;
+      const builderRevenueSharePercentage = 100; // 100%
+
+      const collection: Collection = await manager.create({
+        name: "Collection 2",
+        symbol: "COL2",
+        baseUri: "https://example.com/metadata/",
+        price: 1000,
+        options: {
+          maxSupply: 100,
+          owner: wallets[0],
+          builderFeeAddress,
+          builderFee,
+          builderRevenueShareAddress,
+          builderRevenueSharePercentage,
+        },
+      });
+
+      if (!collection.contract) {
+        throw new Error("Collection contract not found");
+      }
+
+      const feeSplitterContract = new PropsFeeSplitterContract(
+        feeSplitterContractAddress,
+        wallets[0]
+      );
+
+      const { value: totalPrice } = await collection.contract.functions
+        .total_price()
+        .addContracts([feeSplitterContract])
+        .get();
+      expect(totalPrice?.toString()).toBe("1000");
+
+      // Store balances before minting the token
+      const balancesBeforeMint: BN[] = [];
+      for (let i = 0; i < wallets.length; i++) {
+        const balance: BN = await wallets[i].getBalance(
+          wallets[i].provider.getBaseAssetId()
+        );
+        balancesBeforeMint.push(balance);
+      }
+
+      console.log("balancesBeforeMint", balancesBeforeMint);
+
+      await collection.connect(wallets[3]);
+
+      // Mint a token to trigger fee and revenue share distribution
+      await collection.mint(wallets[3].address.toB256(), 1);
+
+      const balanceAfterMint: BN = await wallets[3].getBalance(
+        wallets[3].provider.getBaseAssetId()
+      );
+      const expectedBalanceAfterMint = balancesBeforeMint[3].sub(new BN(1000));
+
+      console.log("balanceAfterMint", balanceAfterMint.toString());
+      console.log("expectedBalanceAfterMint", expectedBalanceAfterMint.toString());
+
+      // Check balances to ensure fees and revenue shares are distributed
+      const assetId = wallets[0].provider.getBaseAssetId();
+
+      const builderFeeBalance: BN = await wallets[1].getBalance(assetId);
+      const builderRevenueShareBalance: BN =
+        await wallets[2].getBalance(assetId);
+
+      console.log("100% builderFeeBalance", builderFeeBalance.toString());
+      console.log(
+        "100% builderRevenueShareBalance",
+        builderRevenueShareBalance.toString()
+      );
+
+      // Assuming the minting process distributes the fees and shares correctly
+      expect(builderFeeBalance.toString()).toBe(
+        balancesBeforeMint[1].toString()
+      ); // No builder fee
+      expect(builderRevenueShareBalance.toString()).toEqual(
+        balancesBeforeMint[2].add(new BN(1000)).toString()
+      ); // 100% of 1000
     });
 
   //   it("should get a specific collection", async () => {

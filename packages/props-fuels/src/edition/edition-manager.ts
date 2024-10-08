@@ -82,9 +82,6 @@ export class EditionManager extends PropsContractManager {
 
     const { contract } = await waitForResult();
 
-    console.log("contract: ", contract);
-    console.log("contract id: ", contract.id.toB256());
-
     const address = Address.fromDynamicInput(owner.address);
     const addressInput = { bits: address.toB256() };
     const addressIdentityInput = { Address: addressInput };
