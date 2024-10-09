@@ -232,4 +232,21 @@ export class CollectionManager extends PropsContractManager {
 
     return collections;
   }
+
+  /**
+   * Gets the details of a specific collection.
+   * @param {string} collectionId - The ID of the collection to retrieve.
+   * @param {Account} owner - The account that owns the collection.
+   * @returns {Promise<Collection>} A promise that resolves to the collection object.
+   */
+  async get(
+    collectionId: string,
+    owner: Account
+  ): Promise<Collection> {
+    const collection = await Collection.fromContractIdAndWallet(
+      collectionId,
+      owner
+    );
+    return collection;
+  }
 }
