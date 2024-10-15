@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.9
-  Forc version: 0.65.2
-  Fuel-Core version: 0.37.1
+  Fuels version: 0.96.1
+  Forc version: 0.66.1
+  Fuel-Core version: 0.40.0
 */
 
 import { Contract, Interface } from "fuels";
@@ -5688,37 +5688,37 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91944
+      "offset": 91504
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 91864
+      "offset": 91424
     },
     {
       "name": "BUILDER_FEE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91856
+      "offset": 91416
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 91896
+      "offset": 91456
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91928
+      "offset": 91488
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91848
+      "offset": 91408
     },
     {
       "name": "DISABLE_AIRDROP",
       "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-      "offset": 91936
+      "offset": 91496
     }
   ]
 };

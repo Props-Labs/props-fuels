@@ -41,6 +41,7 @@ use sway_libs::{
 use std::{hash::*, storage::storage_string::*, storage::storage_vec::*, string::String, bytes::Bytes, bytes_conversions::{b256::*, u16::*, u256::*, u32::*, u64::*,}, block::height};
 use std::logging::log;
 use std::context::msg_amount;
+use std::auth::msg_sender;
 use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
 use std::block::timestamp;
@@ -516,6 +517,56 @@ fn _mint_core(
     minted_by_address.insert(recipient, existing_count + minted_count);
 }
 
+#[storage(read, write), payable]
+fn _airdrop(
+    recipient: Identity,
+    amount: u64,
+    total_assets: StorageKey<u64>,
+    last_minted_id: StorageKey<u64>,
+    total_supply: StorageKey<StorageMap<AssetId, u64>>
+) {
+    require(!DISABLE_AIRDROP, "Airdrop is disabled");
+    only_owner();
+    require_not_paused();
+
+    let total_assets_value = total_assets.try_read().unwrap_or(0);
+    let mut last_minted_id_value = last_minted_id.try_read().unwrap_or(0);
+
+    require(
+        total_assets_value + amount <= MAX_SUPPLY,
+        MintError::MaxNFTsMinted,
+    );
+
+    let mut minted_count = 0;
+
+    while minted_count < amount {
+        let new_minted_id = last_minted_id_value + 1;
+        let new_sub_id = new_minted_id.as_u256().as_b256();
+        let asset = AssetId::new(ContractId::this(), new_sub_id);
+
+        // Mint the NFT
+        let _ = _mint(
+            total_assets,
+            total_supply,
+            recipient,
+            new_sub_id,
+            1,
+        );
+
+        log(AirdropEvent{
+            recipient,
+            amount,
+            new_minted_id
+        });
+
+        last_minted_id_value = new_minted_id;
+        minted_count += 1;
+    }
+
+    // Update last minted id in storage
+    last_minted_id.write(last_minted_id_value);
+}
+
 impl SRC3PayableExtension for Contract {
     /// Mints new assets using the `sub_id` sub-identifier in a sequential manner.
     ///
@@ -604,48 +655,7 @@ impl SRC3PayableExtension for Contract {
     /// ```
     #[storage(read, write)]
     fn airdrop(recipient: Identity, amount: u64) {
-        require(!DISABLE_AIRDROP, "Airdrop is disabled");
-        only_owner();
-        require_not_paused();
-
-        let total_assets = storage.total_assets.try_read().unwrap_or(0);
-        let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
-
-        require(
-            total_assets + amount <= MAX_SUPPLY,
-            MintError::MaxNFTsMinted,
-        );
-
-        let mut minted_count = 0;
-
-        while minted_count < amount {
-            let new_minted_id = last_minted_id + 1;
-            let new_sub_id = new_minted_id.as_u256().as_b256();
-            let asset = AssetId::new(ContractId::this(), new_sub_id);
-
-            // Mint the NFT
-            let _ = _mint(
-                storage
-                    .total_assets,
-                storage
-                    .total_supply,
-                recipient,
-                new_sub_id,
-                1,
-            );
-
-            log(AirdropEvent{
-                recipient,
-                amount,
-                new_minted_id
-            });
-
-            last_minted_id = new_minted_id;
-            minted_count += 1;
-        }
-
-        // Update last minted id in storage
-        storage.last_minted_id.write(last_minted_id);
+        _airdrop(recipient, amount, storage.total_assets, storage.last_minted_id, storage.total_supply)
     }
 
     /// Burns assets sent with the given `sub_id`.

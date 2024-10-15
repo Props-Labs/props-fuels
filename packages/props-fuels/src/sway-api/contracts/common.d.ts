@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.9
-  Forc version: 0.65.2
-  Fuel-Core version: 0.37.1
+  Fuels version: 0.96.1
+  Forc version: 0.66.1
+  Fuel-Core version: 0.40.0
 */
 
 /**

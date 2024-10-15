@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.9
-  Forc version: 0.65.2
-  Fuel-Core version: 0.37.1
+  Fuels version: 0.96.1
+  Forc version: 0.66.1
+  Fuel-Core version: 0.40.0
 */
 
 import { Contract, Interface } from "fuels";
@@ -2058,222 +2058,6 @@ const abi = {
       "name": "mint",
       "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
       "attributes": [
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " Mints new assets using the `sub_id` sub-identifier in a sequential manner."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Additional Information"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " This conforms to the SRC-20 NFT portion of the standard for a maximum"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " mint amount of 1 coin per asset. The minting process is sequential, meaning"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " each new asset is assigned a unique identifier incrementally."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `recipient`: [Identity] - The user to which the newly minted assets are transferred to."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `sub_id`: [SubId] - The sub-identifier of the newly minted asset."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `amount`: [u64] - The quantity of coins to mint."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Reverts"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * When the contract is paused."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * When amount is greater than one."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * When the asset has already been minted."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * When more than the MAX_SUPPLY NFTs have been minted."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Number of Storage Accesses"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * Reads: `3`"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * Writes: `2`"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " use src3::SRC3;"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId) {"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     let contract_abi = abi(SR3, contract_id);"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     contract_abi.mint(Identity::ContractId(ContractId::this()), ZERO_B256, 1);"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
-        },
         {
           "name": "storage",
           "arguments": [
@@ -5144,37 +4928,37 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 82040
+      "offset": 81592
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 81960
+      "offset": 81512
     },
     {
       "name": "BUILDER_FEE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 81952
+      "offset": 81504
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 81992
+      "offset": 81544
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 82024
+      "offset": 81576
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 81944
+      "offset": 81496
     },
     {
       "name": "DISABLE_AIRDROP",
       "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-      "offset": 82032
+      "offset": 81584
     }
   ]
 };

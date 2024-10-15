@@ -374,209 +374,210 @@ impl SRC20 for Contract {
     }
 }
 
+#[storage(read, write), payable]
+fn _mint_core(
+    recipient: Identity,
+    _sub_id: SubId,
+    amount: u64,
+    affiliate: Option<Identity>,
+    proof: Option<Vec<b256>>,
+    key: Option<u64>,
+    num_leaves: Option<u64>,
+    max_amount: Option<u64>,
+    start_date: StorageKey<u64>,
+    end_date: StorageKey<u64>,
+    merkle_root: StorageKey<b256>,
+    minted_by_address: StorageKey<StorageMap<Identity, u64>>,
+    price: StorageKey<u64>,
+    total_assets: StorageKey<u64>,
+    last_minted_id: StorageKey<u64>,
+    total_supply: StorageKey<StorageMap<AssetId, u64>>,
+    assets_to_sub_id: StorageKey<StorageMap<AssetId, SubId>>
+) {
+    reentrancy_guard();
+    require_not_paused();
+
+    let current_time = timestamp();
+    let start_date_value = start_date.try_read().unwrap_or(0);
+    let end_date_value = end_date.try_read().unwrap_or(0);
+
+    require(
+        current_time >= start_date_value,
+        MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has not started yet."))
+    );
+
+    require(
+        current_time <= end_date_value,
+        MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has ended."))
+    );
+
+    // Checking merkle proof
+    let root = merkle_root.try_read().unwrap_or(b256::zero());
+    if root != b256::zero() {
+        let recipient_bits:b256 = recipient.bits();
+        let mut recipient_bytes:Bytes = recipient_bits.to_le_bytes();
+        let amount_bytes = max_amount.unwrap_or(amount).to_le_bytes();
+        recipient_bytes.append(amount_bytes);
+
+        let hashed_leaf = leaf_digest(sha256(recipient_bytes));
+
+        // Verify the Merkle proof
+        require(
+            verify_proof(
+                key.unwrap_or(0),
+                hashed_leaf,
+                root,
+                num_leaves.unwrap_or(0),
+                proof.unwrap()
+            ),
+            MintError::InvalidProof
+        );
+
+        // Check if the recipient has not exceeded their maximum minting limit
+        let minted_count: u64 = minted_by_address.get(recipient).try_read().unwrap_or(0);
+        require(
+            minted_count + amount <= max_amount.unwrap_or(0),
+            MintError::ExceededMaxMintLimit
+        );
+    }
+
+    let mut total_price: u64 = 0;
+    let mut total_fee: u64 = 0;
+    let mut affiliate_fee: u64 = 0;
+
+    let price_value = price.try_read().unwrap_or(0);
+    let total_assets_value = total_assets.try_read().unwrap_or(0);
+    let mut last_minted_id_value = last_minted_id.try_read().unwrap_or(0);
+
+    let stored_owner = _owner();
+    let price_amount = msg_amount();
+    let asset_id = msg_asset_id();
+
+    require(asset_id == AssetId::base(), MintError::InvalidAsset);
+
+    require(
+        total_assets_value + amount <= MAX_SUPPLY,
+        MintError::MaxNFTsMinted,
+    );
+
+    // Check and transfer builder fee
+    if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
+        if BUILDER_FEE > 0 {
+            // Fixed fee mode
+            total_fee += BUILDER_FEE;
+            transfer(Identity::Address(BUILDER_FEE_ADDRESS), AssetId::base(), BUILDER_FEE);
+        }
+    }
+
+    if BUILDER_REVENUE_SHARE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
+        if BUILDER_REVENUE_SHARE_PERCENTAGE > 0 {
+            // Calculate the builder revenue share fee
+            let builder_fee = (price_value * BUILDER_REVENUE_SHARE_PERCENTAGE) / 100;
+            total_fee += builder_fee;
+            transfer(Identity::Address(BUILDER_REVENUE_SHARE_ADDRESS), AssetId::base(), builder_fee);
+        }
+    }
+
+    // Check and transfer affiliate fee
+    if let Some(Identity::Address(affiliate_address)) = affiliate {
+        if AFFILIATE_FEE_PERCENTAGE > 0 {
+            affiliate_fee = (price_value * AFFILIATE_FEE_PERCENTAGE) / 100;
+            total_fee += affiliate_fee;
+            transfer(Identity::Address(affiliate_address), AssetId::base(), affiliate_fee);
+        }
+    }
+
+    let fee_splitter = abi(PropsFeeSplitter, FEE_CONTRACT_ID);
+    let fee = fee_splitter.fee().unwrap_or(0);
+
+    total_price = price_value.multiply(amount) + fee + BUILDER_FEE;
+    total_fee += fee;
+
+    require(price_amount >= total_price, MintError::NotEnoughTokens(total_price));
+
+    if fee > 0 {
+        fee_splitter.receive_funds {
+            coins: fee,
+            asset_id: AssetId::base().bits(),
+            gas: 1_000_000
+        }();
+    }
+
+    let creator_price = price_amount - total_fee; // Allows giving tips to the creator
+
+    // Transfer the remaining amount to the owner
+    if creator_price > 0 {
+        if let State::Initialized(owner_identity) = stored_owner {
+            if let Identity::Address(owner_address) = owner_identity {
+                transfer(Identity::Address(owner_address), AssetId::base(), creator_price);
+            }
+        }
+    }
+
+    let mut minted_count = 0;
+
+    while minted_count < amount {
+        let new_minted_id = last_minted_id_value + 1;
+        let new_sub_id = new_minted_id.as_u256().as_b256();
+        let asset = AssetId::new(ContractId::this(), new_sub_id);
+
+        assets_to_sub_id.insert(asset, new_sub_id);
+
+        // Mint the NFT
+        let _ = _mint(
+            total_assets,
+            total_supply,
+            recipient,
+            new_sub_id,
+            1,
+        );
+
+        log(MintEvent{
+            recipient,
+            amount,
+            affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
+            max_amount: max_amount.unwrap_or(0),
+            total_price,
+            total_fee,
+            price_amount,
+            builder_fee: BUILDER_FEE,
+            affiliate_fee,
+            fee,
+            creator_price,
+            asset_id: asset,
+            new_minted_id
+        });
+
+        last_minted_id_value = new_minted_id;
+        minted_count += 1;
+    }
+
+    // Update last minted id in storage
+    last_minted_id.write(last_minted_id_value);
+}
+
 impl SRC3PayableExtension for Contract {
-    /// Mints new assets using the `sub_id` sub-identifier in a sequential manner.
-    ///
-    /// # Additional Information
-    ///
-    /// This conforms to the SRC-20 NFT portion of the standard for a maximum
-    /// mint amount of 1 coin per asset. The minting process is sequential, meaning
-    /// each new asset is assigned a unique identifier incrementally.
-    ///
-    /// # Arguments
-    ///
-    /// * `recipient`: [Identity] - The user to which the newly minted assets are transferred to.
-    /// * `sub_id`: [SubId] - The sub-identifier of the newly minted asset.
-    /// * `amount`: [u64] - The quantity of coins to mint.
-    ///
-    /// # Reverts
-    ///
-    /// * When the contract is paused.
-    /// * When amount is greater than one.
-    /// * When the asset has already been minted.
-    /// * When more than the MAX_SUPPLY NFTs have been minted.
-    ///
-    /// # Number of Storage Accesses
-    ///
-    /// * Reads: `3`
-    /// * Writes: `2`
-    ///
-    /// # Examples
-    ///
-    /// ```sway
-    /// use src3::SRC3;
-    ///
-    /// fn foo(contract_id: ContractId) {
-    ///     let contract_abi = abi(SR3, contract_id);
-    ///     contract_abi.mint(Identity::ContractId(ContractId::this()), ZERO_B256, 1);
-    /// }
-    /// ```
     #[storage(read, write), payable]
     fn mint(recipient: Identity, _sub_id: SubId, amount: u64, affiliate: Option<Identity>, proof: Option<Vec<b256>>, key: Option<u64>, num_leaves: Option<u64>, max_amount: Option<u64>) {
-        reentrancy_guard();
-        require_not_paused();
-
-        let current_time = timestamp();
-        let start_date = storage.start_date.try_read().unwrap_or(0);
-        let end_date = storage.end_date.try_read().unwrap_or(0);
-
-        require(
-            current_time >= start_date,
-            MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has not started yet."))
+        _mint_core(
+            recipient,
+            _sub_id,
+            amount,
+            affiliate,
+            proof,
+            key,
+            num_leaves,
+            max_amount,
+            storage.start_date,
+            storage.end_date,
+            storage.merkle_root,
+            storage.minted_by_address,
+            storage.price,
+            storage.total_assets,
+            storage.last_minted_id,
+            storage.total_supply,
+            storage.assets_to_sub_id
         );
-
-        require(
-            current_time <= end_date,
-            MintError::OutsideMintingPeriod(String::from_ascii_str("Minting has ended."))
-        );
-
-        // Checking merkle proof
-        let root = storage.merkle_root.try_read().unwrap_or(b256::zero());
-        if root != b256::zero() {
-            let recipient_bits:b256 = recipient.bits();
-            let mut recipient_bytes:Bytes = recipient_bits.to_le_bytes();
-            let amount_bytes = max_amount.unwrap_or(amount).to_le_bytes();
-            recipient_bytes.append(amount_bytes);
-
-            let hashed_leaf = leaf_digest(sha256(recipient_bytes));
-
-            // Verify the Merkle proof
-            require(
-                verify_proof(
-                    key.unwrap_or(0),
-                    hashed_leaf,
-                    root,
-                    num_leaves.unwrap_or(0),
-                    proof.unwrap()
-                ),
-                MintError::InvalidProof
-            );
-
-            // Check if the recipient has not exceeded their maximum minting limit
-            let minted_count: u64 = storage.minted_by_address.get(recipient).try_read().unwrap_or(0);
-            require(
-                minted_count + amount <= max_amount.unwrap_or(0),
-                MintError::ExceededMaxMintLimit
-            );
-        }
-
-        let mut total_price: u64 = 0;
-        let mut total_fee: u64 = 0;
-        let mut affiliate_fee: u64 = 0;
-
-        let price = storage.price.try_read().unwrap_or(0);
-        let total_assets = storage.total_assets.try_read().unwrap_or(0);
-        let mut last_minted_id = storage.last_minted_id.try_read().unwrap_or(0);
-
-        let stored_owner = _owner();
-        let price_amount = msg_amount();
-        let asset_id = msg_asset_id();
-
-        require(asset_id == AssetId::base(), MintError::InvalidAsset);
-
-        // require(amount > 0, MintError::CannotMintMoreThanOneNFTWithSubId);
-        require(
-            total_assets + amount <= MAX_SUPPLY,
-            MintError::MaxNFTsMinted,
-        );
-
-        // Check and transfer builder fee
-        if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
-            if BUILDER_FEE > 0 {
-                // Fixed fee mode
-                total_fee += BUILDER_FEE;
-                transfer(Identity::Address(BUILDER_FEE_ADDRESS), AssetId::base(), BUILDER_FEE);
-            }
-        }
-
-        if BUILDER_REVENUE_SHARE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
-            if BUILDER_REVENUE_SHARE_PERCENTAGE > 0 {
-                // Calculate the builder revenue share fee
-                let builder_fee = (price * BUILDER_REVENUE_SHARE_PERCENTAGE) / 100;
-                total_fee += builder_fee;
-                transfer(Identity::Address(BUILDER_REVENUE_SHARE_ADDRESS), AssetId::base(), builder_fee);
-            }
-        }
-
-        // Check and transfer affiliate fee
-        if let Some(Identity::Address(affiliate_address)) = affiliate {
-            if AFFILIATE_FEE_PERCENTAGE > 0 {
-                affiliate_fee = (price * AFFILIATE_FEE_PERCENTAGE) / 100;
-                total_fee += affiliate_fee;
-                transfer(Identity::Address(affiliate_address), AssetId::base(), affiliate_fee);
-            }
-        }
-
-        let fee_splitter = abi(PropsFeeSplitter, FEE_CONTRACT_ID);
-        let fee = fee_splitter.fee().unwrap_or(0);
-
-        total_price = price.multiply(amount) + fee + BUILDER_FEE;
-        total_fee += fee;
-
-        require(price_amount >= total_price, MintError::NotEnoughTokens(total_price));
-
-        if fee > 0 {
-            fee_splitter.receive_funds {
-                coins: fee,
-                asset_id: AssetId::base().bits(),
-                gas: 1_000_000
-            }();
-        }
-
-        let creator_price = price_amount - total_fee; // Allows giving tips to the creator
-
-        // Transfer the remaining amount to the owner
-        if creator_price > 0 {
-            if let State::Initialized(owner_identity) = stored_owner {
-                if let Identity::Address(owner_address) = owner_identity {
-                    transfer(Identity::Address(owner_address), AssetId::base(), creator_price);
-                }
-            }
-        }
-
-        let mut minted_count = 0;
-
-        while minted_count < amount {
-            let new_minted_id = last_minted_id + 1;
-            let new_sub_id = new_minted_id.as_u256().as_b256();
-            let asset = AssetId::new(ContractId::this(), new_sub_id);
-
-            storage.assets_to_sub_id.insert(asset, new_sub_id);
-
-            // Mint the NFT
-            let _ = _mint(
-                storage
-                    .total_assets,
-                storage
-                    .total_supply,
-                recipient,
-                new_sub_id,
-                1,
-            );
-
-            log(MintEvent{
-                recipient,
-                amount,
-                affiliate: affiliate.unwrap_or(Identity::Address(Address::from(0x0000000000000000000000000000000000000000000000000000000000000000))),
-                max_amount: max_amount.unwrap_or(0),
-                total_price,
-                total_fee,
-                price_amount,
-                builder_fee: BUILDER_FEE,
-                affiliate_fee,
-                fee,
-                creator_price,
-                asset_id: asset,
-                new_minted_id
-            });
-
-            last_minted_id = new_minted_id;
-            minted_count += 1;
-        }
-
-        // Update last minted id in storage
-        storage.last_minted_id.write(last_minted_id);
-
     }
 
     /// Mints new assets to a recipient in a sequential manner. Only callable by the owner.

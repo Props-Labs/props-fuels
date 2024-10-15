@@ -118,4 +118,26 @@ describe("Collection", () => {
     expect(metadata).toBeDefined();
     expect(metadata.name).toBe("Props #1");
   });
+
+  it("should get token metadata from ipfs", async () => {
+    const contract2 = await deployProps721CollectionContract(
+      wallets[0],
+      "ipfs://bafybeigotlyxwcbn46yzbsbeliet4dqpz6emj6fhwzg7ozykd3npkpo37a/"
+    );
+    const collection2 = new Collection(
+      "collection-id",
+      contract2,
+      wallets[0],
+      "ipfs://bafybeigotlyxwcbn46yzbsbeliet4dqpz6emj6fhwzg7ozykd3npkpo37a/"
+    );
+    const { transactionResult } = await collection2.mint(
+      wallets[0].address.toB256(),
+      1
+    );
+    const metadata = await collection2.getTokenMetadata(
+      transactionResult.mintedAssets[0].assetId
+    );
+    expect(metadata).toBeDefined();
+    expect(metadata.name).toBe("Reveal testing #1");
+  });
 });

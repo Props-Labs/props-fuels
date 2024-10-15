@@ -144,13 +144,16 @@ export async function deployProps721EditionContract(wallet1:Account): Promise<Pr
 
     return contract;
 }
-export async function deployProps721CollectionContract(wallet1: Account): Promise<Props721CollectionContract> {
+export async function deployProps721CollectionContract(
+  wallet1: Account,
+  baseUri: string = "https://propsassets.s3.amazonaws.com/fuel/sample-collection/"
+): Promise<Props721CollectionContract> {
   const salt: BytesLike = randomBytes(32);
   const { waitForResult } = await Props721CollectionContractFactory.deploy(
     wallet1,
     {
       configurableConstants: {
-        MAX_SUPPLY: 100
+        MAX_SUPPLY: 100,
       },
       salt,
     }
@@ -175,7 +178,7 @@ export async function deployProps721CollectionContract(wallet1: Account): Promis
       addressIdentityInput,
       "Test Collection",
       "TESTC",
-      "https://propsassets.s3.amazonaws.com/fuel/sample-collection/",
+      baseUri,
       0,
       defaultStartDate,
       defaultEndDate
