@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.2
-  Forc version: 0.63.1
-  Fuel-Core version: 0.33.0
+  Fuels version: 0.94.9
+  Forc version: 0.65.2
+  Fuel-Core version: 0.37.1
 */
 
 import { Contract, Interface } from "fuels";
@@ -3251,6 +3251,12 @@ const abi = {
     },
     {
       "inputs": [],
+      "name": "max_supply",
+      "output": "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
+      "attributes": null
+    },
+    {
+      "inputs": [],
       "name": "merkle_root",
       "output": "0c2beb9013490c4f753f2757dfe2d8340b22ce3827d596d81d249b7038033cb6",
       "attributes": [
@@ -3840,144 +3846,6 @@ const abi = {
       "name": "set_merkle",
       "output": "2e38e77b22c314a449e91fafed92a43826ac6aa403ae6a8acb6cf58239fbaf5d",
       "attributes": [
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " Sets the Merkle root and URI for the contract."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Arguments"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `root`: [b256] - The Merkle root to set."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * `uri`: [String] - The Merkle URI to set."
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Number of Storage Accesses"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " * Writes: `2`"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " # Examples"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " ```sway"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " use sway_libs::mint::SetMintMetadata;"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            ""
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " fn foo(contract_id: ContractId) {"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     let mint_abi = abi(SetMintMetadata, contract_id);"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     let root = 0x1234567890123456789012345678901234567890123456789012345678901234;"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     let uri = \"https://example.com/merkle\";"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            "     mint_abi.set_merkle(root, uri);"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " }"
-          ]
-        },
-        {
-          "name": "doc-comment",
-          "arguments": [
-            " ```"
-          ]
-        },
         {
           "name": "storage",
           "arguments": [
@@ -5276,37 +5144,37 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 80616
+      "offset": 82040
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 80536
+      "offset": 81960
     },
     {
       "name": "BUILDER_FEE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 80528
+      "offset": 81952
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 80568
+      "offset": 81992
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 80600
+      "offset": 82024
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 80520
+      "offset": 81944
     },
     {
       "name": "DISABLE_AIRDROP",
       "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-      "offset": 80608
+      "offset": 82032
     }
   ]
 };
@@ -5358,6 +5226,7 @@ export class Props721CollectionContractInterface extends Interface {
     owner: FunctionFragment;
     end_date: FunctionFragment;
     fees: FunctionFragment;
+    max_supply: FunctionFragment;
     merkle_root: FunctionFragment;
     merkle_uri: FunctionFragment;
     price: FunctionFragment;
@@ -5394,6 +5263,7 @@ export class Props721CollectionContract extends Contract {
     owner: InvokeFunction<[], StateOutput>;
     end_date: InvokeFunction<[], Option<BN>>;
     fees: InvokeFunction<[], Option<[BN, BN]>>;
+    max_supply: InvokeFunction<[], Option<BN>>;
     merkle_root: InvokeFunction<[], Option<string>>;
     merkle_uri: InvokeFunction<[], Option<StdString>>;
     price: InvokeFunction<[], Option<BN>>;

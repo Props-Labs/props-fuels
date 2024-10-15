@@ -33,6 +33,8 @@ const collection: Collection = await propsClient.collections.create({
 });
 ```
 
+> **Note:** The `baseUri` must end with a trailing slash. The contract expects the folder to contain numeric json files e.g 1.json, 2.json, etc. and will return `baseUri` + `tokenId` + `.json` when calling retrieving token metadata.
+
 ### Advanced Example
 
 The advanced example below demonstrates how to create an collection with additional parameters such as builder fee and revenue share.
@@ -84,7 +86,7 @@ const endDate = new Date('2025-01-31').getTime().toString();
 const collection: Collection = await propsClient.collections.create({
   name:"Collection 1",
   symbol: "ED1",
-  baseUri: "ipfs://bafybeiaad7jp7bsk2fubp4wmks56yxevoz7ywst5fd4gqdschuqonpd2ee/",
+  baseUri: "ipfs://bafybeiaad7jp7bsk2fubp4wmks56yxevoz7ywst5fd4gqdschuqonpd2ee/", // use trailing slash
   startDate,
   endDate,
   options: {
@@ -175,12 +177,14 @@ const propsClient = new PropsSDK({
   network: 'testnet',
 });
 
-propsClient.collections.on('transaction', (data) => {
+const collection = await propsClient.collections.get('0x1234567890123456789012345678901234567890');
+
+collection.on('transaction', (data) => {
   console.log('Transaction waiting for approval: ', collection);
   console.log('Transaction: ', data.transactionIndex, data.transactionCount, data.transactionHash);
 });
 
-propsClient.collections.on('waiting', (data) => {
+collection.on('waiting', (data) => {
   console.log('Waiting for transaction to clear:', data);
 });
 ```
@@ -189,6 +193,15 @@ propsClient.collections.on('waiting', (data) => {
 
 - `transaction` - Emitted when a transaction is waiting for approval.
 - `waiting` - Emitted when a transaction is waiting to clear.
+
+## Get Token Metadata
+To get the token metadata for a specific asset, you can use the `getTokenMetadata` method.
+
+> **Note:** Please note that on fuel, each NFT is its 1-of-1 asset with its own unique assetId. In order to get the tokens metadata, you need to specify the assetId.
+
+```javascript
+const tokenMetadata = await collection.getTokenMetadata('0x1234567890123456789012345678901234567890');
+```
 
 ## Collections API Reference
 

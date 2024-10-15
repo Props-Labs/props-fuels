@@ -48,10 +48,11 @@ use std::block::timestamp;
 use libraries::*;
 
 // release
-// const FEE_CONTRACT_ID = 0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562;
+const FEE_CONTRACT_ID = 0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562;
 
 // debug
-const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
+// const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
+// const FEE_CONTRACT_ID = 0xd92c81da30e4fba3dcaaf3cc363b8b22a08fa34ef3f1a37fa06bfbc5f651014a;
 
 storage {
     /// The total number of unique assets minted by this contract.
@@ -478,16 +479,6 @@ impl SRC3PayableExtension for Contract {
             total_assets + amount <= MAX_SUPPLY,
             MintError::MaxNFTsMinted,
         );
-
-        log("BUILDER FEE ADDRESS:");
-        log(BUILDER_FEE_ADDRESS);
-        log("BUIDER FEE:");
-        log(BUILDER_FEE);
-
-        log("BUILDER REVENUE SHARE ADDRESS:");
-        log(BUILDER_REVENUE_SHARE_ADDRESS);
-        log("BUIDER REVENUE SHARE PERCENTAGE:");
-        log(BUILDER_REVENUE_SHARE_PERCENTAGE);
 
         // Check and transfer builder fee
         if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {

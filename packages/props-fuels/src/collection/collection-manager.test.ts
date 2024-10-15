@@ -77,7 +77,7 @@ describe("CollectionManager", () => {
       .get()
     expect(value as MetadataOutput).toBeDefined();
     expect((value as MetadataOutput).String).toEqual(
-      "https://example.com/metadata/1"
+      "https://example.com/metadata/1.json"
     );
   });
 
