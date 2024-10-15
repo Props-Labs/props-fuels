@@ -59,6 +59,8 @@ export class CollectionManager extends PropsContractManager {
         {} as Partial<Record<string, any>>
       );
 
+    console.log("configurableConstants", configurableConstants);
+
     const salt: BytesLike = randomBytes(32);
     const { waitForResult } =
       await Props721CollectionContractFactory.deploy(

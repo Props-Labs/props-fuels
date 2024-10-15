@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{burn, constructor, mint, pause, total_assets, total_supply, set_fee, fee, fee_constructor, set_price, set_merkle_root},
-    setup::{defaults, default_start_date, default_end_date,get_wallet_balance, setup, deploy_edition_with_builder_fee, default_name, default_symbol, default_price, default_base_uri},
+    setup::{defaults, default_start_date, default_end_date,get_wallet_balance, setup, deploy_collection_with_builder_fee, default_name, default_symbol, default_price, default_base_uri},
 };
 use fuels::{
     prelude::*,
@@ -231,7 +231,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_assets_with_builder_fee() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2, fee_id, _fee_instance_1) = deploy_edition_with_builder_fee(Some(0)).await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, _instance_2, fee_id, _fee_instance_1) = deploy_collection_with_builder_fee(Some(0)).await;
         let owner_wallet_clone = owner_wallet.clone();
         let another_wallet_clone = another_wallet.clone();
         let (
@@ -280,7 +280,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_assets_with_builder_fee_revenue_share() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = deploy_edition_with_builder_fee(Some(1)).await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = deploy_collection_with_builder_fee(Some(1)).await;
         let owner_wallet_clone = owner_wallet.clone();
         let another_wallet_clone = another_wallet.clone();
         let other_wallet_clone = other_wallet.clone();
@@ -338,7 +338,7 @@ mod success {
 
     #[tokio::test]
     async fn mints_assets_with_affiliate_fee() {
-        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = deploy_edition_with_builder_fee(Some(2)).await;
+        let (owner_wallet, other_wallet, another_wallet, id, instance_1, instance_2, fee_id, _fee_instance_1) = deploy_collection_with_builder_fee(Some(2)).await;
         let owner_wallet_clone = owner_wallet.clone();
         let another_wallet_clone = another_wallet.clone();
         let other_wallet_clone = other_wallet.clone();

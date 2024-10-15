@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.2
-  Forc version: 0.63.1
-  Fuel-Core version: 0.33.0
+  Fuels version: 0.94.9
+  Forc version: 0.65.2
+  Fuel-Core version: 0.37.1
 */
 
 import { Contract, Interface } from "fuels";
@@ -3522,6 +3522,139 @@ const abi = {
     },
     {
       "inputs": [],
+      "name": "max_supply",
+      "output": "d852149004cc9ec0bbe7dc4e37bffea1d41469b759512b6136f2e865a4c06e7d",
+      "attributes": [
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " Returns the maximum supply of tokens that can be minted."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Returns"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * [Option<u64>] - The maximum supply of tokens."
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Number of Storage Accesses"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " * Reads: `1`"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " # Examples"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```sway"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " use sway_libs::mint::SetMintMetadata;"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            ""
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " fn foo(contract_id: ContractId) {"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let mint_abi = abi(SetMintMetadata, contract_id);"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     let max_supply = mint_abi.max_supply();"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            "     assert(max_supply.is_some());"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " }"
+          ]
+        },
+        {
+          "name": "doc-comment",
+          "arguments": [
+            " ```"
+          ]
+        }
+      ]
+    },
+    {
+      "inputs": [],
       "name": "merkle_root",
       "output": "0c2beb9013490c4f753f2757dfe2d8340b22ce3827d596d81d249b7038033cb6",
       "attributes": [
@@ -5555,37 +5688,37 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91560
+      "offset": 91944
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 91480
+      "offset": 91864
     },
     {
       "name": "BUILDER_FEE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91472
+      "offset": 91856
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 91512
+      "offset": 91896
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91544
+      "offset": 91928
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91464
+      "offset": 91848
     },
     {
       "name": "DISABLE_AIRDROP",
       "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-      "offset": 91552
+      "offset": 91936
     }
   ]
 };
@@ -5638,6 +5771,7 @@ export class Props721EditionContractInterface extends Interface {
     set_metadata: FunctionFragment;
     end_date: FunctionFragment;
     fees: FunctionFragment;
+    max_supply: FunctionFragment;
     merkle_root: FunctionFragment;
     merkle_uri: FunctionFragment;
     price: FunctionFragment;
@@ -5675,6 +5809,7 @@ export class Props721EditionContract extends Contract {
     set_metadata: InvokeFunction<[asset: AssetIdInput, key: StdString, metadata: MetadataInput], void>;
     end_date: InvokeFunction<[], Option<BN>>;
     fees: InvokeFunction<[], Option<[BN, BN]>>;
+    max_supply: InvokeFunction<[], Option<BN>>;
     merkle_root: InvokeFunction<[], Option<string>>;
     merkle_uri: InvokeFunction<[], Option<StdString>>;
     price: InvokeFunction<[], Option<BN>>;

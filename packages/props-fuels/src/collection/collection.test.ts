@@ -16,7 +16,7 @@ describe("Collection", () => {
     wallets = [wallet1, wallet2, wallet3, wallet4];
     provider = setupProvider;
     contract = await deployProps721CollectionContract(wallet1);
-    collection = new Collection("collection-id", contract, wallet1, "https://example.com/");
+    collection = new Collection("collection-id", contract, wallet1, "https://propsassets.s3.amazonaws.com/fuel/sample-collection/");
     // console.log("Collection Contract: ", collection);
     console.log("Cleanup: ", setupCleanup);
     cleanup = setupCleanup;
@@ -30,7 +30,7 @@ describe("Collection", () => {
     // console.log("Collection: ", collection);
     expect(collection).toBeInstanceOf(Collection);
     expect(collection.id).toBe("collection-id");
-    expect(collection.baseUri).toBe("https://example.com/");
+    expect(collection.baseUri).toBe("https://propsassets.s3.amazonaws.com/fuel/sample-collection/");
   });
 
   it("should connect an account to the collection", () => {
@@ -100,12 +100,22 @@ describe("Collection", () => {
   it("should get total assets", async () => {
     await collection.mint(wallets[0].address.toB256(), 2);
     const totalAssets = await collection.getTotalAssets();
-    console.log("Total Assets: ", totalAssets);
     expect(totalAssets).toBe(2);
   });
 
   it("should throw error if contract is not connected when getting total assets", async () => {
     const invalidCollection = new Collection("invalid-id");
     await expect(invalidCollection.getTotalAssets()).rejects.toThrow('Contract is not connected');
+  });
+
+  it("should get token metadata", async () => {
+    const { transactionResult } = await collection.mint(
+      wallets[0].address.toB256(),
+      1
+    );
+    const metadata = await collection.getTokenMetadata(
+      transactionResult.mintedAssets[0].assetId);
+    expect(metadata).toBeDefined();
+    expect(metadata.name).toBe("Props #1");
   });
 });

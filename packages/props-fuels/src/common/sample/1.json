@@ -1,0 +1,11 @@
+{
+  "name": "Props #1",
+  "description": "Props #1",
+  "tokenId": 1,
+  "image": "https://cdn.prod.website-files.com/62c4020866e1c640176bc34e/641a380bc04bba704d894ac4_Logo-props.svg",
+  "external_url": "https://props.com",
+  "attributes": [
+    { "trait_type": "Background", "value": "Black" },
+    { "trait_type": "Finish", "value": "Silver" }
+  ]
+}

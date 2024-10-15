@@ -64,10 +64,10 @@ export async function setup(): Promise<
 
   // Log hash of deployed fee splitter contract
   const feeSplitterContractId = feeSplitterContract.id;
-  // console.log(
-  //   "Props Fee Splitter Contract deployed at:",
-  //   feeSplitterContractId.toB256()
-  // );
+  console.log(
+    "Props Fee Splitter Contract deployed at:",
+    feeSplitterContractId.toB256()
+  );
 
   // Deploy Props Registry Contract
   const { waitForResult: waitForPropsRegistryResult } =
@@ -91,10 +91,10 @@ export async function setup(): Promise<
 
   // Log hash of deployed registry contract
   const registryContractId = propsRegistryContract.id;
-  // console.log(
-  //   "Props Registry Contract deployed at:",
-  //   registryContractId.toB256()
-  // );
+  console.log(
+    "Props Registry Contract deployed at:",
+    registryContractId.toB256()
+  );
 
   return { wallet1, wallet2, wallet3, wallet4, provider, feeSplitterContract, cleanup };
 }
@@ -175,7 +175,7 @@ export async function deployProps721CollectionContract(wallet1: Account): Promis
       addressIdentityInput,
       "Test Collection",
       "TESTC",
-      "https://example.com/metadata/",
+      "https://propsassets.s3.amazonaws.com/fuel/sample-collection/",
       0,
       defaultStartDate,
       defaultEndDate

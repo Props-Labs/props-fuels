@@ -188,12 +188,15 @@ const propsClient = new PropsSDK({
   network: 'testnet',
 });
 
-propsClient.editions.on('transaction', (data) => {
+const edition = await propsClient.editions.get('0x1234567890123456789012345678901234567890');
+// or edition = propsClient.editions.create(...)
+
+edition.on('transaction', (data) => {
   console.log('Transaction waiting for approval: ', edition);
   console.log('Transaction: ', data.transactionIndex, data.transactionCount, data.transactionHash);
 });
 
-propsClient.editions.on('waiting', (data) => {
+edition.on('waiting', (data) => {
   console.log('Waiting for transaction to clear:', data);
 });
 ```

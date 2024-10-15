@@ -5,6 +5,7 @@ import { NFTMetadata } from "../common/types";
 import { PropsContract } from "../contract";
 import { feeSplitterContractAddress } from "../common/defaults";
 import { PropsEvents } from "../core";
+import { PropsUtilities } from "../utils";
 
 /**
  * Represents an edition within the Props SDK.
@@ -65,6 +66,42 @@ export class Collection extends PropsContract {
   }
 
   /**
+   * Fetches the metadata for a specific token.
+   * @param {string} assetId - The asset ID of the token.
+   * @returns {Promise<NFTMetadata>} A promise that resolves to the token's metadata.
+   * @throws {Error} If the metadata cannot be fetched or parsed.
+   */
+  public async getTokenMetadata(assetId: string): Promise<NFTMetadata> {
+    if (!this.contract) {
+      throw new Error("Contract is not connected");
+    }
+
+    try {
+      // Fetch the token URI from the contract
+      const { value: tokenUri } = await this.contract.functions.metadata({ bits: assetId }, "uri").get();
+
+      // console.log("Token URI: ", tokenUri);
+      
+      if (!tokenUri || !tokenUri.String) {
+        throw new Error(`Token URI not found for asset ID: ${assetId}`);
+      }
+
+      // Fetch the metadata from the token URI
+      const normalizedUrl = PropsUtilities.parseUrl(tokenUri.String);
+      const response = await fetch(normalizedUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch metadata for asset ID: ${assetId}`);
+      }
+
+      const metadata: NFTMetadata = await response.json();
+      return metadata;
+    } catch (error) {
+      console.error(`Error fetching metadata for asset ID ${assetId}:`, error);
+      throw new Error(`Failed to get metadata for asset ID: ${assetId}`);
+    }
+  }
+
+  /**
    * Connects an account to the edition, replacing the current account.
    * @param {Account} account - The account to connect.
    */
@@ -83,7 +120,7 @@ export class Collection extends PropsContract {
     to: string,
     amount: number,
     affiliate?: string
-  ): Promise<MintResult|Error> {
+  ): Promise<MintResult> {
     if (!this.contract || !this.account) {
       throw new Error("Contract or account is not connected");
     }

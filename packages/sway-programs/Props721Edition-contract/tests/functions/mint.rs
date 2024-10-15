@@ -296,7 +296,10 @@ mod success {
 
         set_price(&instance_1, 1_000).await;
 
-        mint(&instance_2, other_identity, sub_id_1, 1, 1_000, fee_id, None, None, None, None, None).await;
+        let response = mint(&instance_2, other_identity, sub_id_1, 1, 1_000, fee_id, None, None, None, None, None).await;
+        let logs = response.decode_logs();
+        println!("BUILDER_FEE_SHARE");
+        println!("{:?}", logs);
 
         // Check that mint has transferred the coins
         let contract_balances = instance_1.get_balances().await.unwrap();

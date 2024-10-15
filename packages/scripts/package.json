@@ -1,0 +1,16 @@
+{
+  "name": "@props-fuels/scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "create-edition": "tsx create-edition.ts"
+  },
+  "dependencies": {
+    "@props-labs/fuels": "workspace:*",
+    "fuels": "^0.94.9"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.0.0"
+  }
+}
