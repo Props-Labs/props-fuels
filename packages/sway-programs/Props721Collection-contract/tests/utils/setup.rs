@@ -125,7 +125,7 @@ pub(crate) async fn setup() -> (
     (wallet1, wallet2, id.into(), instance_1, instance_2, fee_id.into(), fee_instance_1)
 }
 
-pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
+pub(crate) async fn deploy_collection_with_builder_fee(mode: Option<u8>) -> (
     WalletUnlocked,
     WalletUnlocked,
     WalletUnlocked,
@@ -158,6 +158,7 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
     let mut configurables = Props721CollectionConfigurables::default();
 
     if let Some(1) = mode {
+        println!("SETTING BUILDER REVENUE SHARE TO {:?} ", 50);
         configurables = configurables
             .with_BUILDER_REVENUE_SHARE_ADDRESS(wallet3.address().into()).unwrap()
             .with_BUILDER_REVENUE_SHARE_PERCENTAGE(50).unwrap();
@@ -165,10 +166,13 @@ pub(crate) async fn deploy_edition_with_builder_fee(mode: Option<u8>) -> (
         configurables = configurables
             .with_AFFILIATE_FEE_PERCENTAGE(10).unwrap()
     } else {
+         println!("SETTING BUILDER FEE TO {:?} ", 1000);
         configurables = configurables
             .with_BUILDER_FEE_ADDRESS(wallet3.address().into()).unwrap()
             .with_BUILDER_FEE(1000).unwrap(); // Example value for BUILDER_FEE
     }
+
+    println!("configurables: {:?}", configurables);
 
     let id = Contract::load_from(NFT_CONTRACT_BINARY_PATH, LoadConfiguration::default()
         .with_configurables(configurables)

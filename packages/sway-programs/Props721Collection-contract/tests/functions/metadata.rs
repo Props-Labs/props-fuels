@@ -27,14 +27,14 @@ mod success {
         mint(&instance_1, other_identity, sub_id_1, 3, 0, fee_id, None, None, None, None, None).await;
 
         assert_eq!(base_uri(&instance_1).await, Some(default_base_uri()));
-        let metadata1 = Metadata::String(String::from(default_base_uri() + "1"));
+        let metadata1 = Metadata::String(String::from(default_base_uri() + "1.json"));
         println!("metadata1: {:?}", metadata1);
         assert_eq!(
             metadata(&instance_1, asset_id_1, String::from("uri")).await,
             Some(metadata1)
         );
 
-        let metadata2 = Metadata::String(String::from(default_base_uri() + "2"));
+        let metadata2 = Metadata::String(String::from(default_base_uri() + "2.json"));
         println!("metadata1: {:?}", metadata2);
         assert_eq!(
             metadata(&instance_1, asset_id_2, String::from("uri")).await,

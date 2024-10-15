@@ -47,7 +47,11 @@ use std::block::timestamp;
 
 use libraries::*;
 
-const FEE_CONTRACT_ID = 0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562;
+// release
+// const FEE_CONTRACT_ID = 0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562;
+
+// debug
+const FEE_CONTRACT_ID = 0xd65987a6b981810a28559d57e5083d47a10ce269cbf96316554d5b4a1b78485a;
 
 storage {
     /// The total number of unique assets minted by this contract.
@@ -435,11 +439,20 @@ impl SRC3PayableExtension for Contract {
             MintError::MaxNFTsMinted,
         );
 
+        log("BUILDER FEE ADDRESS:");
+        log(BUILDER_FEE_ADDRESS);
+        log("BUIDER FEE:");
+        log(BUILDER_FEE);
+
+        log("BUILDER REVENUE SHARE ADDRESS:");
+        log(BUILDER_REVENUE_SHARE_ADDRESS);
+        log("BUIDER REVENUE SHARE PERCENTAGE:");
+        log(BUILDER_REVENUE_SHARE_PERCENTAGE);
+
         // Check and transfer builder fee
         if BUILDER_FEE_ADDRESS != Address::from(0x0000000000000000000000000000000000000000000000000000000000000000) {
             if BUILDER_FEE > 0 {
                 // Fixed fee mode
-                require(price_amount >= BUILDER_FEE, MintError::NotEnoughTokens(price_amount));
                 total_fee += BUILDER_FEE;
                 transfer(Identity::Address(BUILDER_FEE_ADDRESS), AssetId::base(), BUILDER_FEE);
             }
@@ -449,7 +462,6 @@ impl SRC3PayableExtension for Contract {
             if BUILDER_REVENUE_SHARE_PERCENTAGE > 0 {
                 // Calculate the builder revenue share fee
                 let builder_fee = (price * BUILDER_REVENUE_SHARE_PERCENTAGE) / 100;
-                require(price_amount >= builder_fee, MintError::NotEnoughTokens(price_amount));
                 total_fee += builder_fee;
                 transfer(Identity::Address(BUILDER_REVENUE_SHARE_ADDRESS), AssetId::base(), builder_fee);
             }
@@ -459,7 +471,6 @@ impl SRC3PayableExtension for Contract {
         if let Some(Identity::Address(affiliate_address)) = affiliate {
             if AFFILIATE_FEE_PERCENTAGE > 0 {
                 affiliate_fee = (price * AFFILIATE_FEE_PERCENTAGE) / 100;
-                require(price_amount >= affiliate_fee, MintError::NotEnoughTokens(price_amount));
                 total_fee += affiliate_fee;
                 transfer(Identity::Address(affiliate_address), AssetId::base(), affiliate_fee);
             }
@@ -1193,10 +1204,9 @@ impl SetMintMetadata for Contract {
     ///     assert(max_supply.is_some());
     /// }
     /// ```
-    // #[storage(read)]
-    // fn max_supply() -> Option<u64> {
-    //     Some(MAX_SUPPLY)
-    // }
+    fn max_supply() -> Option<u64> {
+        Some(MAX_SUPPLY)
+    }
 }
 
 impl Pausable for Contract {

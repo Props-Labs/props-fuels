@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{max_supply, constructor},
-    setup::{defaults, default_start_date, default_end_date,setup, default_name, default_price, default_base_uri, default_symbol, Metadata},
+    setup::{defaults, default_start_date, default_end_date,setup, default_name, default_price, default_base_uri, default_symbol},
 };
 
 mod success {

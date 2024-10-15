@@ -1,6 +1,6 @@
 use crate::utils::{
     interface::{constructor, owner, base_uri, price},
-    setup::{defaults, default_start_date, default_end_date,setup, deploy_edition_with_builder_fee, default_name, default_price, default_base_uri, default_symbol, State},
+    setup::{defaults, default_start_date, default_end_date,setup, deploy_collection_with_builder_fee, default_name, default_price, default_base_uri, default_symbol, State},
 };
 
 mod success {
@@ -36,7 +36,7 @@ mod success {
 
     #[tokio::test]
     async fn initializes_fee() {
-        let (owner_wallet, other_wallet, _another_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = deploy_edition_with_builder_fee(Some(0)).await;
+        let (owner_wallet, other_wallet, _another_wallet, id, instance_1, _instance_2, _fee_id, _fee_instance_1) = deploy_collection_with_builder_fee(Some(0)).await;
         let (
             _asset_id_1,
             _asset_id_2,
