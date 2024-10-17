@@ -29,15 +29,12 @@ export const props721CollectionVersion: number = 1;
 export const props721EditionVersion: number = 1;
 
 // mainnet
-// export const registryContractAddress =
-//   "0xac0f1a9c784d339dbecf735936dab1c8811aa953a8b9bc247020d8ea9743bf65";
-
-// export const registryContractAddress =
-//   "0xc6e6c19f5a8bc4d505eb0725e4b93b5494bcbf7d53253be303c83a921df9ea70";
+export const registryContractAddress =
+  "0xc6e6c19f5a8bc4d505eb0725e4b93b5494bcbf7d53253be303c83a921df9ea70";
 
 // test
-export const registryContractAddress =
-  "0x386162f4c6bbec1c5d868b1e7c67068c9854e09b3338c4adb221ff488140456e";
+// export const registryContractAddress =
+//   "0x386162f4c6bbec1c5d868b1e7c67068c9854e09b3338c4adb221ff488140456e";
 
 export const registryContractAddresses: Record<string, string> = {
   testnet: "0xc6e6c19f5a8bc4d505eb0725e4b93b5494bcbf7d53253be303c83a921df9ea70",
@@ -45,12 +42,12 @@ export const registryContractAddresses: Record<string, string> = {
   // Add other network IDs and their corresponding addresses here
 };
 
-// export const feeSplitterContractAddress =
-//   "0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562";
+export const feeSplitterContractAddress =
+  "0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562";
 
 // test
-export const feeSplitterContractAddress =
-  "0xd92c81da30e4fba3dcaaf3cc363b8b22a08fa34ef3f1a37fa06bfbc5f651014a";
+// export const feeSplitterContractAddress =
+//   "0xd92c81da30e4fba3dcaaf3cc363b8b22a08fa34ef3f1a37fa06bfbc5f651014a";
 
 export const feeSplitterContractAddresses: Record<string, string> = {
   testnet: "0xe63564f83a2b82b97ea3f42d1680eeca825e3596b76da197ea4f6f6595810562",

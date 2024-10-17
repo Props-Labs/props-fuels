@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.96.1
+  Fuels version: 0.94.9
   Forc version: 0.66.1
   Fuel-Core version: 0.40.0
 */
@@ -64,6 +64,8 @@ export type MintEventInput = { recipient: IdentityInput, amount: BigNumberish, a
 export type MintEventOutput = { recipient: IdentityOutput, amount: BN, affiliate: IdentityOutput, max_amount: BN, total_price: BN, total_fee: BN, price_amount: BN, builder_fee: BN, affiliate_fee: BN, fee: BN, creator_price: BN, asset_id: AssetIdOutput, new_minted_id: BN };
 export type OwnershipSetInput = { new_owner: IdentityInput };
 export type OwnershipSetOutput = { new_owner: IdentityOutput };
+export type SetDecimalsEventInput = { asset: AssetIdInput, decimals: BigNumberish, sender: IdentityInput };
+export type SetDecimalsEventOutput = { asset: AssetIdOutput, decimals: number, sender: IdentityOutput };
 export type SetMerkleRootEventInput = { root: string, uri: StdString };
 export type SetMerkleRootEventOutput = SetMerkleRootEventInput;
 export type SetMetadataEventInput = { asset: AssetIdInput, key: StdString, metadata: MetadataInput };
@@ -72,6 +74,12 @@ export type SetMintDatesEventInput = { start: BigNumberish, end: BigNumberish };
 export type SetMintDatesEventOutput = { start: BN, end: BN };
 export type SetMintPriceEventInput = { price: BigNumberish };
 export type SetMintPriceEventOutput = { price: BN };
+export type SetNameEventInput = { asset: AssetIdInput, name: Option<StdString>, sender: IdentityInput };
+export type SetNameEventOutput = { asset: AssetIdOutput, name: Option<StdString>, sender: IdentityOutput };
+export type SetSymbolEventInput = { asset: AssetIdInput, symbol: Option<StdString>, sender: IdentityInput };
+export type SetSymbolEventOutput = { asset: AssetIdOutput, symbol: Option<StdString>, sender: IdentityOutput };
+export type TotalSupplyEventInput = { asset: AssetIdInput, supply: BigNumberish, sender: IdentityInput };
+export type TotalSupplyEventOutput = { asset: AssetIdOutput, supply: BN, sender: IdentityOutput };
 
 export type Props721EditionContractConfigurables = Partial<{
   MAX_SUPPLY: BigNumberish;
@@ -277,24 +285,44 @@ const abi = {
       "metadataTypeId": 22
     },
     {
+      "type": "struct standards::src20::SetDecimalsEvent",
+      "concreteTypeId": "fbe071a6e7ca2b2b5e503e82638f9f11c861a6fb452b65473eca8260db87392d",
+      "metadataTypeId": 23
+    },
+    {
+      "type": "struct standards::src20::SetNameEvent",
+      "concreteTypeId": "6ce295b0fb4c1c15e8ed1cfa4babda47d8a04940a5266a3229e12243a2e37c2c",
+      "metadataTypeId": 24
+    },
+    {
+      "type": "struct standards::src20::SetSymbolEvent",
+      "concreteTypeId": "a8a4b78066c51a50da6349bd395fe1c67e774d75c1db2c5c22288a432d7a363d",
+      "metadataTypeId": 25
+    },
+    {
+      "type": "struct standards::src20::TotalSupplyEvent",
+      "concreteTypeId": "f255d5cc2114d1b6bc34bef4c28d4b60caccffd9a672ed16b79ea217e1c4a8a3",
+      "metadataTypeId": 26
+    },
+    {
       "type": "struct std::address::Address",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "metadataTypeId": 23
+      "metadataTypeId": 27
     },
     {
       "type": "struct std::asset_id::AssetId",
       "concreteTypeId": "c0710b6731b1dd59799cf6bef33eee3b3b04a2e40e80a0724090215bbf2ca974",
-      "metadataTypeId": 24
+      "metadataTypeId": 28
     },
     {
       "type": "struct std::string::String",
       "concreteTypeId": "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c",
-      "metadataTypeId": 28
+      "metadataTypeId": 32
     },
     {
       "type": "struct std::vec::Vec<(struct std::string::String, enum standards::src7::Metadata)>",
       "concreteTypeId": "776867f04d61042b56c8406dc3294b1c7cee623ad2eee442f9c7f7cbde40438f",
-      "metadataTypeId": 30,
+      "metadataTypeId": 34,
       "typeArguments": [
         "699fc2a782d312c8f241a452a79c7a2e50289646d236b28f49e02ff1df61a160"
       ]
@@ -302,7 +330,7 @@ const abi = {
     {
       "type": "struct std::vec::Vec<b256>",
       "concreteTypeId": "32559685d0c9845f059bf9d472a0a38cf77d36c23dfcffe5489e86a65cdd9198",
-      "metadataTypeId": 30,
+      "metadataTypeId": 34,
       "typeArguments": [
         "7c5ee1cecf5f8eacd1284feb5f0bf2bdea533a51e2f0c9aabe9236d335989f3b"
       ]
@@ -310,7 +338,7 @@ const abi = {
     {
       "type": "struct std::vec::Vec<enum standards::src7::Metadata>",
       "concreteTypeId": "1ab103a67384da9b250699acaad9c7a5f9b3650cb5bb74244026e4a665dbaf13",
-      "metadataTypeId": 30,
+      "metadataTypeId": 34,
       "typeArguments": [
         "f44b531974c6c04e17e66ab54e9868d230b9a24b3710b184399c363f0190180d"
       ]
@@ -318,7 +346,7 @@ const abi = {
     {
       "type": "struct std::vec::Vec<struct std::string::String>",
       "concreteTypeId": "44fe2320bc65785fc0e617cb83e9eed432430acbf1a3999783a15982b84237e8",
-      "metadataTypeId": 30,
+      "metadataTypeId": 34,
       "typeArguments": [
         "9a7f1d3e963c10e0a4ea70a8e20a4813d1dc5682e28f74cb102ae50d32f7f98c"
       ]
@@ -326,7 +354,7 @@ const abi = {
     {
       "type": "struct sway_libs::ownership::events::OwnershipSet",
       "concreteTypeId": "e1ef35033ea9d2956f17c3292dea4a46ce7d61fdf37bbebe03b7b965073f43b5",
-      "metadataTypeId": 31
+      "metadataTypeId": 35
     },
     {
       "type": "u64",
@@ -344,7 +372,7 @@ const abi = {
       "components": [
         {
           "name": "__tuple_element",
-          "typeId": 28
+          "typeId": 32
         },
         {
           "name": "__tuple_element",
@@ -392,7 +420,7 @@ const abi = {
         },
         {
           "name": "OutsideMintingPeriod",
-          "typeId": 28
+          "typeId": 32
         },
         {
           "name": "InvalidProof",
@@ -452,7 +480,7 @@ const abi = {
         },
         {
           "name": "Bytes",
-          "typeId": 25
+          "typeId": 29
         },
         {
           "name": "Int",
@@ -460,7 +488,7 @@ const abi = {
         },
         {
           "name": "String",
-          "typeId": 28
+          "typeId": 32
         }
       ]
     },
@@ -470,11 +498,11 @@ const abi = {
       "components": [
         {
           "name": "Address",
-          "typeId": 23
+          "typeId": 27
         },
         {
           "name": "ContractId",
-          "typeId": 27
+          "typeId": 31
         }
       ]
     },
@@ -643,7 +671,7 @@ const abi = {
         },
         {
           "name": "asset_id",
-          "typeId": 24
+          "typeId": 28
         },
         {
           "name": "new_minted_id",
@@ -661,7 +689,7 @@ const abi = {
         },
         {
           "name": "uri",
-          "typeId": 28
+          "typeId": 32
         }
       ]
     },
@@ -671,11 +699,11 @@ const abi = {
       "components": [
         {
           "name": "asset",
-          "typeId": 24
+          "typeId": 28
         },
         {
           "name": "key",
-          "typeId": 28
+          "typeId": 32
         },
         {
           "name": "metadata",
@@ -708,8 +736,92 @@ const abi = {
       ]
     },
     {
-      "type": "struct std::address::Address",
+      "type": "struct standards::src20::SetDecimalsEvent",
       "metadataTypeId": 23,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 28
+        },
+        {
+          "name": "decimals",
+          "typeId": "c89951a24c6ca28c13fd1cfdc646b2b656d69e61a92b91023be7eb58eb914b6b"
+        },
+        {
+          "name": "sender",
+          "typeId": 7
+        }
+      ]
+    },
+    {
+      "type": "struct standards::src20::SetNameEvent",
+      "metadataTypeId": 24,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 28
+        },
+        {
+          "name": "name",
+          "typeId": 8,
+          "typeArguments": [
+            {
+              "name": "",
+              "typeId": 32
+            }
+          ]
+        },
+        {
+          "name": "sender",
+          "typeId": 7
+        }
+      ]
+    },
+    {
+      "type": "struct standards::src20::SetSymbolEvent",
+      "metadataTypeId": 25,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 28
+        },
+        {
+          "name": "symbol",
+          "typeId": 8,
+          "typeArguments": [
+            {
+              "name": "",
+              "typeId": 32
+            }
+          ]
+        },
+        {
+          "name": "sender",
+          "typeId": 7
+        }
+      ]
+    },
+    {
+      "type": "struct standards::src20::TotalSupplyEvent",
+      "metadataTypeId": 26,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 28
+        },
+        {
+          "name": "supply",
+          "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "sender",
+          "typeId": 7
+        }
+      ]
+    },
+    {
+      "type": "struct std::address::Address",
+      "metadataTypeId": 27,
       "components": [
         {
           "name": "bits",
@@ -719,7 +831,7 @@ const abi = {
     },
     {
       "type": "struct std::asset_id::AssetId",
-      "metadataTypeId": 24,
+      "metadataTypeId": 28,
       "components": [
         {
           "name": "bits",
@@ -729,11 +841,11 @@ const abi = {
     },
     {
       "type": "struct std::bytes::Bytes",
-      "metadataTypeId": 25,
+      "metadataTypeId": 29,
       "components": [
         {
           "name": "buf",
-          "typeId": 26
+          "typeId": 30
         },
         {
           "name": "len",
@@ -743,7 +855,7 @@ const abi = {
     },
     {
       "type": "struct std::bytes::RawBytes",
-      "metadataTypeId": 26,
+      "metadataTypeId": 30,
       "components": [
         {
           "name": "ptr",
@@ -757,7 +869,7 @@ const abi = {
     },
     {
       "type": "struct std::contract_id::ContractId",
-      "metadataTypeId": 27,
+      "metadataTypeId": 31,
       "components": [
         {
           "name": "bits",
@@ -767,17 +879,17 @@ const abi = {
     },
     {
       "type": "struct std::string::String",
-      "metadataTypeId": 28,
+      "metadataTypeId": 32,
       "components": [
         {
           "name": "bytes",
-          "typeId": 25
+          "typeId": 29
         }
       ]
     },
     {
       "type": "struct std::vec::RawVec",
-      "metadataTypeId": 29,
+      "metadataTypeId": 33,
       "components": [
         {
           "name": "ptr",
@@ -794,11 +906,11 @@ const abi = {
     },
     {
       "type": "struct std::vec::Vec",
-      "metadataTypeId": 30,
+      "metadataTypeId": 34,
       "components": [
         {
           "name": "buf",
-          "typeId": 29,
+          "typeId": 33,
           "typeArguments": [
             {
               "name": "",
@@ -817,7 +929,7 @@ const abi = {
     },
     {
       "type": "struct sway_libs::ownership::events::OwnershipSet",
-      "metadataTypeId": 31,
+      "metadataTypeId": 35,
       "components": [
         {
           "name": "new_owner",
@@ -5655,6 +5767,22 @@ const abi = {
       "concreteTypeId": "8918e0ef064a0148dea2d218f022d9b9065aea529e92f028167175e90d883194"
     },
     {
+      "logId": "7845998088195677205",
+      "concreteTypeId": "6ce295b0fb4c1c15e8ed1cfa4babda47d8a04940a5266a3229e12243a2e37c2c"
+    },
+    {
+      "logId": "12152039456660331088",
+      "concreteTypeId": "a8a4b78066c51a50da6349bd395fe1c67e774d75c1db2c5c22288a432d7a363d"
+    },
+    {
+      "logId": "18149631459970394923",
+      "concreteTypeId": "fbe071a6e7ca2b2b5e503e82638f9f11c861a6fb452b65473eca8260db87392d"
+    },
+    {
+      "logId": "17462098202904023478",
+      "concreteTypeId": "f255d5cc2114d1b6bc34bef4c28d4b60caccffd9a672ed16b79ea217e1c4a8a3"
+    },
+    {
       "logId": "13791596350235125220",
       "concreteTypeId": "bf6597cf3d56a5e47a920520e275ccd481a27e7c988ea6af6f253170d5374c5a"
     },
@@ -5688,37 +5816,37 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91504
+      "offset": 94960
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 91424
+      "offset": 94880
     },
     {
       "name": "BUILDER_FEE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91416
+      "offset": 94872
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 91456
+      "offset": 94912
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91488
+      "offset": 94944
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 91408
+      "offset": 94864
     },
     {
       "name": "DISABLE_AIRDROP",
       "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-      "offset": 91496
+      "offset": 94952
     }
   ]
 };

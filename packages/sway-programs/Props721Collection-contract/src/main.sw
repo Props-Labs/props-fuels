@@ -6,6 +6,7 @@ mod interface;
 use errors::{MintError, SetError};
 use interface::{Props721Collection, SetTokenUri};
 use standards::{src20::SRC20, src3::SRC3, src5::{SRC5, State}, src7::{Metadata, SRC7},};
+use standards::src20::{SetNameEvent, SetSymbolEvent, SetDecimalsEvent, TotalSupplyEvent};
 use sway_libs::{
     asset::{
         base::{
@@ -41,6 +42,7 @@ use sway_libs::{
 use std::{hash::*, storage::storage_string::*, storage::storage_vec::*, string::String, bytes::Bytes, bytes_conversions::{b256::*, u16::*, u256::*, u32::*, u64::*,}};
 use std::logging::log;
 use std::context::msg_amount;
+use std::auth::msg_sender;
 use std::call_frames::msg_asset_id;
 use std::asset::{transfer};
 use std::block::timestamp;
@@ -392,7 +394,9 @@ fn _mint_core(
     total_assets: StorageKey<u64>,
     last_minted_id: StorageKey<u64>,
     total_supply: StorageKey<StorageMap<AssetId, u64>>,
-    assets_to_sub_id: StorageKey<StorageMap<AssetId, SubId>>
+    assets_to_sub_id: StorageKey<StorageMap<AssetId, SubId>>,
+    name: StorageKey<StorageString>,
+    symbol: StorageKey<StorageString>
 ) {
     reentrancy_guard();
     require_not_paused();
@@ -548,6 +552,16 @@ fn _mint_core(
             new_minted_id
         });
 
+        let name_value = name.read_slice().unwrap();
+        let symbol_value = symbol.read_slice().unwrap();
+
+        let sender = msg_sender().unwrap();
+
+        SetNameEvent::new(asset, Some(name_value), sender).log();
+        SetSymbolEvent::new(asset, Some(symbol_value), sender).log();
+        SetDecimalsEvent::new(asset, 0u8, sender).log();
+        TotalSupplyEvent::new(asset, 1, sender).log();
+
         last_minted_id_value = new_minted_id;
         minted_count += 1;
     }
@@ -576,7 +590,9 @@ impl SRC3PayableExtension for Contract {
             storage.total_assets,
             storage.last_minted_id,
             storage.total_supply,
-            storage.assets_to_sub_id
+            storage.assets_to_sub_id,
+            storage.name,
+            storage.symbol
         );
     }
 
