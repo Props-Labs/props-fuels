@@ -6,6 +6,8 @@ mod interface;
 use errors::{MintError, SetError};
 use interface::{Props721Edition, SRC7MetadataExtension};
 use standards::{src20::SRC20, src3::SRC3, src5::{SRC5, State}, src7::{Metadata, SRC7},};
+use standards::src20::{SetNameEvent, SetSymbolEvent, SetDecimalsEvent, TotalSupplyEvent};
+use standards::src7::{SetMetadataEvent};
 use sway_libs::{
     asset::{
         base::{
@@ -353,7 +355,11 @@ fn _mint_core(
     price: StorageKey<u64>,
     total_assets: StorageKey<u64>,
     last_minted_id: StorageKey<u64>,
-    total_supply: StorageKey<StorageMap<AssetId, u64>>
+    total_supply: StorageKey<StorageMap<AssetId, u64>>,
+    name: StorageKey<StorageString>,
+    symbol: StorageKey<StorageString>,
+    metadata_keys: StorageKey<StorageVec<StorageString>>,
+    metadata: StorageKey<StorageMetadata>
 ) {
     reentrancy_guard();
     require_not_paused();
@@ -507,6 +513,25 @@ fn _mint_core(
             new_minted_id
         });
 
+        let name_value = name.read_slice().unwrap();
+        let symbol_value = symbol.read_slice().unwrap();
+
+        let sender = msg_sender().unwrap();
+
+        SetNameEvent::new(asset, Some(name_value), sender).log();
+        SetSymbolEvent::new(asset, Some(symbol_value), sender).log();
+        SetDecimalsEvent::new(asset, 0u8, sender).log();
+        TotalSupplyEvent::new(asset, 1, sender).log();
+
+        let mut i = 0;
+        while i < metadata_keys.len() {
+            let key = metadata_keys.get(i).unwrap();
+            if let Some(metadata) = metadata.get(AssetId::from(SubId::zero()), key.read_slice().unwrap()) {
+                SetMetadataEvent::new(asset, Some(metadata), key.read_slice().unwrap(), sender).log();
+            }
+            i += 1;
+        }
+
         last_minted_id_value = new_minted_id;
         minted_count += 1;
     }
@@ -523,7 +548,11 @@ fn _airdrop(
     amount: u64,
     total_assets: StorageKey<u64>,
     last_minted_id: StorageKey<u64>,
-    total_supply: StorageKey<StorageMap<AssetId, u64>>
+    total_supply: StorageKey<StorageMap<AssetId, u64>>,
+    name: StorageKey<StorageString>,
+    symbol: StorageKey<StorageString>,
+    metadata_keys: StorageKey<StorageVec<StorageString>>,
+    metadata: StorageKey<StorageMetadata>
 ) {
     require(!DISABLE_AIRDROP, "Airdrop is disabled");
     only_owner();
@@ -558,6 +587,25 @@ fn _airdrop(
             amount,
             new_minted_id
         });
+
+        let name_value = name.read_slice().unwrap();
+        let symbol_value = symbol.read_slice().unwrap();
+
+        let sender = msg_sender().unwrap();
+
+        SetNameEvent::new(asset, Some(name_value), sender).log();
+        SetSymbolEvent::new(asset, Some(symbol_value), sender).log();
+        SetDecimalsEvent::new(asset, 0u8, sender).log();
+        TotalSupplyEvent::new(asset, 1, sender).log();
+
+        let mut i = 0;
+        while i < metadata_keys.len() {
+            let key = metadata_keys.get(i).unwrap();
+            if let Some(metadata) = metadata.get(AssetId::from(SubId::zero()), key.read_slice().unwrap()) {
+                SetMetadataEvent::new(asset, Some(metadata), key.read_slice().unwrap(), sender).log();
+            }
+            i += 1;
+        }
 
         last_minted_id_value = new_minted_id;
         minted_count += 1;
@@ -622,7 +670,11 @@ impl SRC3PayableExtension for Contract {
             storage.price,
             storage.total_assets,
             storage.last_minted_id,
-            storage.total_supply
+            storage.total_supply,
+            storage.name,
+            storage.symbol,
+            storage.metadata_keys,
+            storage.metadata
         );
     }
 
@@ -655,7 +707,7 @@ impl SRC3PayableExtension for Contract {
     /// ```
     #[storage(read, write)]
     fn airdrop(recipient: Identity, amount: u64) {
-        _airdrop(recipient, amount, storage.total_assets, storage.last_minted_id, storage.total_supply)
+        _airdrop(recipient, amount, storage.total_assets, storage.last_minted_id, storage.total_supply, storage.name, storage.symbol, storage.metadata_keys, storage.metadata)
     }
 
     /// Burns assets sent with the given `sub_id`.
@@ -897,11 +949,8 @@ impl SetAssetMetadata for Contract {
         only_owner();
         require(storage.metadata.get(AssetId::from(SubId::zero()), key).is_none(), SetError::ValueAlreadySet);
         _set_metadata(storage.metadata, AssetId::from(SubId::zero()), key, metadata);
-        log(SetMetadataEvent{
-            asset,
-            key,
-            metadata
-        });
+        let sender = msg_sender().unwrap();
+        SetMetadataEvent::new(asset, Some(metadata), key, sender).log();
     }
 }
 
