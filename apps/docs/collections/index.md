@@ -164,6 +164,28 @@ const endDate = new Date('2025-01-31').getTime().toString();
 await collection.setDates(startDate, endDate);
 ```
 
+## Airdropping Tokens from an Collection
+
+To airdrop tokens, you need to use the `airdrop` method of the `Collection` class. Below is a guide on how to airdrop tokens from an collection.
+
+```javascript
+import { Wallet } from 'fuels';
+import { PropsSDK, Collection } from '@props-labs/fuels';
+
+const collectionId = '0x1234567890123456789012345678901234567890' // Collection ID aka Contract ID
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
+const collection:Collection = await propsClient.collections.get(collectionId);
+
+const wallet = new Wallet('private_key');
+collection.connect(wallet);
+
+await collection.airdrop('0x1234567890123456789012345678901234567890', 10);
+```
+
 ## Events
 
 The `Collections` class emits events that you can listen to. Below is a list of events that you can listen to.

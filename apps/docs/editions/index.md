@@ -175,6 +175,28 @@ const endDate = new Date('2025-01-31').getTime().toString();
 await edition.setDates(startDate, endDate);
 ```
 
+## Airdropping Tokens from an Edition
+
+To airdrop tokens, you need to use the `airdrop` method of the `Edition` class. Below is a guide on how to airdrop tokens from an edition.
+
+```javascript
+import { Wallet } from 'fuels';
+import { PropsSDK, Collection } from '@props-labs/fuels';
+
+const editionId = '0x1234567890123456789012345678901234567890' // Edition ID aka Contract ID
+
+const propsClient = new PropsSDK({
+  network: 'testnet',
+});
+
+const edition:Edition = await propsClient.editions.get(editionId);
+
+const wallet = new Wallet('private_key');
+edition.connect(wallet);
+
+await edition.airdrop('0x1234567890123456789012345678901234567890', 10);
+```
+
 ## Events
 
 The `Editions` class emits events that you can listen to. Below is a list of events that you can listen to.
