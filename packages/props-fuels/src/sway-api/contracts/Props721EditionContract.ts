@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.9
+  Fuels version: 0.96.1
   Forc version: 0.66.1
   Fuel-Core version: 0.40.0
 */
@@ -68,8 +68,8 @@ export type SetDecimalsEventInput = { asset: AssetIdInput, decimals: BigNumberis
 export type SetDecimalsEventOutput = { asset: AssetIdOutput, decimals: number, sender: IdentityOutput };
 export type SetMerkleRootEventInput = { root: string, uri: StdString };
 export type SetMerkleRootEventOutput = SetMerkleRootEventInput;
-export type SetMetadataEventInput = { asset: AssetIdInput, key: StdString, metadata: MetadataInput };
-export type SetMetadataEventOutput = { asset: AssetIdOutput, key: StdString, metadata: MetadataOutput };
+export type SetMetadataEventInput = { asset: AssetIdInput, metadata: Option<MetadataInput>, key: StdString, sender: IdentityInput };
+export type SetMetadataEventOutput = { asset: AssetIdOutput, metadata: Option<MetadataOutput>, key: StdString, sender: IdentityOutput };
 export type SetMintDatesEventInput = { start: BigNumberish, end: BigNumberish };
 export type SetMintDatesEventOutput = { start: BN, end: BN };
 export type SetMintPriceEventInput = { price: BigNumberish };
@@ -270,38 +270,38 @@ const abi = {
       "metadataTypeId": 19
     },
     {
-      "type": "struct libraries::events::SetMetadataEvent",
-      "concreteTypeId": "0bd6e6a5b94ae08fe72842648315868c2deddfa5799f8f27ccad840b87906de0",
-      "metadataTypeId": 20
-    },
-    {
       "type": "struct libraries::events::SetMintDatesEvent",
       "concreteTypeId": "788c9cfcf0567b3194bbdb3a842065bc0aaf694a747136d4b9ed4ffa52b0c15e",
-      "metadataTypeId": 21
+      "metadataTypeId": 20
     },
     {
       "type": "struct libraries::events::SetMintPriceEvent",
       "concreteTypeId": "8e19313db1ba0eced06c7a689e8ba78c6949185dfffc7e4bd8ce2da93a2cb715",
-      "metadataTypeId": 22
+      "metadataTypeId": 21
     },
     {
       "type": "struct standards::src20::SetDecimalsEvent",
       "concreteTypeId": "fbe071a6e7ca2b2b5e503e82638f9f11c861a6fb452b65473eca8260db87392d",
-      "metadataTypeId": 23
+      "metadataTypeId": 22
     },
     {
       "type": "struct standards::src20::SetNameEvent",
       "concreteTypeId": "6ce295b0fb4c1c15e8ed1cfa4babda47d8a04940a5266a3229e12243a2e37c2c",
-      "metadataTypeId": 24
+      "metadataTypeId": 23
     },
     {
       "type": "struct standards::src20::SetSymbolEvent",
       "concreteTypeId": "a8a4b78066c51a50da6349bd395fe1c67e774d75c1db2c5c22288a432d7a363d",
-      "metadataTypeId": 25
+      "metadataTypeId": 24
     },
     {
       "type": "struct standards::src20::TotalSupplyEvent",
       "concreteTypeId": "f255d5cc2114d1b6bc34bef4c28d4b60caccffd9a672ed16b79ea217e1c4a8a3",
+      "metadataTypeId": 25
+    },
+    {
+      "type": "struct standards::src7::SetMetadataEvent",
+      "concreteTypeId": "f1b1cc90b68559aa4bb5cc58201ebb5c5402ed3aa28927140761e8ff7dcd3ab8",
       "metadataTypeId": 26
     },
     {
@@ -694,26 +694,8 @@ const abi = {
       ]
     },
     {
-      "type": "struct libraries::events::SetMetadataEvent",
-      "metadataTypeId": 20,
-      "components": [
-        {
-          "name": "asset",
-          "typeId": 28
-        },
-        {
-          "name": "key",
-          "typeId": 32
-        },
-        {
-          "name": "metadata",
-          "typeId": 6
-        }
-      ]
-    },
-    {
       "type": "struct libraries::events::SetMintDatesEvent",
-      "metadataTypeId": 21,
+      "metadataTypeId": 20,
       "components": [
         {
           "name": "start",
@@ -727,7 +709,7 @@ const abi = {
     },
     {
       "type": "struct libraries::events::SetMintPriceEvent",
-      "metadataTypeId": 22,
+      "metadataTypeId": 21,
       "components": [
         {
           "name": "price",
@@ -737,7 +719,7 @@ const abi = {
     },
     {
       "type": "struct standards::src20::SetDecimalsEvent",
-      "metadataTypeId": 23,
+      "metadataTypeId": 22,
       "components": [
         {
           "name": "asset",
@@ -755,7 +737,7 @@ const abi = {
     },
     {
       "type": "struct standards::src20::SetNameEvent",
-      "metadataTypeId": 24,
+      "metadataTypeId": 23,
       "components": [
         {
           "name": "asset",
@@ -779,7 +761,7 @@ const abi = {
     },
     {
       "type": "struct standards::src20::SetSymbolEvent",
-      "metadataTypeId": 25,
+      "metadataTypeId": 24,
       "components": [
         {
           "name": "asset",
@@ -803,7 +785,7 @@ const abi = {
     },
     {
       "type": "struct standards::src20::TotalSupplyEvent",
-      "metadataTypeId": 26,
+      "metadataTypeId": 25,
       "components": [
         {
           "name": "asset",
@@ -812,6 +794,34 @@ const abi = {
         {
           "name": "supply",
           "typeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0"
+        },
+        {
+          "name": "sender",
+          "typeId": 7
+        }
+      ]
+    },
+    {
+      "type": "struct standards::src7::SetMetadataEvent",
+      "metadataTypeId": 26,
+      "components": [
+        {
+          "name": "asset",
+          "typeId": 28
+        },
+        {
+          "name": "metadata",
+          "typeId": 8,
+          "typeArguments": [
+            {
+              "name": "",
+              "typeId": 6
+            }
+          ]
+        },
+        {
+          "name": "key",
+          "typeId": 32
         },
         {
           "name": "sender",
@@ -5747,6 +5757,26 @@ const abi = {
       "concreteTypeId": "43052c3eb9b6a222401d50809c2efdadc567cfe06e22216115496d6984df3fa5"
     },
     {
+      "logId": "7845998088195677205",
+      "concreteTypeId": "6ce295b0fb4c1c15e8ed1cfa4babda47d8a04940a5266a3229e12243a2e37c2c"
+    },
+    {
+      "logId": "12152039456660331088",
+      "concreteTypeId": "a8a4b78066c51a50da6349bd395fe1c67e774d75c1db2c5c22288a432d7a363d"
+    },
+    {
+      "logId": "18149631459970394923",
+      "concreteTypeId": "fbe071a6e7ca2b2b5e503e82638f9f11c861a6fb452b65473eca8260db87392d"
+    },
+    {
+      "logId": "17462098202904023478",
+      "concreteTypeId": "f255d5cc2114d1b6bc34bef4c28d4b60caccffd9a672ed16b79ea217e1c4a8a3"
+    },
+    {
+      "logId": "17415926155927968170",
+      "concreteTypeId": "f1b1cc90b68559aa4bb5cc58201ebb5c5402ed3aa28927140761e8ff7dcd3ab8"
+    },
+    {
       "logId": "4237256875605624201",
       "concreteTypeId": "3acdc2adac8e0589c5864525e0edc9dc61a9571a4d09c3c57b58ea76d33f4b46"
     },
@@ -5767,28 +5797,8 @@ const abi = {
       "concreteTypeId": "8918e0ef064a0148dea2d218f022d9b9065aea529e92f028167175e90d883194"
     },
     {
-      "logId": "7845998088195677205",
-      "concreteTypeId": "6ce295b0fb4c1c15e8ed1cfa4babda47d8a04940a5266a3229e12243a2e37c2c"
-    },
-    {
-      "logId": "12152039456660331088",
-      "concreteTypeId": "a8a4b78066c51a50da6349bd395fe1c67e774d75c1db2c5c22288a432d7a363d"
-    },
-    {
-      "logId": "18149631459970394923",
-      "concreteTypeId": "fbe071a6e7ca2b2b5e503e82638f9f11c861a6fb452b65473eca8260db87392d"
-    },
-    {
-      "logId": "17462098202904023478",
-      "concreteTypeId": "f255d5cc2114d1b6bc34bef4c28d4b60caccffd9a672ed16b79ea217e1c4a8a3"
-    },
-    {
       "logId": "13791596350235125220",
       "concreteTypeId": "bf6597cf3d56a5e47a920520e275ccd481a27e7c988ea6af6f253170d5374c5a"
-    },
-    {
-      "logId": "853122778885972111",
-      "concreteTypeId": "0bd6e6a5b94ae08fe72842648315868c2deddfa5799f8f27ccad840b87906de0"
     },
     {
       "logId": "8686490391468735281",
@@ -5816,37 +5826,37 @@ const abi = {
     {
       "name": "MAX_SUPPLY",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 94960
+      "offset": 99648
     },
     {
       "name": "BUILDER_FEE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 94880
+      "offset": 99568
     },
     {
       "name": "BUILDER_FEE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 94872
+      "offset": 99560
     },
     {
       "name": "BUILDER_REVENUE_SHARE_ADDRESS",
       "concreteTypeId": "f597b637c3b0f588fb8d7086c6f4735caa3122b85f0423b82e489f9bb58e2308",
-      "offset": 94912
+      "offset": 99600
     },
     {
       "name": "BUILDER_REVENUE_SHARE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 94944
+      "offset": 99632
     },
     {
       "name": "AFFILIATE_FEE_PERCENTAGE",
       "concreteTypeId": "1506e6f44c1d6291cdf46395a8e573276a4fa79e8ace3fc891e092ef32d1b0a0",
-      "offset": 94864
+      "offset": 99552
     },
     {
       "name": "DISABLE_AIRDROP",
       "concreteTypeId": "b760f44fa5965c2474a3b471467a22c43185152129295af588b022ae50b50903",
-      "offset": 94952
+      "offset": 99640
     }
   ]
 };

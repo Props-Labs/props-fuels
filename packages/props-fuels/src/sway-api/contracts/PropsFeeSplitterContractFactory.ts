@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 /*
-  Fuels version: 0.94.9
+  Fuels version: 0.96.1
   Forc version: 0.66.1
   Fuel-Core version: 0.40.0
 */
@@ -25,7 +25,7 @@ export class PropsFeeSplitterContractFactory extends ContractFactory {
     super(bytecode, PropsFeeSplitterContract.abi, accountOrProvider);
   }
 
-  deploy<TContract extends Contract = Contract>(
+  override deploy<TContract extends Contract = Contract>(
     deployOptions?: DeployContractOptions
   ): Promise<DeployContractResult<TContract>> {
     return super.deploy({
